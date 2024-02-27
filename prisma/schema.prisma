@@ -1,0 +1,722 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Sex {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique(map: "name") @db.VarChar(10)
+  addedBy   Int?       @default(1)
+  deleted   Int?       @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Personal  Personal[]
+}
+
+model YesNo {
+  id           Int            @id @default(autoincrement())
+  value        String?        @db.VarChar(255)
+  addedBy      Int?           @default(1)
+  deleted      Int?           @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Confirmation Confirmation[]
+  Bonded       Bonded[]
+}
+
+model MaritalStatus {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique(map: "name") @db.VarChar(10)
+  addedBy   Int?       @default(1)
+  deleted   Int?       @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Personal  Personal[]
+}
+
+model Admin {
+  id         Int        @id @default(autoincrement())
+  User       User       @relation(fields: [userId], references: [id])
+  position   String?    @db.VarChar(255)
+  Department Department @relation(fields: [departmentId], references: [id])
+  deleted    Int?       @default(0)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  userId       Int @unique
+  departmentId Int
+}
+
+model Division {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique(map: "name") @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Department Department[]
+}
+
+model Department {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  addedBy    Int?     @default(1)
+  deleted    Int?     @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Division   Division @relation(fields: [divisionId], references: [id])
+  divisionId Int
+  Admin      Admin[]
+}
+
+model StaffType {
+  id              Int               @id @default(autoincrement())
+  name            String?           @db.VarChar(255)
+  addedBy         Int?              @default(1)
+  deleted         Int?              @default(0)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Policy Policy[]
+
+  Recruitment Recruitment[]
+}
+
+model EducationLevel {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique(map: "name") @db.VarChar(100)
+  addedBy         Int?              @default(1)
+  deleted         Int?              @default(0)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Policy Policy[]
+  SchoolAttended  SchoolAttended[]
+  Certificate     Certificate[]
+}
+
+model Policy {
+  id             Int            @id @default(autoincrement())
+  name           String?        @db.VarChar(255)
+  age            Int
+  EducationLevel EducationLevel @relation(fields: [educationLevelId], references: [id])
+  StaffType      StaffType      @relation(fields: [staffTypeId], references: [id])
+  experience     Int?
+  minimumGrade   Int
+  deadline       DateTime?      @db.Date
+  note           String?        @db.VarChar(1000)
+  addedBy        Int?           @default(1)
+  deleted        Int?           @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  staffTypeId      Int
+  educationLevelId Int
+  Job              Job[]
+  Advert           Advert[]
+}
+
+model Job {
+  id                Int             @id @default(autoincrement())
+ Policy  Policy @relation(fields: [policyId], references: [id])
+  name              String?         @unique(map: "name") @db.VarChar(255)
+  published         Int?            @default(0)
+  addedBy           Int?            @default(1)
+  deleted           Int?            @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  policyId Int
+  AccessibleJob     AccessibleJob[]
+  Application       Application[]
+}
+
+model Advert {
+  id                Int             @id @default(autoincrement())
+  Policy   Policy @relation(fields: [policyId], references: [id])
+  name              String?         @db.VarChar(255)
+  details           String?         @db.Text
+  published         Int?            @default(0)
+  addedBy           Int?            @default(1)
+  deleted           Int?            @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  policyId Int
+}
+
+model ExamTypeNew {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  IndexNumber IndexNumber[]
+}
+
+model ExamType {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Grade          Grade[]
+  Subject        Subject[]
+  GradesObtained GradesObtained[]
+}
+
+model Subject {
+  id          Int         @id @default(autoincrement())
+  ExamType    ExamType    @relation(fields: [examTypeId], references: [id])
+  SubjectType SubjectType @relation(fields: [subjectTypeId], references: [id])
+  name        String      @db.VarChar(255)
+  addedBy     Int?        @default(1)
+  deleted     Int?        @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  examTypeId     Int
+  subjectTypeId  Int
+  GradesObtained GradesObtained[]
+}
+
+model SubjectType {
+  id        Int      @id @default(autoincrement())
+  name      String?  @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Subject Subject[]
+}
+
+model Recruitment {
+  id        Int      @id @default(autoincrement())
+  name      String?  @unique(map: "name") @db.VarChar(255)
+  code      String?  @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  StaffType           StaffType             @relation(fields: [staffTypeId], references: [id])
+  staffTypeId         Int
+  CurrentRecruitment  CurrentRecruitment[]
+  CurrentShortlisting CurrentShortlisting[]
+}
+
+model CurrentRecruitment {
+  id            Int           @id @default(autoincrement())
+  addedBy       Int?          @default(1)
+  deleted       Int?          @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  Recruitment   Recruitment   @relation(fields: [recruitmentId], references: [id])
+  Application   Application[]
+  recruitmentId Int
+}
+
+model CurrentShortlisting {
+  id            Int         @id @default(autoincrement())
+  addedBy       Int?        @default(1)
+  deleted       Int?        @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  Recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
+  recruitmentId Int
+}
+
+model Grade {
+  id             Int      @id @default(autoincrement())
+  ExamType       ExamType @relation(fields: [examTypeId], references: [id])
+  name           String   @db.VarChar(255)
+  examTypeId     Int
+  interpretation Int
+  addedBy        Int?     @default(1)
+  deleted        Int?     @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  GradesObtained GradesObtained[]
+}
+
+model PageAccess {
+  id         Int      @id @default(autoincrement())
+  UserRole   UserRole @relation(fields: [userRoleId], references: [id])
+  Page       Page     @relation(fields: [pageId], references: [id])
+  addedBy    Int?     @default(1)
+  deleted    Int?     @default(0)
+  userRoleId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  pageId     Int
+}
+
+model AccessibleJob {
+  id        Int      @id @default(autoincrement())
+  jobId     Int
+  Job       Job      @relation(fields: [jobId], references: [id])
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  firstName   String?  @db.VarChar(255)
+  surname     String?  @db.VarChar(255)
+  otherNames  String?  @db.VarChar(255)
+  email       String   @unique(map: "email") @db.VarChar(255)
+  phoneNumber String?  @unique(map: "phoneNumber") @db.VarChar(10)
+  password    String?  @db.VarChar(255)
+  UserRole    UserRole @relation(fields: [userRoleId], references: [id])
+  deleted     Int?     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userRoleId  Int      @default(4)
+
+  Admin          Admin?
+  Personal       Personal?
+  Publication    Publication[]
+  Reference      Reference[]
+  Bonded         Bonded?
+  Employment     Employment[]
+  Essay          Essay?
+  Application    Application[]
+  GradesObtained GradesObtained[]
+  SchoolAttended SchoolAttended[]
+  UserLogs       UserLogs[]
+  Certificate    Certificate[]
+  Confirmation   Confirmation?
+  AccessibleJob  AccessibleJob[]
+  IndexNumber    IndexNumber[]
+}
+
+model UserRole {
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(255)
+  addedBy    Int?         @default(1)
+  deleted    Int?         @default(0)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  User       User[]
+  PageAccess PageAccess[]
+}
+
+model UserLogs {
+  id        Int      @id @default(autoincrement())
+  User      User     @relation(fields: [userId], references: [id])
+  activity  String?  @db.VarChar(255)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+}
+
+model Page {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique(map: "name") @db.VarChar(255)
+  icon       String?      @db.VarChar(255)
+  hasSubMenu Int?         @default(0)
+  addedBy    Int?         @default(1)
+  deleted    Int?         @default(0)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  PageAccess PageAccess[]
+}
+
+// model SubMenu {
+//   id        Int      @id @default(autoincrement())
+//   name      String   @unique(map: "name") @db.VarChar(255)
+//   path      String?  @db.VarChar(255)
+//   Menu      Menu     @relation(fields: [menuId], references: [id])
+//   addedBy   Int?     @default(1)
+//   deleted   Int?     @default(0)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   menuId    Int
+// }
+
+model DegreePrefix {
+  id        Int      @id @default(autoincrement())
+  name      String?  @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Personal {
+  id               Int           @id @default(autoincrement())
+  User             User          @relation(fields: [userId], references: [id])
+  address          String?       @db.VarChar(255)
+  residenceTel     String?       @db.VarChar(255)
+  hometown         String?       @db.VarChar(255)
+  birthPlace       String?       @db.VarChar(255)
+  dob              String?       @db.VarChar(20)
+  ageAtApplication Int?
+  Sex              Sex           @relation(fields: [sexId], references: [id])
+  MaritalStatus    MaritalStatus @relation(fields: [maritalStatusId], references: [id])
+  childrenNumber   String?       @db.VarChar(20)
+  deleted          Int?          @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  maritalStatusId Int
+  sexId           Int
+  userId          Int @unique
+
+  title            String? @db.VarChar(255)
+  permanentAddress String? @db.VarChar(255)
+  presentAddress   String? @db.VarChar(255)
+
+  sonNumber      String? @db.VarChar(255)
+  daughterNumber String? @db.VarChar(255)
+}
+
+model Publication {
+  id          Int      @id @default(autoincrement())
+  User        User     @relation(fields: [userId], references: [id])
+  title       String?  @unique(map: "title") @db.VarChar(255)
+  date        String?  @db.VarChar(255)
+  authors     String?  @db.VarChar(255)
+  url         String?  @db.VarChar(255)
+  description String?  @db.Text
+  deleted     Int?     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+
+  @@unique([userId, title], name: "titleusercomp")
+}
+
+model Reference {
+  id         Int      @id @default(autoincrement())
+  User       User     @relation(fields: [userId], references: [id])
+  name       String   @db.VarChar(255)
+  occupation String   @db.VarChar(255)
+  address    String   @db.VarChar(255)
+  phone      String   @db.VarChar(255)
+  deleted    Int?     @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  userId Int
+
+  @@unique([userId, name], name: "refnameusercomp")
+}
+
+model Confirmation {
+  id               Int      @id @default(autoincrement())
+  userId           Int      @unique
+  User             User     @relation(fields: [userId], references: [id])
+  contactObjection Int
+  deleted          Int?     @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  YesNo            YesNo    @relation(fields: [contactObjection], references: [id])
+}
+
+model Bonded {
+  id        Int      @id @default(autoincrement())
+  User      User     @relation(fields: [userId], references: [id])
+  bonded    Int
+  details   String?  @db.Text
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  YesNo     YesNo    @relation(fields: [bonded], references: [id])
+
+  userId Int @unique
+}
+
+// model ContactObjection {
+//   id        Int      @id @default(autoincrement())
+//   User      User     @relation(fields: [userId], references: [id])
+//   YesNo     YesNo    @relation(fields: [yesNoId], references: [id])
+//   deleted   Int?     @default(0)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   userId  Int
+//   yesNoId Int
+// }
+
+model Employment {
+  id               Int      @id @default(autoincrement())
+  User             User     @relation(fields: [userId], references: [id])
+  organizationName String?  @db.VarChar(100)
+  start            String?  @db.VarChar(100)
+  end              String?  @db.VarChar(100)
+  position         String?  @db.VarChar(100)
+  salary           String?  @db.VarChar(100)
+  leavingReason    String?  @db.VarChar(255)
+  deleted          Int?     @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  userId Int
+}
+
+model Essay {
+  id        Int      @id @default(autoincrement())
+  User      User     @relation(fields: [userId], references: [id])
+  essay     String   @db.Text
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int      @unique(map: "userId")
+}
+
+model Application {
+  id              Int      @id @default(autoincrement())
+  jobId           Int
+  submitted       Int?     @default(0)
+  submissionDate  String?  @db.VarChar(255)
+  shortlisted     Int?     @default(-1)
+  deleted         Int?     @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          Int
+  shortlistedById Int?
+
+  User User @relation(fields: [userId], references: [id])
+
+  Job                  Job                 @relation(fields: [jobId], references: [id])
+  RejectReason         RejectReason[]
+  // @@unique([userId, jobId], name: "userId_jobId")
+  FilteredOutReason    FilteredOutReason[]
+  currentRecruitmentId Int
+  CurrentRecruitment   CurrentRecruitment  @relation(fields: [currentRecruitmentId], references: [id])
+}
+
+// model ApplicationMenu {
+//   id                    Int                     @id @default(autoincrement())
+//   name                  String?                 @db.VarChar(255)
+//   path                  String?                 @db.VarChar(255)
+//   icon                  String?                 @db.VarChar(255)
+//   code                  String?                 @db.Text
+//   deleted               Int?                    @default(0)
+//   createdAt             DateTime                @default(now())
+//   updatedAt             DateTime                @updatedAt
+//   ApplicationMenuAccess ApplicationMenuAccess[]
+// }
+
+// model ApplicationMenuAccess {
+//   id                Int             @id @default(autoincrement())
+//   policyId Int
+//   applicationMenuId Int
+//   deleted           Int?            @default(0)
+//   createdAt         DateTime        @default(now())
+//   updatedAt         DateTime        @updatedAt
+//   ApplicationMenu   ApplicationMenu @relation(fields: [applicationMenuId], references: [id])
+//   Policy   Policy @relation(fields: [policyId], references: [id])
+
+// }
+
+// model Reason {
+//   id          Int         @id @default(autoincrement())
+//   Application Application @relation(fields: [applicationId], references: [id])
+//   User        User        @relation(fields: [userId], references: [id])
+//   addedBy     Int?
+//   deleted     Int?        @default(0)
+//   createdAt   DateTime    @default(now())
+//   updatedAt   DateTime    @updatedAt
+
+//   RejectReason   RejectReason @relation(fields: [rejectReasonId], references: [id])
+//   applicationId  Int
+//   userId         Int
+//   rejectReasonId Int
+// }
+
+model RejectReason {
+  id          Int         @id @default(autoincrement())
+  Application Application @relation(fields: [applicationId], references: [id])
+  addedBy     Int?
+  deleted     Int?        @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  Reason        Reason @relation(fields: [reasonId], references: [id])
+  applicationId Int
+  reasonId      Int
+}
+
+model Reason {
+  id        Int      @id @default(autoincrement())
+  reason    String?  @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  RejectReason RejectReason[]
+}
+
+model ApplicationStatus {
+  id        Int      @id @default(autoincrement())
+  status    String?  @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FilteredOutReason {
+  id            Int     @id @default(autoincrement())
+  applicationId Int
+  filterReason  String? @db.VarChar(200)
+
+  addedBy     Int?        @default(1)
+  deleted     Int?        @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  Application Application @relation(fields: [applicationId], references: [id])
+}
+
+// model FilterReason {
+//   id            Int      @id @default(autoincrement())
+//   reason        String?  @db.VarChar(150)
+//   applicationId Int
+//   addedBy       Int?     @default(1)
+//   deleted       Int?     @default(0)
+//   createdAt     DateTime @default(now())
+//   updatedAt     DateTime @updatedAt
+
+//   FilteredOutReason FilteredOutReason[]
+// }
+
+model GradesObtained {
+  id        Int      @id @default(autoincrement())
+  User      User     @relation(fields: [userId], references: [id])
+  ExamType  ExamType @relation(fields: [examTypeId], references: [id])
+  Subject   Subject  @relation(fields: [subjectId], references: [id])
+  Grade     Grade    @relation(fields: [gradeId], references: [id])
+  year      String?  @db.VarChar(255)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  examTypeId Int
+  userId     Int
+  subjectId  Int
+  gradeId    Int
+
+  @@unique([userId, year, examTypeId, subjectId, gradeId], name: "gradesObtainedComp")
+}
+
+model IndexNumber {
+  id            Int          @id @default(autoincrement())
+  indexNumber   String       @db.VarChar(255)
+  year          String       @db.VarChar(255)
+  addedBy       Int?         @default(1)
+  deleted       Int?         @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  User          User         @relation(fields: [userId], references: [id])
+  userId        Int
+  ExamTypeNew   ExamTypeNew? @relation(fields: [examTypeNewId], references: [id])
+  examTypeNewId Int?
+}
+
+model Certificate {
+  id                  Int            @id @default(autoincrement())
+  User                User           @relation(fields: [userId], references: [id])
+  institution         String?        @db.VarChar(255)
+  from                String?        @db.VarChar(255)
+  to                  String?        @db.VarChar(255)
+  certificateObtained String?        @db.VarChar(255)
+  EducationLevel      EducationLevel @relation(fields: [educationLevelId], references: [id])
+  deleted             Int?           @default(0)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  userId              Int
+  educationLevelId    Int
+}
+
+model SchoolAttended {
+  id               Int            @id @default(autoincrement())
+  User             User           @relation(fields: [userId], references: [id])
+  EducationLevel   EducationLevel @relation(fields: [educationLevelId], references: [id])
+  institutionName  String?        @db.VarChar(255)
+  institutionStart String?        @db.VarChar(255)
+  institutionEnd   String?        @db.VarChar(255)
+  deleted          Int?           @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  educationLevelId Int
+  userId           Int
+}
+
+// model MenuAccessType {
+//   id         Int          @id @default(autoincrement())
+//   name       String       @db.VarChar(255)
+//   addedBy    Int?         @default(1)
+//   deleted    Int?         @default(0)
+//   createdAt  DateTime     @default(now())
+//   updatedAt  DateTime     @updatedAt
+//   MenuAccess MenuAccess[]
+// }
+
+// model programme {
+//   id        Int      @id @default(autoincrement())
+//   name      String   @db.VarChar(255)
+//   addedBy   Int?
+//   deleted   Int?     @default(0)
+//   createdAt DateTime @db.DateTime(0)
+//   updatedAt DateTime @db.DateTime(0)
+// }
+
+// model jobsaccesslevel {
+//   id        Int      @id @default(autoincrement())
+//   userId    Int?
+//   jobId     Int?
+//   addedBy   Int?     @default(1)
+//   deleted   Int?     @default(0)
+//   createdAt DateTime @db.DateTime(0)
+//   updatedAt DateTime @db.DateTime(0)
+
+// }
+
+// model jobtype {
+//   id           Int      @id @default(autoincrement())
+//   pageAccessId Int
+//   type         String   @db.VarChar(255)
+//   addedBy      Int?     @default(1)
+//   active       Int?     @default(1)
+//   deleted      Int?     @default(0)
+//   createdAt    DateTime @db.DateTime(0)
+//   updatedAt    DateTime @db.DateTime(0)
+// }
+
+// model Classes {
+//   id        Int      @id @default(autoincrement())
+//   title     String?  @db.VarChar(255)
+//   addedBy   Int?     @default(1)
+//   deleted   Int?     @default(0)
+//   createdAt DateTime @db.DateTime(0)
+//   updatedAt DateTime @db.DateTime(0)
+// }
+
+// model Applicationmeta {
+//   id                   Int      @id @default(autoincrement())
+//   userId               Int      @unique(map: "userId")
+//   totalYearsExperience Int?     @default(0)
+//   age                  Int?
+//   deleted              Int?     @default(0)
+//   createdAt            DateTime @db.DateTime(0)
+//   updatedAt            DateTime @db.DateTime(0)
+// }
