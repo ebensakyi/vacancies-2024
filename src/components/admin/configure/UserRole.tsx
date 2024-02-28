@@ -9,14 +9,16 @@ const UserRole = ({ data }: any) => {
 
 
   const [name, setName] = useState("");
-  const accessibleJobs = useState([])
+  const [accessibleJobs, setAccessibleJobs] = useState([])
+  const [accessiblePages, setAccessiblePages] = useState([])
+
   const save = async () => {
     try {
-      if (name == "") return toast.error("Enter user role");
+      if (name == "" || accessibleJobs.length == 0 || accessiblePages.length == 0) return toast.error("Enter user role");
 
-      const response = await axios.post("/api/admin/user-role", { data });
+      const response = await axios.post("/api/admin/configure/user-role", { data });
       if (response.status == 200) {
-        setName( "") ;
+        setName("");
         return toast.success("Data saved successfully");
       }
       if (response.status != 200) return toast.error("Data not saved");
@@ -26,14 +28,18 @@ const UserRole = ({ data }: any) => {
 
   };
 
-  const onSelect = (selectedList: [], selectedItem: number) => {
-    //  accessibleJobs.value = [...accessibleJobs.value, { jobId: selectedItem.id }];
+  const onSelect = (selectedList: [], selectedItem: any) => {
+
+    // setAccessibleJobs(...accessibleJobs, { 'jobId': selectedItem });
+    setAccessibleJobs(selectedItem?.id);
 
   };
 
-  const onRemove = (selectedList: [], removedItem: number) => {
-    //const filtered = accessibleJobs.value.filter((m) => m.jobId !== removedItem.id);
-    //accessibleJobs.value = filtered
+  const onRemove = (selectedList: [], removedItem: any) => {
+
+    // const filtered = accessibleJobs.filter((m) => m?.id !== removedItem?.id);
+    setAccessibleJobs(selectedList)
+
   };
   return (
     <div id="layout-wrapper">
@@ -80,7 +86,7 @@ const UserRole = ({ data }: any) => {
                                 className="form-control"
                                 required
                                 onChange={(e: any) => {
-                                  setName(e.target.value)  ;
+                                  setName(e.target.value);
                                 }}
                               />
                             </div>

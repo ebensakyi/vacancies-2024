@@ -63,6 +63,7 @@ export async function GET(request: Request) {
   try {
     //  const res = await request.json();
     const response = await prisma.job.findMany({ where: { deleted: 0 }, include: { Policy: true } });
+    //const response = await prisma.job.findMany({ select: { id: true, name: true } });
 
 
     return NextResponse.json({ response }, { status: 200 });

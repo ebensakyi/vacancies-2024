@@ -31,16 +31,29 @@ async function getPages(searchParams: any) {
 
 
 
+async function getJobs(searchParams: any) {
+    let { qry } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/job?qry=${qry}`, { cache: 'no-store' });
+
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return await response.json();
+
+}
+
 
 export default async function Page({ searchParams }: any) {
 
 
     const userRoles = await getUserRoles(searchParams)
     const pages = await getPages(searchParams)
+    const jobs = await getJobs(searchParams)
 
 
     let data: any = {
-        userRoles,pages
+        userRoles,pages,jobs
     }
 
     return <UserRole data={data} />
