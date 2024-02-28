@@ -1,5 +1,5 @@
 import { SERVER_BASE_URL } from "@/constants";
-import Job from "@/src/components/admin/configure/JobList";
+import Job from "@/src/components/admin/JobList";
 
 export const dynamic = "force-dynamic";
 

@@ -302,10 +302,10 @@ const Header = () => {
                         Set up portal
 
                       </Link>
-                      <Link href="/admin/configure/job-advert" className="dropdown-item">
+                      <Link href="/admin/job-advert" className="dropdown-item">
                         Job advert
                       </Link>
-                      <Link href="/admin/configure/job" className="dropdown-item">
+                      <Link href="/admin/job" className="dropdown-item">
 
                         Job list
 

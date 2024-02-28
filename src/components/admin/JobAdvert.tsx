@@ -4,26 +4,26 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { Modal } from "react-responsive-modal";
-import ReactHtmlParser from "react-html-parser";
-// import { Modal } from 'next-modal'
-
 import { Editor } from "@tinymce/tinymce-react";
+import { useRouter } from "next/navigation";
 
 const JobAdvert = ({ data }: any) => {
+  const router = useRouter()
   const [toggleModal, setToggleModal] = useState(false)
+  const [id, setId] = useState("");
 
   const [name, setName] = useState("");
   const [policy, setPolicy] = useState("");
   const [detail, setDetail] = useState("");
- const [publish, setPublish] = useState("");
+  const [formattedDetail, setFormattedDetail] = useState("");
+
+  const [publish, setPublish] = useState("");
   // const [modalContent, setModalContent] = useState("");
   // const [modalTitle, setModalTitle] = useState("");
   // const [open, setOpen] = useState(false);
 
   // const onCloseModal = () => setOpen(false);
 
-  console.log(data);
 
   const save = async () => {
     try {
@@ -35,13 +35,54 @@ const JobAdvert = ({ data }: any) => {
       if (name == "" || policy == "" || detail == "")
         return toast.error("Data not saved. Fill the form");
 
-      const response = await axios.post("/api/admin/job-advert", { data });
-      console.log(response);
+      let response = await axios.post("/api/admin/job-advert", { data });
 
-      // if (response.statusCode == 1) {
-      //   return toast.success("Data saved successfully");
-      // }
-      // if (response.statusCode == 0) return toast.error("Data not saved");
+
+      if (response.status == 200) {
+        setName("")
+        setPolicy("")
+        setDetail("")
+        router.refresh()
+
+
+        return toast.success("Data saved successfully");
+      }
+      if (response.status != 200) return toast.error("Data not saved");
+    } catch (error) {
+    }
+
+  };
+
+  const update = async () => {
+    try {
+      const data = {
+        update: 1,
+        id,
+        name,
+        policy,
+        detail,
+      };
+      if (name == "" || policy == "" || detail == "")
+        return toast.error("Data not saved. Fill the form");
+
+
+      let response = await axios.put("/api/admin/job-advert", { data });
+
+
+
+      if (response.status == 200) {
+        setName("")
+        setPolicy("")
+        setDetail("")
+        router.refresh()
+
+        return toast.success("Data updated successfully");
+      }
+      setName("")
+      setPolicy("")
+      setDetail("")
+      router.refresh()
+      return toast.error("Data not updated");
     } catch (error) {
     }
 
@@ -49,9 +90,15 @@ const JobAdvert = ({ data }: any) => {
 
   const handlePublishing = async (id: any) => {
     try {
-      const response = await axios.put("/api/admin/job-advert", { id });
+
+      const data = {
+        publish: 1,
+        id,
+
+      };
+      const response = await axios.put("/api/admin/job-advert", { data });
       if (response.status == 200) {
-        //Router.reload(window.location.pathname);
+        router.refresh()
         return toast.success("Job published successfully");
       }
       if (response.status != 0) return toast.error("Job not published ");
@@ -66,44 +113,24 @@ const JobAdvert = ({ data }: any) => {
       const response = await axios.delete(`/api/admin/job-advert`, {
         data: id,
       });
+
+
+      router.refresh()
       if (response.status == 200) {
-        // Router.reload(window.location.pathname);
+
+
         return toast.success("Job deleted successfully");
       }
-      if (response.status != 0) return toast.error("Job not published ");
+      if (response.status != 200) return toast.error("Job not deleted ");
     } catch (error) {
-
+      return toast.error("Job not deleted ");
     }
 
   };
-
+  // let formattedDetails = ReactHtmlParser(detail)
   return (
     <div id="layout-wrapper">
-      {/* <Modal toggle={toggleModal} setToggle={setToggleModal}>
-        <Modal.Header className='sans font-900 text-30px fade-in-left animation-duration-500ms animation-forwards'>
-          <h3>👋 Hi, I'm your modal</h3>
-        </Modal.Header>
-        <Modal.Body className='sans font-400 text-15px text-gray fade-in animation-duration-800ms animation-forwards'>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-            aliqua. Viverra accumsan in nisl nisi scelerisque eu ultrices vitae auctor. Quis vel eros donec ac. Mauris
-            pellentesque pulvinar pellentesque habitant morbi tristique senectus.
-          </p>
-          <p>
-            Nunc non blandit massa enim nec dui nunc. Sed elementum tempus egestas sed sed risus. Senectus et netus et malesuada
-            fames ac turpis egestas maecenas. Urna nec tincidunt praesent semper feugiat. Est ante in nibh mauris cursus mattis
-            molestie. Vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant.
-          </p>
-        </Modal.Body>
-        <Modal.Footer className='sans font-400 text-10px'>
-          <h3>copyright</h3>
-        </Modal.Footer>
-      </Modal> */}
-      {/* <Modal open={open} onClose={onCloseModal} center>
-        {modalTitle}
-        <hr />
-        {modalContent}
-      </Modal> */}
+
       <div className="main-content">
         <div className="page-content">
           <div className="container-fluid">
@@ -118,7 +145,7 @@ const JobAdvert = ({ data }: any) => {
 
               <ToastContainer
                 position="top-right"
-                autoClose={15000}
+                autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -185,17 +212,17 @@ const JobAdvert = ({ data }: any) => {
                               initialValue={detail}
                               init={{
                                 height: 500,
-                                menubar: false,
+                                // menubar: false,
                                 plugins: [
                                   "advlist autolink lists link image",
                                   "charmap print preview anchor help",
                                   "searchreplace visualblocks code",
                                   "insertdatetime media table paste wordcount",
                                 ],
-                                toolbar:
-                                  "undo redo | formatselect | bold italic | \
-            alignleft aligncenter alignright | \
-            bullist numlist outdent indent | help",
+                                //                     toolbar:
+                                //                       "undo redo | formatselect | bold italic | \
+                                // alignleft aligncenter alignright | \
+                                // bullist numlist outdent indent | help",
                               }}
                               onChange={(e: any) => {
                                 setDetail(e.target.getContent());
@@ -204,7 +231,16 @@ const JobAdvert = ({ data }: any) => {
                           </div>
                         </div>
                       </div>
-                      <button
+                      {id != "" ? <button
+                        className="btn btn-warning"
+                        type="submit"
+                        onClick={(e: any) => {
+                          e.preventDefault();
+                          update();
+                        }}
+                      >
+                        Update
+                      </button> : <button
                         className="btn btn-primary"
                         type="submit"
                         onClick={(e: any) => {
@@ -213,6 +249,21 @@ const JobAdvert = ({ data }: any) => {
                         }}
                       >
                         Submit
+                      </button>}
+
+                      {" "}
+                      <button
+                        className="btn btn-danger"
+                        type="submit"
+                        onClick={(e: any) => {
+                          e.preventDefault();
+
+                          setId("")
+                          setName("")
+                          setDetail("")
+                        }}
+                      >
+                        Cancel
                       </button>
                     </form>
                   </div>
@@ -234,7 +285,9 @@ const JobAdvert = ({ data }: any) => {
                             <th>Is published</th>
 
                             <th>Publish</th>
+                            <th>Edit</th>
                             <th>Preview</th>
+
                             <th>Delete</th>
                           </tr>
                         </thead>
@@ -270,15 +323,39 @@ const JobAdvert = ({ data }: any) => {
                                     </label>
                                   </div>
                                 </td>
+                                <td> <button
+                                  type="button"
+                                  className="btn btn-primary btn-sm waves-effect waves-light "
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    setId(ad.id)
+                                    setName(ad.name)
+                                    setPolicy(ad.policyId)
+                                    setDetail(ad.details)
+
+                                    console.log(detail);
+
+                                    // setOpen(true);
+                                    // setModalTitle(ad.name);
+                                    // let fd = ReactHtmlParser(ad.details)
+                                    // console.log(fd);
+
+                                    //setFormattedDetail(fd);
+                                  }}
+                                >
+                                  <i className="dripicons-pencil" />
+                                </button></td>
                                 <td>
                                   <button
                                     type="button"
                                     className="btn btn-success btn-sm waves-effect waves-light "
                                     onClick={(e) => {
                                       e.preventDefault()
-                                      setName(ad.name)
-                                      setPolicy(ad.policyId)
-                                      setDetail(ad.detail)
+
+                                      window.open(`/admin/job-advert/preview?id=${ad.id}`, '_blank', 'noopener,noreferrer');
+                                      // setName(ad.name)
+                                      // setPolicy(ad.policyId)
+                                      // setDetail(ad.detail)
                                       // setOpen(true);
                                       // setModalTitle(ad.name);
                                       // setModalContent(ReactHtmlParser(ad.details));

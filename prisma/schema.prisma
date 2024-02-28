@@ -76,27 +76,27 @@ model Department {
 }
 
 model StaffType {
-  id              Int               @id @default(autoincrement())
-  name            String?           @db.VarChar(255)
-  addedBy         Int?              @default(1)
-  deleted         Int?              @default(0)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  Policy Policy[]
+  id        Int      @id @default(autoincrement())
+  name      String?  @db.VarChar(255)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Policy    Policy[]
 
   Recruitment Recruitment[]
 }
 
 model EducationLevel {
-  id              Int               @id @default(autoincrement())
-  name            String            @unique(map: "name") @db.VarChar(100)
-  addedBy         Int?              @default(1)
-  deleted         Int?              @default(0)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  Policy Policy[]
-  SchoolAttended  SchoolAttended[]
-  Certificate     Certificate[]
+  id             Int              @id @default(autoincrement())
+  name           String           @unique(map: "name") @db.VarChar(100)
+  addedBy        Int?             @default(1)
+  deleted        Int?             @default(0)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Policy         Policy[]
+  SchoolAttended SchoolAttended[]
+  Certificate    Certificate[]
 }
 
 model Policy {
@@ -121,30 +121,32 @@ model Policy {
 }
 
 model Job {
-  id                Int             @id @default(autoincrement())
- Policy  Policy @relation(fields: [policyId], references: [id])
-  name              String?         @unique(map: "name") @db.VarChar(255)
-  published         Int?            @default(0)
-  addedBy           Int?            @default(1)
-  deleted           Int?            @default(0)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  policyId Int
-  AccessibleJob     AccessibleJob[]
-  Application       Application[]
+  id            Int             @id @default(autoincrement())
+  Policy        Policy          @relation(fields: [policyId], references: [id])
+  name          String?         @unique(map: "name") @db.VarChar(255)
+  published     Int?            @default(0)
+  addedBy       Int?            @default(1)
+  deleted       Int?            @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  policyId      Int
+  AccessibleJob AccessibleJob[]
+  Application   Application[]
+
+  @@unique([policyId, name,deleted], name: "name_policy")
 }
 
 model Advert {
-  id                Int             @id @default(autoincrement())
-  Policy   Policy @relation(fields: [policyId], references: [id])
-  name              String?         @db.VarChar(255)
-  details           String?         @db.Text
-  published         Int?            @default(0)
-  addedBy           Int?            @default(1)
-  deleted           Int?            @default(0)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  policyId Int
+  id        Int      @id @default(autoincrement())
+  Policy    Policy   @relation(fields: [policyId], references: [id])
+  name      String?  @db.VarChar(255)
+  details   String?  @db.Text
+  published Int?     @default(0)
+  addedBy   Int?     @default(1)
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  policyId  Int
 }
 
 model ExamTypeNew {
