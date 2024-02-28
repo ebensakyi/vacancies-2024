@@ -333,7 +333,6 @@ const JobAdvert = ({ data }: any) => {
                                     setPolicy(ad.policyId)
                                     setDetail(ad.details)
 
-                                    console.log(detail);
 
                                     // setOpen(true);
                                     // setModalTitle(ad.name);

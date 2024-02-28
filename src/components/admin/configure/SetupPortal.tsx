@@ -20,7 +20,7 @@ const SetupPortal = ({ data }: any) => {
             const response = await axios.post("/api/admin/setup-portal", {
                 data: { currentRecruitment, currentShortlist },
             });
-            if (response.data.statusCode == 1) {
+            if (response.status == 1) {
                 setCurrentRecruitment("");
                 setCurrentShortlist("");
 
@@ -28,7 +28,7 @@ const SetupPortal = ({ data }: any) => {
 
                 return toast.success("Data saved successfully");
             }
-            if (response.data.statusCode == 0) return toast.error("Data not saved");
+            if (response.status == 0) return toast.error("Data not saved");
         } catch (error) { }
     };
     return (

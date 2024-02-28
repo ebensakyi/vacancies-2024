@@ -49,12 +49,12 @@ export const Register = () => {
       const response = await axios.post("/api/auth/register", {
         data,
       });
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
         Router.push({ pathname: "/auth/login", query: { status: 1 } });
         return toast.success("Data saved successfully");
       }
 
-      if (response.data.statusCode == 0)
+      if (response.status == 0)
         return toast.error(response.data.message);
     } catch (error) {}
   };

@@ -18,14 +18,14 @@ const SetupPortal = ({ recruitment, current }: any) => {
       const response = await axios.post("/api/admin/setup-portal", {
         data: { cs, cr },
       });
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
         setCs("");
         setCr("");
 
         //Router.reload(window.location.pathname);
         return toast.success("Data saved successfully");
       }
-      if (response.data.statusCode == 0) return toast.error("Data not saved");
+      if (response.status == 0) return toast.error("Data not saved");
     } catch (error) { }
   };
   return (

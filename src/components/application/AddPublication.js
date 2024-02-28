@@ -37,7 +37,7 @@ export const AddPublication = ({ publicationsList }) => {
         data,
       });
 
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
         setTitle("");
         setUrl("");
         setAuthors("");
@@ -50,7 +50,7 @@ export const AddPublication = ({ publicationsList }) => {
         return toast.success("Data saved successfully");
       }
 
-      if (response.data.statusCode == 0) return toast.error("Data not saved");
+      if (response.status == 0) return toast.error("Data not saved");
     } catch (error) {
 
     }

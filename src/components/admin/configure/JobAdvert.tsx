@@ -31,11 +31,11 @@
 //             if (name == "") return toast.error("Data not saved. Enter sex");
 
 //             const response = await axios.post("/api/admin/job-advert", { data });
-//             if (response.data.statusCode == 1) {
+//             if (response.status == 1) {
 //                 redirect(pathname);
 //                 return toast.success("Data saved successfully");
 //             }
-//             if (response.data.statusCode == 0) return toast.error("Data not saved");
+//             if (response.status == 0) return toast.error("Data not saved");
 //         } catch (error) {
 //         }
 
@@ -43,11 +43,11 @@
 //     const handlePublishing = async (id: any) => {
 //         try {
 //           const response = await axios.put("/api/admin/job-advert", { id });
-//           if (response.data.statusCode == 1) {
+//           if (response.status == 1) {
 //             redirect(pathname);
 //             return toast.success("Job published successfully");
 //           }
-//           if (response.data.statusCode == 0) return toast.error("Job not published ");
+//           if (response.status == 0) return toast.error("Job not published ");
 //         } catch (error) {
     
 //         }
@@ -59,11 +59,11 @@
 //           const response = await axios.delete(`/api/admin/job-advert`, {
 //             data: id,
 //           });
-//           if (response.data.statusCode == 1) {
+//           if (response.status == 1) {
 //             redirect(pathname);
 //             return toast.success("Job deleted successfully");
 //           }
-//           if (response.data.statusCode == 0) return toast.error("Job not published ");
+//           if (response.status == 0) return toast.error("Job not published ");
 //         } catch (error) {
     
 //         }

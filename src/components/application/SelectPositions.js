@@ -20,7 +20,7 @@ const SelectPositions = ({ jobList, selectedPositions }) => {
       const response = await axios.post("/api/application/select-positions", {
         data,
       });
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
       //return toast.success(response.data.message);
         return Router.push("/application/select-positions");
       }
@@ -41,7 +41,7 @@ const SelectPositions = ({ jobList, selectedPositions }) => {
       const response = await axios.delete("/api/application/select-positions", {
         data,
       });
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
         return Router.push("/application/select-positions");
 
       }

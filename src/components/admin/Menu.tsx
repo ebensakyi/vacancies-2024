@@ -17,12 +17,12 @@ const Menu = ({menus}:any) => {
         icon,
       };
       const response = await axios.post("/api/admin/menu", { data });
-      if (response.data.statusCode == 1) {
+      if (response.status == 200) {
         setName("");
        // Router.reload(window.location.pathname);
         return toast.success("Data saved successfully");
       }
-      if (response.data.statusCode == 0) return toast.error("Data not saved");
+      if (response.status != 200) return toast.error("Data not saved");
     } catch (error) {
       console.log(error)
 

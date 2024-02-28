@@ -1,25 +1,25 @@
 "use client"
-import { signal } from "@preact/signals";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Multiselect from "multiselect-react-dropdown";
+import { useState } from "react";
 
-const UserRole = ({data}:any) => {
+const UserRole = ({ data }: any) => {
 
-  
-  const name = signal("");
-  const accessibleJobs = signal([])
+
+  const [name, setName] = useState("");
+  const accessibleJobs = useState([])
   const save = async () => {
     try {
-      if (name.value == "") return toast.error("Enter user role");
+      if (name == "") return toast.error("Enter user role");
 
       const response = await axios.post("/api/admin/user-role", { data });
-      if (response.data.status == 200) {
-        name.value = "";
+      if (response.status == 200) {
+        setName( "") ;
         return toast.success("Data saved successfully");
       }
-      if (response.data.statusCode == 0) return toast.error("Data not saved");
+      if (response.status != 200) return toast.error("Data not saved");
     } catch (error) {
 
     }
@@ -27,7 +27,7 @@ const UserRole = ({data}:any) => {
   };
 
   const onSelect = (selectedList: [], selectedItem: number) => {
-  //  accessibleJobs.value = [...accessibleJobs.value, { jobId: selectedItem.id }];
+    //  accessibleJobs.value = [...accessibleJobs.value, { jobId: selectedItem.id }];
 
   };
 
@@ -80,7 +80,7 @@ const UserRole = ({data}:any) => {
                                 className="form-control"
                                 required
                                 onChange={(e: any) => {
-                                  name.value = e.target.value;
+                                  setName(e.target.value)  ;
                                 }}
                               />
                             </div>
@@ -94,7 +94,7 @@ const UserRole = ({data}:any) => {
                                 <span className="danger">*</span>
                               </label>
                               <Multiselect
-                                options={data?.jobs?.response}
+                                options={data?.pages?.response}
                                 //selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
                                 onSelect={onSelect}
                                 onRemove={onRemove}
@@ -147,43 +147,43 @@ const UserRole = ({data}:any) => {
               </div>
 
               <div className="col-xl-6">
-      <div className="card border border-">
-        <div className="card-header">
-          <h4 className="card-title">LIST</h4>
-        </div>
-        <div className="card-body">
-          <div className="table-responsive">
-            <table className="table mb-0">
-              <thead className="table-light">
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.userRole?.response?.map((data:any) => {
-                  return (
-                    <tr key={data.id}>
-                      <td>{data.id}</td>
-                      <td>{data.name}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm waves-effect waves-light"
-                        >
-                          <i className="dripicons-trash" />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+                <div className="card border border-">
+                  <div className="card-header">
+                    <h4 className="card-title">LIST</h4>
+                  </div>
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="table mb-0">
+                        <thead className="table-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data?.userRole?.response?.map((data: any) => {
+                            return (
+                              <tr key={data.id}>
+                                <td>{data.id}</td>
+                                <td>{data.name}</td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm waves-effect waves-light"
+                                  >
+                                    <i className="dripicons-trash" />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -17,6 +17,18 @@ async function getUserRoles(searchParams: any) {
 
 }
 
+async function getPages(searchParams: any) {
+    let { qry } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/page?qry=${qry}`, { cache: 'no-store' });
+
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return await response.json();
+
+}
+
 
 
 
@@ -24,10 +36,11 @@ export default async function Page({ searchParams }: any) {
 
 
     const userRoles = await getUserRoles(searchParams)
+    const pages = await getPages(searchParams)
 
 
     let data: any = {
-        userRoles
+        userRoles,pages
     }
 
     return <UserRole data={data} />

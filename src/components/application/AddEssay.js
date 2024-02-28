@@ -22,13 +22,13 @@ export const AddEssay = ({ savedEssay }) => {
         return toast.error("Data not saved. Enter your motivation letter");
 
       const response = await axios.post("/api/application/essay", { data });
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
         setEssay(savedEssay);
 
         // Router.reload(window.location.pathname);
         return toast.success(response.data.message);
       }
-      if (response.data.statusCode == 0) return toast.error("Data not saved");
+      if (response.status == 0) return toast.error("Data not saved");
     } catch (error) {
 
     }

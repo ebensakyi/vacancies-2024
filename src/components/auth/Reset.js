@@ -37,12 +37,12 @@ const Reset = () => {
       setPassword("");
       setConfirmPassword("");
 
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
         Router.push("/");
         return toast.success(response.data.message);
       }
 
-      if (response.data.statusCode == 0)
+      if (response.status == 0)
         return toast.error(response.data.message);
     } catch (error) {
 

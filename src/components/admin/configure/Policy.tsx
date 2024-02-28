@@ -7,28 +7,29 @@ import { useRouter, redirect } from "next/navigation";
 import moment from "moment";
 
 const Policy = ({ data }: any) => {
-const router = useRouter()
+  const router = useRouter()
   console.log(data);
-  
+
 
   const ages = [];
 
   for (let age = 18; age < 46; age++) {
     ages.push(age)
   }
-  const [name, setName] = useState();
-  const [deadline, setDeadline] = useState();
-  const [age, setAge] = useState();
-  const [miniGrade, setMiniGrade] = useState();
-  const [miniEducation, setMiniEducation] = useState();
-  const [experience, setExperience] = useState();
-  const [staffType, setStaffType] = useState();
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [age, setAge] = useState("");
+  const [miniGrade, setMiniGrade] = useState("");
+  const [miniEducation, setMiniEducation] = useState("");
+  const [experience, setExperience] = useState("");
+  const [staffType, setStaffType] = useState("");
   const [note, setNote] = useState("");
 
 
   const save = async () => {
     try {
-      if (name == null || deadline == null)
+      if (name == "" || deadline == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" || staffType == "")
         return toast.error("Please fill the form");
 
       const data = {
@@ -43,6 +44,14 @@ const router = useRouter()
       };
       const response = await axios.post("/api/admin/policy", { data });
       if (response.status == 200) {
+        setName("")
+        setDeadline("")
+        setAge("")
+        setMiniEducation("")
+        setMiniGrade("")
+        setExperience("")
+        setStaffType("")
+        setNote("")
         router.refresh();
 
         return toast.success("Data saved successfully");
@@ -52,6 +61,55 @@ const router = useRouter()
   };
 
 
+  const updatePolicy = async (id: any) => {
+    try {
+      if (name == "" || deadline == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" || staffType == "")
+        return toast.error("Please fill the form");
+
+      const data = {
+        id,
+        name,
+        deadline,
+        age,
+        miniGrade,
+        miniEducation,
+        experience,
+        staffType,
+        note,
+      };
+      const response = await axios.put("/api/admin/policy", { data });
+      if (response.status == 200) {
+        setId("")
+        setName("")
+        setDeadline("")
+        setAge("")
+        setMiniEducation("")
+        setMiniGrade("")
+        setExperience("")
+        setStaffType("")
+        setNote("")
+        router.refresh();
+
+        return toast.success("Data saved successfully");
+      }
+      if (response.status != 200) return toast.error("Data not saved");
+    } catch (error) { }
+  };
+
+  const deletePolicy = async (id: any) => {
+    try {
+
+      const data = {
+        id
+      };
+      const response = await axios.delete("/api/admin/policy", { data });
+      if (response.status == 200) {
+        router.refresh();
+        return toast.success("Policy deleted successfully");
+      }
+      if (response.status != 200) return toast.error("Policy not deleted");
+    } catch (error) { return toast.error("Policy not deleted"); }
+  }
 
   return (
     <div id="layout-wrapper">
@@ -79,7 +137,7 @@ const router = useRouter()
                 draggable
                 pauseOnHover
               />
-              <div className="col-xl-6">
+              <div className="col-lg-12">
                 <div className="card">
                   <div className="card-header">
                     <h4 className="card-title">ADD</h4>
@@ -132,18 +190,18 @@ const router = useRouter()
                               </label>
                               <select
                                 className="custom-select form-control required"
-                                id="age"
                                 required
                                 onChange={(e: any) => {
                                   setAge(e.target.value);
                                 }}
+                                value={age}
                               >
                                 <option value="">Select limit</option>
                                 {ages.map((row, index) => (
-                        <option key={index} value={row}>
-                          {row} years old
-                        </option>
-                      ))}
+                                  <option key={index} value={row}>
+                                    {row} years old
+                                  </option>
+                                ))}
 
                                 { }
                               </select>
@@ -163,6 +221,7 @@ const router = useRouter()
                                 onChange={(e: any) => {
                                   setMiniGrade(e.target.value);
                                 }}
+                                value={miniGrade}
                               >
                                 <option value="">Select limit</option>
                                 <option value="1">1</option>
@@ -188,6 +247,7 @@ const router = useRouter()
                                 onChange={(e: any) => {
                                   setExperience(e.target.value);
                                 }}
+                                value={experience}
                               >
                                 <option value="">Select limit</option>
                                 <option value="1">1</option>
@@ -215,6 +275,7 @@ const router = useRouter()
                                 onChange={(e: any) => {
                                   setMiniEducation(e.target.value);
                                 }}
+                                value={miniEducation}
                               >
                                 <option value="">Select limit</option>
                                 {data?.levels?.response?.map((data: any) => (
@@ -238,6 +299,7 @@ const router = useRouter()
                                 onChange={(e: any) => {
                                   setStaffType(e.target.value);
                                 }}
+                                value={staffType}
                               >
                                 <option value="">Select staff</option>
                                 {data?.staffTypes?.response?.map((data: any) => (
@@ -302,7 +364,7 @@ const router = useRouter()
                 </div>
               </div>
 
-              <div className="col-xl-6">
+              <div className="col-lg-12">
                 <div className="card">
                   <div className="card-body">
                     <h4 className="card-title">LIST</h4>
@@ -314,7 +376,7 @@ const router = useRouter()
                       <table className="table mb-0">
                         <thead className="table-light">
                           <tr>
-                            <th>#</th>
+                            {/* <th>#</th> */}
                             <th>Name</th>
                             <th>Age</th>
                             <th>Minimum Edu</th>
@@ -329,7 +391,7 @@ const router = useRouter()
                           {data?.policies?.response?.map((data: any) => {
                             return (
                               <tr key={data.id}>
-                                <td>{data.id}</td>
+                                {/* <td>{data.id}</td> */}
                                 <td>{data.name}</td>
 
                                 <td>{data.age}</td>
@@ -339,12 +401,36 @@ const router = useRouter()
                                 <td>{data.StaffType.name}</td>
 
                                 <td>
+
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary btn-sm waves-effect waves-light"
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      setName(data.name)
+                                      // setDeadline(data.deadline)
+                                      setAge(data.age)
+                                      setMiniGrade(data.minimumGradeId)
+                                      setExperience(data.experience)
+                                      setMiniEducation(data.minimumEduLevelId)
+                                      setStaffType(data.staffTypeId)
+                                      setNote(data.note)
+                                      // updatePolicy(data.id)
+                                    }}
+                                  >
+                                    <i className="dripicons-pencil" />
+                                  </button>  {" "} 
                                   <button
                                     type="button"
                                     className="btn btn-danger btn-sm waves-effect waves-light"
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      deletePolicy(data.id)
+                                    }}
                                   >
                                     <i className="dripicons-trash" />
                                   </button>
+
                                 </td>
                               </tr>
                             );
@@ -364,3 +450,5 @@ const router = useRouter()
 };
 
 export default Policy;
+
+

@@ -23,12 +23,12 @@ const ForgetPassword = () => {
       });
 
       setEmail("");
-      if (response.data.statusCode == 1) {
+      if (response.status == 1) {
         // Router.push("/auth/reset-password");
         return toast.success("Check your email for a password reset link");
       }
 
-      if (response.data.statusCode == 0)
+      if (response.status == 0)
         return toast.error(response.data.message);
     } catch (error) {
 

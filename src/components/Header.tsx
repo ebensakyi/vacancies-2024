@@ -20,7 +20,7 @@ const Header = () => {
   // const logout = async () => {
   //   const response = await axios.post("/api/auth/logout", {});
 
-  //   if (response.data.statusCode == 1) {
+  //   if (response.status == 1) {
   //     Cookies.set("ut", "", {
   //       expires: 0,
   //     });
@@ -30,7 +30,7 @@ const Header = () => {
   //     redirect("/auth/login");
   //   }
 
-  //   if (response.data.statusCode == 0) return;
+  //   if (response.status == 0) return;
   // };
   return (
     <header id="page-topbar">
@@ -314,7 +314,7 @@ const Header = () => {
 
                       <Link href="/admin/configure/policy" className="dropdown-item">
 
-                        Criteria
+                        Policy
 
                       </Link>
 

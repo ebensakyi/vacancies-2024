@@ -58,7 +58,7 @@ const BroadsheetPositionSummary = ({ jobSummary }: any) => {
   //     });
 
   //     let path = `/broadsheet/${response.data.data}`;
-  //     let status = response.data.statusCode;
+  //     let status = response.status;
   //     let url = response.data.data.url;
 
   //     if (status == 1) {
