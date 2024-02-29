@@ -4,21 +4,39 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Multiselect from "multiselect-react-dropdown";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 const UserRole = ({ data }: any) => {
+  const router = useRouter()
+  console.log(data);
 
 
   const [name, setName] = useState("");
-  const [accessibleJobs, setAccessibleJobs] = useState([])
+  // const [accessibleJobs, setAccessibleJobs] = useState([])
   const [accessiblePages, setAccessiblePages] = useState([])
 
   const save = async () => {
     try {
-      if (name == "" || accessibleJobs.length == 0 || accessiblePages.length == 0) return toast.error("Enter user role");
+      if (name == "") {
+        return toast.error("Enter user role");
+      }
+      if (accessiblePages.length == 0) {
+        return toast.error("Enter select one or more pages");
+      }
+      let data = {
+        name,
+        accessiblePages
+      }
+
+
 
       const response = await axios.post("/api/admin/configure/user-role", { data });
       if (response.status == 200) {
         setName("");
+        setAccessiblePages([])
+        router.refresh()
+
         return toast.success("Data saved successfully");
       }
       if (response.status != 200) return toast.error("Data not saved");
@@ -28,17 +46,21 @@ const UserRole = ({ data }: any) => {
 
   };
 
-  const onSelect = (selectedList: [], selectedItem: any) => {
 
-    // setAccessibleJobs(...accessibleJobs, { 'jobId': selectedItem });
-    setAccessibleJobs(selectedItem?.id);
+
+  const onSelectPages = (selectedList: any, selectedItem: any) => {
+
+    console.log(selectedItem);
+    setAccessiblePages(selectedList)
+
+    // setAccessiblePages([...selectedItem, selectedItem]);
 
   };
 
-  const onRemove = (selectedList: [], removedItem: any) => {
+  const onRemovePage = (selectedList: [], removedItem: any) => {
 
     // const filtered = accessibleJobs.filter((m) => m?.id !== removedItem?.id);
-    setAccessibleJobs(selectedList)
+    setAccessiblePages(selectedList)
 
   };
   return (
@@ -83,6 +105,7 @@ const UserRole = ({ data }: any) => {
                               </label>
                               <input
                                 type="text"
+                                value={name}
                                 className="form-control"
                                 required
                                 onChange={(e: any) => {
@@ -100,16 +123,17 @@ const UserRole = ({ data }: any) => {
                                 <span className="danger">*</span>
                               </label>
                               <Multiselect
+
                                 options={data?.pages?.response}
-                                //selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                                onSelect={onSelect}
-                                onRemove={onRemove}
+                               selectedValues={accessiblePages} // Preselected value to persist in dropdown
+                                onSelect={onSelectPages}
+                                onRemove={onRemovePage}
                                 displayValue="name"
                               />
                             </div>
                           </div>
                         </div>
-                        <div className="col-md-4">
+                        {/* <div className="col-md-4">
                           <div className="form-group">
                             <div className="mb-4 position-relative">
                               <label htmlFor="policy">
@@ -119,13 +143,13 @@ const UserRole = ({ data }: any) => {
                               <Multiselect
                                 options={data?.jobs?.response}
                                 //selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                                onSelect={onSelect}
-                                onRemove={onRemove}
+                                onSelect={onSelectJobs}
+                                onRemove={onRemoveJob}
                                 displayValue="name"
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                         <div className="col-md-2">
                           <div className="form-group">
                             <label htmlFor="save">

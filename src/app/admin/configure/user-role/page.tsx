@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 async function getUserRoles(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/user-role?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/configure/user-role?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {

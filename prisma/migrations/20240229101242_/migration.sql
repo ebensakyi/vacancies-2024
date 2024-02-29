@@ -132,6 +132,7 @@ CREATE TABLE `Job` (
     `policyId` INTEGER NOT NULL,
 
     UNIQUE INDEX `name`(`name`),
+    UNIQUE INDEX `Job_policyId_name_deleted_key`(`policyId`, `name`, `deleted`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -254,6 +255,19 @@ CREATE TABLE `Grade` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `UserRole` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `addedBy` INTEGER NULL DEFAULT 1,
+    `deleted` INTEGER NULL DEFAULT 0,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `UserRole_name_key`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `PageAccess` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `addedBy` INTEGER NULL DEFAULT 1,
@@ -295,18 +309,6 @@ CREATE TABLE `User` (
 
     UNIQUE INDEX `email`(`email`),
     UNIQUE INDEX `phoneNumber`(`phoneNumber`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `UserRole` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `addedBy` INTEGER NULL DEFAULT 1,
-    `deleted` INTEGER NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
