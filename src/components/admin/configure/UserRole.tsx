@@ -10,8 +10,7 @@ import { useRouter } from "next/navigation";
 const UserRole = ({ data }: any) => {
   const router = useRouter()
   console.log(data);
-
-
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   // const [accessibleJobs, setAccessibleJobs] = useState([])
   const [accessiblePages, setAccessiblePages] = useState([])
@@ -46,8 +45,47 @@ const UserRole = ({ data }: any) => {
 
   };
 
+  const deleteUserRole = async (id: any) => {
+    try {
+      const data = {
+        id,
+
+      };
 
 
+      const response = await axios.delete("/api/admin/configure/user-role", { data });
+      if (response.status == 200) {
+        router.refresh()
+
+        return toast.success("Data deleted successfully");
+      }
+      if (response.status != 200) return toast.error("Data not deleted");
+    } catch (error) {
+
+    }
+
+  };
+  const update = async () => {
+    try {
+      const data = { id, name, accessiblePages };
+      if (name == "" || accessiblePages.length == 0)
+        return toast.error("Data not saved. Fill form");
+
+      const response = await axios.put("/api/admin/configure/user-role", { data });
+      if (response.status == 200) {
+        setId("");
+        setName("");
+        setAccessiblePages([])
+        router.refresh()
+
+        return toast.success("Data saved successfully");
+      }
+      if (response.status != 200) return toast.error("Data not saved");
+    } catch (error) {
+
+    }
+
+  };
   const onSelectPages = (selectedList: any, selectedItem: any) => {
 
     console.log(selectedItem);
@@ -125,7 +163,7 @@ const UserRole = ({ data }: any) => {
                               <Multiselect
 
                                 options={data?.pages?.response}
-                               selectedValues={accessiblePages} // Preselected value to persist in dropdown
+                                selectedValues={accessiblePages} // Preselected value to persist in dropdown
                                 onSelect={onSelectPages}
                                 onRemove={onRemovePage}
                                 displayValue="name"
@@ -156,8 +194,7 @@ const UserRole = ({ data }: any) => {
                               Add <span className="danger"></span>
                             </label>
                             <br />
-
-                            <button
+                            {id == "" ? <button
                               type="button"
                               className="btn btn-success add"
                               onClick={(e: any) => {
@@ -167,7 +204,18 @@ const UserRole = ({ data }: any) => {
                               }}
                             >
                               Save
-                            </button>
+                            </button> : <button
+                              type="button"
+                              className="btn btn-warning add"
+                              onClick={(e: any) => {
+                                e.preventDefault();
+
+                                update();
+                              }}
+                            >
+                              Update
+                            </button>}
+
                           </div>
                         </div>
                       </div>
@@ -186,21 +234,50 @@ const UserRole = ({ data }: any) => {
                       <table className="table mb-0">
                         <thead className="table-light">
                           <tr>
-                            <th>#</th>
+                            {/* <th>#</th> */}
                             <th>Name</th>
+                            <th>Pages</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {data?.userRole?.response?.map((data: any) => {
+                          {data?.userRoles?.response?.map((data: any) => {
                             return (
                               <tr key={data.id}>
-                                <td>{data.id}</td>
+                                {/* <td>{data.id}</td> */}
                                 <td>{data.name}</td>
+                                <td>{data.PageAccess.map((data: any) => {
+                                  return <><span style={{ margin: 10 }}>{data.Page.name}</span> <br /> </>
+                                })}</td>
+
+
                                 <td>
                                   <button
                                     type="button"
+                                    className="btn btn-success btn-sm waves-effect waves-light"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setId(data.id)
+                                      setName(data.name)
+
+                                      let savedPages = data.PageAccess.map((pa) => {
+                                        return { id: pa.Page.id, name: pa.Page.name }
+                                      })
+
+                                      console.log(savedPages);
+
+                                      setAccessiblePages(savedPages)
+                                    }}
+                                  >
+                                    <i className="dripicons-pencil" />
+                                  </button>
+                                  {" "} {" "}
+                                  <button
+                                    type="button"
                                     className="btn btn-danger btn-sm waves-effect waves-light"
+                                    onClick={(e) => {
+                                      deleteUserRole(data.id)
+                                    }}
                                   >
                                     <i className="dripicons-trash" />
                                   </button>

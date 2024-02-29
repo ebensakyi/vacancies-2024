@@ -318,11 +318,11 @@ const Header = () => {
 
                       </Link>
 
-                      <Link href="/admin/configure/menu-access" className="dropdown-item">
+                      {/* <Link href="/admin/configure/menu-access" className="dropdown-item">
 
                         Menu Access
 
-                      </Link>
+                      </Link> */}
 
                       <Link href="/admin/configure/user-role" className="dropdown-item">
 

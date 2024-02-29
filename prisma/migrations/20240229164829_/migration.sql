@@ -306,6 +306,7 @@ CREATE TABLE `User` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `userRoleId` INTEGER NOT NULL DEFAULT 4,
+    `departmentId` INTEGER NULL,
 
     UNIQUE INDEX `email`(`email`),
     UNIQUE INDEX `phoneNumber`(`phoneNumber`),
@@ -650,6 +651,9 @@ ALTER TABLE `AccessibleJob` ADD CONSTRAINT `AccessibleJob_userId_fkey` FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_userRoleId_fkey` FOREIGN KEY (`userRoleId`) REFERENCES `UserRole`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_departmentId_fkey` FOREIGN KEY (`departmentId`) REFERENCES `Department`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `UserLogs` ADD CONSTRAINT `UserLogs_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
