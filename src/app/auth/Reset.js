@@ -6,8 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Router, { useRouter } from "next/router";
 
 import Link from "next/link";
-import MyHead from "../Head";
-import Footer from "../Footer";
+import MyHead from "../../components/Head";
+import Footer from "../../components/Footer";
 
 const Reset = () => {
   // const [email, setEmail] = useState();

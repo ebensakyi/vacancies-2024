@@ -12,7 +12,7 @@ import { signIn, useSession } from "next-auth/react";
 const launch_pad = () => {
   const {data: session}:any = useSession()
 
-  let sess = session;
+  let sess = session?.user
 
   return <h1>{sess}</h1>
 };
