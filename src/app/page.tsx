@@ -82,7 +82,7 @@ const ads = await getJobAds();
                       </tr>
                     </thead>
                     <tbody>
-                      {ads.response.map((data:any) => {
+                      {ads?.response?.map((data:any) => {
                         return (
                           <tr key={data.id}>
                             <td>{data.name}</td>

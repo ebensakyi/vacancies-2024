@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
-import {useSession} from 'next-auth/react'
+import {signOut, useSession} from 'next-auth/react'
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter, redirect, usePathname } from "next/navigation";
 
 import Cookies from "js-cookie";
 import axios from "axios";
+import ApplicationMenu from './ApplicationMenu';
 const Header = () => {
 
   const router = useRouter();
@@ -16,27 +17,16 @@ const Header = () => {
 
   const {data: session}:any = useSession()
 
-  // useEffect(() => {
-  //   if (!menu) redirect("/auth/login");
-  // }, []);
+  let user = session?.user
 
-  // const logout = async () => {
-  //   const response = await axios.post("/api/auth/logout", {});
+  
 
-  //   if (response.status == 1) {
-  //     Cookies.set("ut", "", {
-  //       expires: 0,
-  //     });
-  //     Cookies.set("rt", "", {
-  //       expires: 0,
-  //     });
-  //     redirect("/auth/login");
-  //   }
-
-  //   if (response.status == 0) return;
-  // };
+  
   return (
-  <> { session?.user ?
+  <> { user ?
+
+    user?.userRole == 1 ||  user?.userRole == 2||  user?.userRole == 3?
+    ///ADMIN NAV
     <header id="page-topbar">
       <div className="navbar-header">
         <div className="d-flex">
@@ -117,7 +107,7 @@ const Header = () => {
           </div>
 
           <div className="dropdown d-inline-block">
-            {/* <button
+            <button
               type="button"
               className="btn header-item waves-effect"
               id="page-header-user-dropdown"
@@ -131,7 +121,7 @@ const Header = () => {
                 alt="Header Avatar"
               />
               <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
-                Marcus
+                {user?.firstName}  { user?.surname}
               </span>
               <i className="uil-angle-down d-none d-xl-inline-block font-size-15" />
             </button>
@@ -159,7 +149,7 @@ const Header = () => {
                 <i className="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted" />{" "}
                 <span className="align-middle">Sign out</span>
               </a>
-            </div> */}
+            </div>
           </div>
           <div className="dropdown d-inline-block">
             <button
@@ -419,7 +409,7 @@ const Header = () => {
                   </li>
                   <li className="nav-item dropdown" style={{ color: "red" }}>
                     <a
-                      className="nav-link dropdown-toggle arrow-none"
+                      className="nav-link "
                       href="#"
                       id="topnav-pages"
                       role="button"
@@ -433,10 +423,14 @@ const Header = () => {
                     <div
                       className="dropdown-menu"
                       aria-labelledby="topnav-pages"
-                    > <Link href="/admin/user" className="dropdown-item">
-                    Users
+                    > 
+                    <Link href="/admin/user/admin" className="dropdown-item">
+                   Admin Users
                   </Link>
-                  <hr/>
+                  <Link href="/admin/user" className="dropdown-item">
+                   Applicants
+                  </Link>
+                  {/* <hr/>
                       <button
                         type="submit"
                         className="dropdown-item"
@@ -446,7 +440,7 @@ const Header = () => {
                         }}
                       >
                         Logout
-                      </button>
+                      </button> */}
                     </div>
                   </li>
                 </ul>
@@ -457,7 +451,205 @@ const Header = () => {
         </div>
        
       </div>
-    </header>:<></>}</>
+    </header>:
+
+/// APPLICANT NAV
+<>
+     <header id="page-topbar">
+     <div className="navbar-header">
+       <div className="d-flex">
+         {/* LOGO */}
+         <div className="navbar-brand-box">
+           <a href="#" className="logo logo-dark">
+             <span className="logo-sm">
+               <img
+                 src="/logo.png"
+                 style={{ width: "80px", height: "80px" }}
+               />
+             </span>
+             <span className="logo-lg">
+               <img
+                 src="/logo.png"
+                 style={{ width: "80px", height: "80px" }}
+               />
+             </span>
+           </a>
+           <a href="#" className="logo logo-light">
+             <span className="logo-sm">
+               <img
+                 src="/logo.png"
+                 style={{ width: "80px", height: "80px" }}
+               />
+             </span>
+             <span className="logo-lg">
+               <img
+                 src="/logo.png"
+                 style={{ width: "80px", height: "80px" }}
+               />
+             </span>
+           </a>
+         </div>
+         <button
+           type="button"
+           className="btn btn-sm px-3 font-size-16 d-lg-none header-item waves-effect waves-light"
+           data-bs-toggle="collapse"
+           data-bs-target="#topnav-menu-content"
+         >
+           <i className="fa fa-fw fa-bars" />
+         </button>
+         {/* App Search*/}
+         {/* <form className="app-search d-none d-lg-block">
+            <div className="position-relative">
+             <input
+               type="text"
+               className="form-control"
+               placeholder="Search..."
+             />
+             <span className="uil-search" />
+           </div> 
+         </form>*/}
+       </div>{" "}
+       {/* <h4 style={{ color: "white" }}>ONLINE RECRUITMENT</h4> */}
+       <div className="d-flex">
+         <div className="dropdown d-inline-block d-lg-none ms-2">
+           <button
+             type="button"
+             className="btn header-item noti-icon waves-effect"
+             id="page-header-search-dropdown"
+             data-bs-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false"
+           >
+             <i className="uil-search" />
+           </button>
+         </div>
+
+         <div className="dropdown d-none d-lg-inline-block ms-1">
+           <button
+             type="button"
+             className="btn header-item noti-icon waves-effect"
+             data-bs-toggle="fullscreen"
+           >
+             <i className="uil-minus-path" />
+           </button>
+         </div>
+
+         <div className="dropdown d-inline-block">
+           <button
+             type="button"
+             className="btn header-item waves-effect"
+             id="page-header-user-dropdown"
+             data-bs-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false"
+           >
+             <img
+               className="rounded-circle header-profile-user"
+               src="/assets/images/users/avatar-4.jpg"
+               alt="Header Avatar"
+             />
+             <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
+               {user?.firstName}  { user?.surname}
+             </span>
+             <i className="uil-angle-down d-none d-xl-inline-block font-size-15" />
+           </button>
+           <div className="dropdown-menu dropdown-menu-end">
+             <a className="dropdown-item" href="#">
+               <i className="uil uil-user-circle font-size-18 align-middle text-muted me-1" />{" "}
+               <span className="align-middle">View Profile</span>
+             </a>
+             <a className="dropdown-item" href="#">
+               <i className="uil uil-wallet font-size-18 align-middle me-1 text-muted" />{" "}
+               <span className="align-middle">My Wallet</span>
+             </a>
+             <a className="dropdown-item d-block" href="#">
+               <i className="uil uil-cog font-size-18 align-middle me-1 text-muted" />{" "}
+               <span className="align-middle">Settings</span>{" "}
+               <span className="badge bg-soft-success rounded-pill mt-1 ms-2">
+                 03
+               </span>
+             </a>
+             <a className="dropdown-item" href="#">
+               <i className="uil uil-lock-alt font-size-18 align-middle me-1 text-muted" />{" "}
+               <span className="align-middle">Lock screen</span>
+             </a>
+             <button className="dropdown-item" onClick={()=>{signOut()}}>
+               <i className="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted" />{" "}
+               <span className="align-middle">Sign out</span>
+             </button>
+           </div>
+         </div>
+         <div className="dropdown d-inline-block">
+           <button
+             type="button"
+             className="btn header-item noti-icon right-bar-toggle waves-effect"
+           >
+             <i className="uil-cog" />
+           </button>
+         </div>
+       </div>
+     </div>
+     <div className="container-fluid">
+       <div className="topnav">
+         <nav className="navbar navbar-light navbar-expand-lg topnav-menu">
+           <div className="collapse navbar-collapse" id="topnav-menu-content">
+            
+
+           
+           <ul className="navbar-nav">
+                  <li
+                    className={
+                      pathname == "/applicant/personal-info"
+                        ? "nav-item active"
+                        : "nav-item"
+                    }
+                  >
+                    <Link href="/applicant/personal-info" className="nav-link" >
+                      <i
+                        className="dripicons-home
+me-2"
+                      />
+                      Home
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link href="/application/list" className="nav-link" >
+                      <i
+                        className="dripicons-archive me-2
+                        "
+                      />
+                      Applications
+                    </Link>
+                  </li>
+                  <li
+                    className={
+                      pathname == "/application/faq"
+                        ? "nav-item active"
+                        : "nav-item"
+                    }
+                  >
+                    <Link href="/application/faq" className="nav-link" >
+                      <i
+                        className="dripicons-question me-2
+                        "
+                      />
+                      FAQ
+                    </Link>
+                  </li>
+                 
+</ul>
+              </div>
+
+         
+         </nav>
+       </div>
+      
+     </div>
+   </header>
+
+    </>
+    
+    :<></>}</>
   );
 };
 

@@ -8,6 +8,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Title {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique(map: "name") @db.VarChar(10)
+  createdBy Int?       @default(1)
+  deleted   Int?       @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Personal  Personal[]
+}
+
 model Sex {
   id        Int        @id @default(autoincrement())
   name      String     @unique(map: "name") @db.VarChar(10)
@@ -413,6 +423,8 @@ model Personal {
 
   sonNumber      String? @db.VarChar(255)
   daughterNumber String? @db.VarChar(255)
+  Title          Title?  @relation(fields: [titleId], references: [id])
+  titleId        Int?
 }
 
 model Publication {

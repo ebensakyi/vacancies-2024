@@ -293,6 +293,7 @@ CREATE TABLE `User` (
     `updatedAt` DATETIME(3) NOT NULL,
     `userRoleId` INTEGER NOT NULL DEFAULT 4,
     `departmentId` INTEGER NULL,
+    `loginTimes` INTEGER NOT NULL DEFAULT 0,
     `createdById` INTEGER NULL DEFAULT 1,
 
     UNIQUE INDEX `email`(`email`),

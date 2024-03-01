@@ -18,6 +18,7 @@ import { rt } from "./recruitment-type";
 import { yes_no } from "./yes-no";
 import { superAdmin } from "./user";
 import { reasons } from "./reason";
+import { titles } from "./title";
 
 async function main() { await prisma.division.createMany({
     data: division,
@@ -77,6 +78,10 @@ async function main() { await prisma.division.createMany({
   });
   await prisma.examTypeNew.createMany({
     data: examTypeNew,
+  });
+
+  await prisma.title.createMany({
+    data: titles,
   });
 }
 

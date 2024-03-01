@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Link from "next/link";
 import Footer from "@/src/components/Footer";
-import { signIn } from "next-auth/react";
+import { signIn,signOut } from "next-auth/react";
 
 const login = () => {
   // let gen,
@@ -36,7 +36,7 @@ const login = () => {
       let result = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/auth/launch-pad"
+        callbackUrl: "/"
       })
 
       console.log(result);

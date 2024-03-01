@@ -10,23 +10,19 @@ export async function POST(request: Request) {
     let email = res.email;
     let password = res.password;
 
-
     let user: any = await prisma.user.findFirst({
-
       where: {
         email: email,
         deleted: 0,
       },
-    //   include: {
 
-    //     Region: true,
-    //     District: true,
-    //     UserRole: true,
-    //   },
+      include: {
+        UserRole: true,
+        AccessibleJob: true,
+      },
     });
 
-    console.log(user);
-    
+
     if (!user) {
       return NextResponse.json(null, { status: 400 });
     }
@@ -38,19 +34,17 @@ export async function POST(request: Request) {
 
     let isValid = await bcrypt.compare(password, user.password);
 
-    
-
     if (isValid) {
-    //   await prisma.user.update({
-    //     where: {
-    //       id: user?.id,
-    //     },
-    //     data: {
-    //       loginTimes: {
-    //         increment: 1,
-    //       },
-    //     },
-    //   });
+      //   await prisma.user.update({
+      //     where: {
+      //       id: user?.id,
+      //     },
+      //     data: {
+      //       loginTimes: {
+      //         increment: 1,
+      //       },
+      //     },
+      //   });
 
       const pageAccess = await prisma.pageAccess.findMany({
         where: {
@@ -63,11 +57,9 @@ export async function POST(request: Request) {
         return d.pageId;
       });
 
-      const token = jwt.sign(user, process.env.TOKEN_SECRET ?? "");
+      const token = jwt.sign(user, process.env.TOKEN_SECRET || "");
 
       let response = { ...user, token, privileges };
-
-
 
       return NextResponse.json(response);
     }

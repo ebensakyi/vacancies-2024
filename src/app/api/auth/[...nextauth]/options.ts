@@ -50,6 +50,20 @@ export const authOptions: NextAuthOptions = {
     },
   },
   callbacks: {
+    // async jwt({ token, user }) {
+    //   console.log("jwt options user ==> ",user);
+    //   console.log("jwt options token ==> ",token);
+
+    // if (user) token.role = user;
+    //   return token;
+    // },
+    // async session({ session, token }) {
+    //   console.log("session options token ==> ",token);
+    //   console.log("session options token ==> ",token);
+
+    // if (session?.user) session = token.role;
+    //   return session;
+    // },
     async jwt({ token, user }) {
       
       return { ...token, ...user };
