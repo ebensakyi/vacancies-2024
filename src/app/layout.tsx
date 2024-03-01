@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 // import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "../components/Header";
+import NextAuthProvider from "./context/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -81,8 +82,11 @@ export default function RootLayout({
       <body className={inter.className} data-layout="horizontal"
           data-topbar="colored">
         {/* <ThemeProvider attribute="class" defaultTheme="dark" enableSystem> */}
-          <Header />
+        <NextAuthProvider>
+            <Header />
           {children}
+        </NextAuthProvider>
+        
         {/* </ThemeProvider> */}
         <script src="../assets/libs/jquery/jquery.min.js"></script>
         <script src="../assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>

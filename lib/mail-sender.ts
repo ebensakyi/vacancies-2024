@@ -20,8 +20,10 @@ export const sendMail = async (to: string, subject: string, message: string) => 
     };
 
 
-   let resonse = await transport.sendMail(mailOptions);
+   let response = await  transport.sendMail(mailOptions);
+   console.log(response);
+   
 
- 
+ return
    
 };

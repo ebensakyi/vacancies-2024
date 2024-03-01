@@ -1,80 +1,81 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
+'use client'
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Router, { useRouter } from "next/router";
-import Cookies from "js-cookie";
-import { genCode } from "../../util/generate-random";
+// import Router, { useRouter } from "next/router";
 
 import Link from "next/link";
-import MyHead from "../Head";
-import Footer from "../Footer";
+import Footer from "@/src/components/Footer";
+import { signIn } from "next-auth/react";
 
-const Login = () => {
-  let gen,
-    core = "";
+const login = () => {
+  // let gen,
+  //   core = "";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(async () => {
-    gen = await genCode(20);
-    core = await genCode(100);
-  });
+  // useEffect(async () => {
+  //   gen = await genCode(20);
+  //   core = await genCode(100);
+  // });
 
   const login = async () => {
     try {
       if (email == "" || password == "")
         return toast.error("Please fill the form.");
-      const data = {
+      // const data = {
+      //   email,
+      //   password,
+      // };
+      // const response = await axios.post("/api/auth/login", {
+      //   data,
+      // });
+
+
+      let result = await signIn("credentials", {
         email,
         password,
-      };
-      const response = await axios.post("/api/auth/login", {
-        data,
-      });
+        callbackUrl: "/auth/launch-pad"
+      })
+
+      console.log(result);
 
       setEmail("");
       setPassword("");
 
-      let { statusCode } = response.data;
-      let { message } = response.data;
+      // let { statusCode } = response.data;
+      // let { message } = response.data;
 
 
-      if (statusCode == 0) {
-        return toast.error(message);
-      } else if (statusCode == 1) {
-        let { userType } = response.data.data;
-        let { submitted } = response.data.data || "";
+      // if (statusCode == 0) {
+      //   return toast.error(message);
+      // } else if (statusCode == 1) {
+      //   let { userType } = response.data.data;
+      //   let { submitted } = response.data.data || "";
 
-        let { recruitmentType } = response.data.data || "";
+      //   let { recruitmentType } = response.data.data || "";
 
-        Cookies.set("ut", gen + gen + gen + userType, {
-          expires: 3 * 60 * 60,
-        });
-        Cookies.set("rt", gen + gen + gen + recruitmentType, {
-          expires: 3 * 60 * 60,
-        });
-        console.log("dashboard=>",userType);
-        if (userType == 1) {
-          Router.push("/admin/dashboard");
-          return toast.success("Logged in successfully");
-        } else if (userType == 2) {
-          Router.push("/admin/shortlist");
-          return toast.success("Logged in successfully");
-        } else if (userType == 3) {
-          Router.push("/admin/dashboard");
-          return toast.success("Logged in successfully");
-        } else if (userType == 4) {
-        
 
-          if (submitted == true) {
-            return Router.replace("/application/list");
-          } else {
-            return Router.replace("/application/personal?core=" + core);
-          }
-        }
-      }
+      // if (userType == 1) {
+      //   Router.push("/admin/dashboard");
+      //   return toast.success("Logged in successfully");
+      // } else if (userType == 2) {
+      //   Router.push("/admin/shortlist");
+      //   return toast.success("Logged in successfully");
+      // } else if (userType == 3) {
+      //   Router.push("/admin/dashboard");
+      //   return toast.success("Logged in successfully");
+      // } else if (userType == 4) {
+
+
+      //   if (submitted == true) {
+      //     return Router.replace("/application/list");
+      //   } else {
+      //     return Router.replace("/application/personal?core=");
+      //   }
+      // }
+
     } catch (error) {
       console.log(error);
     }
@@ -98,27 +99,25 @@ const Login = () => {
         draggable
         pauseOnHover
       />
-      
+
       <div className="account-pages my-5 pt-sm-5">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="text-center">
-                <Link href="/">
-                  <a href="#" className="mb-5 d-block auth-logo">
-                    <img
-                      src="/logo.png"
-                      style={{ width: "80px", height: "80px" }}
-                    />
+                <Link href="/" className="mb-5 d-block auth-logo">
+                  <img
+                    src="/logo.png"
+                    style={{ width: "80px", height: "80px" }}
+                  />
 
-                    {/* <Image
+                  {/* <Image
                     src="/logo.png"
                     alt=""
                     height="100"
                     width="100"
                     className="logo logo-light"
                   /> */}
-                  </a>
                 </Link>
               </div>
             </div>
@@ -142,7 +141,7 @@ const Login = () => {
                             id="validationTooltip02"
                             name="email"
                             value={email}
-                            onChange={(e:any) => {
+                            onChange={(e: any) => {
                               setEmail(e.target.value);
                             }}
                             required
@@ -162,7 +161,7 @@ const Login = () => {
                             name="password"
                             value={password}
                             required
-                            onChange={(e:any) => {
+                            onChange={(e: any) => {
                               setPassword(e.target.value);
                             }}
                           />
@@ -180,7 +179,7 @@ const Login = () => {
                           <button
                             className="btn btn-success"
                             type="submit"
-                            onClick={(e:any) => {
+                            onClick={(e: any) => {
                               e.preventDefault();
                               login();
                             }}
@@ -192,34 +191,25 @@ const Login = () => {
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
                           Don`t have an account ?
-                          <Link href="/auth/register">
-                            <a
-                              href="/auth/register"
-                              className="fw-medium text-primary"
-                            >
-                              {" "}
-                              Register now
-                            </a>
+                          <Link href="/auth/register" className="fw-medium text-primary">
+
+                            Register now
                           </Link>
                         </p>
                       </div>
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
-                          <Link href="/auth/forget-password">
-                            <a href="#" className="fw-medium text-primary">
-                              Forget password ?
-                            </a>
+                          <Link href="/auth/forget-password" className="fw-medium text-primary">
+                            Forget password ?
                           </Link>
                         </p>
                       </div>
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
                           Back to open positions ?
-                          <Link href="/">
-                            <a href="/" className="fw-medium text-primary">
-                              {" "}
-                              Home
-                            </a>
+                          <Link href="/" className="fw-medium text-primary">
+                            {" "}
+                            Home
                           </Link>
                         </p>
                       </div>
@@ -236,4 +226,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default login;

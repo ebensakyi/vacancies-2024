@@ -302,6 +302,7 @@ model User {
   userRoleId   Int         @default(4)
   Department   Department? @relation(fields: [departmentId], references: [id])
   departmentId Int?
+  loginTimes   Int         @default(0)
 
   Personal            Personal?
   Publication         Publication[]
@@ -336,8 +337,8 @@ model User {
   CurrentShortlisting CurrentShortlisting[]
   Grade               Grade[]
   CreatedBy           User?                 @relation("CreatedBy", fields: [createdById], references: [id])
-  users  User[] @relation("CreatedBy") // users created by this user
-  createdById Int?    @default(1)
+  users               User[]                @relation("CreatedBy") // users created by this user
+  createdById         Int?                  @default(1)
 }
 
 model UserLogs {

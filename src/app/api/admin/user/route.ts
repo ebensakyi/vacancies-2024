@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         email: res.data.phone
       }
     });
-    if (emailExists|| phoneExists) {
+    if (emailExists || phoneExists) {
       return NextResponse.json({}, { status: 201 });
     }
 
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     let send = await sendMail(
       email,
       "WAEC Recruitment User credentials",
-      `<h4>Welcome to WAEC Recruitment Portal.</h4><br /><p>Your user credentials are;<br/>Email: ${email} <br/>Password: ${password}</p>`
+      `<h4>Welcome to WAEC Recruitment Portal.</h4><br /><p>Your user credentials are;<br/><h6>URL: https://vacancies.waecgh.org</h6><br />Email: ${email} <br/>Password: ${password}</p>`
     );
     return NextResponse.json({});
   } catch (error: any) {
@@ -73,11 +73,25 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  try {
+try {
     const res = await request.json();
     let password = await genCode(8);
     let email = res.data.email;
     let id = Number(res.data.id);
+    let resetPassword = Number(res?.data?.resetPassword);
+
+    if (resetPassword == 1) {
+
+      const user = await prisma.user.update({ data: { password: password }, where: { id: id } });
+
+
+      let send = await sendMail(
+        email,
+        "WAEC Recruitment User credentials",
+        `<h4>Welcome to WAEC Recruitment Portal.</h4><br /><p>Your user credentials are;<br/>Email: ${email} <br/>Password: ${password}</p>`
+      );
+      return NextResponse.json({},);
+    }
 
 
 
@@ -94,29 +108,32 @@ export async function PUT(request: Request) {
 
     };
 
-    const emailExists = await prisma.user.findFirst({
-      where: {
-        email: res.data.email
-      }
-    });
+    // const userExist = await prisma.user.findFirst({
+    //   where: {
+    //     OR: [
+    //       {
+    //         phoneNumber: res.data.phone
+    //       },
+    //       {
+    //         email: res.data.email
+    //       }
+    //     ]
+    //   }
+    // });
 
-    const phoneExists = await prisma.user.findFirst({
-      where: {
-        email: res.data.phone
-      }
-    });
-    if (emailExists|| phoneExists) {
-      return NextResponse.json({}, { status: 201 });
-    }
+    
+    // if (userExist) {
+    //   return NextResponse.json({}, { status: 201 });
+    // }
 
- 
-    const user = await prisma.user.update({ data,where:{id:id} });
+
+    const user = await prisma.user.update({ data, where: { id: id } });
 
 
     let accessibleJob = res.data.accessibleJobs;
 
 
-    await prisma.accessibleJob.deleteMany({ where:{userId:id} });
+    await prisma.accessibleJob.deleteMany({ where: { userId: id } });
 
 
     let newAccessible = accessibleJob.map((aj: any) => ({
@@ -129,11 +146,6 @@ export async function PUT(request: Request) {
     });
 
 
-    let send = await sendMail(
-      email,
-      "WAEC Recruitment User credentials",
-      `<h4>Welcome to WAEC Recruitment Portal.</h4><br /><p>Your user credentials are;<br/>Email: ${email} <br/>Password: ${password}</p>`
-    );
 
 
     return NextResponse.json({});
@@ -166,18 +178,20 @@ export async function DELETE(request: Request) {
     const res = await request.json();
 
     console.log(res);
-    
 
-    const user = await prisma.user.findFirst({where:{
-      id: Number(res?.id)
-    }})
 
-    let email = `${user?.email }--${nanoid(10)}`
-    let phone = `${user?.phoneNumber }--${nanoid(10)}`
+    const user = await prisma.user.findFirst({
+      where: {
+        id: Number(res?.id)
+      }
+    })
+
+    let email = `${user?.email}--${nanoid(10)}`
+    let phone = `${user?.phoneNumber}--${nanoid(10)}`
 
     const response = await prisma.user.update({
       where: { id: Number(res?.id) },
-      data: { deleted: 1,email:email,phoneNumber:phone}
+      data: { deleted: 1, email: email, phoneNumber: phone }
     });
 
 

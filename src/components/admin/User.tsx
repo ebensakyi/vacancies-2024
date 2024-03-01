@@ -33,8 +33,7 @@ const User = ({ data }: any) => {
         accessibleJobs,
       };
 
-      console.log(data);
-      
+
       if (firstName == "")
         return toast.error("Please enter first name");
       if (surname == "")
@@ -74,7 +73,10 @@ const User = ({ data }: any) => {
         return toast.success("User added successfully");
       }
       if (response.status != 200) return toast.error("User not added");
-    } catch (error) { }
+    } catch (error) {
+
+
+    }
   };
 
 
@@ -143,12 +145,29 @@ const User = ({ data }: any) => {
 
         return toast.success("Data saved successfully");
       }
+
+      // if (response.status != 201) return toast.error("Email or Phone number already exist");
+      
       if (response.status != 200) return toast.error("Data not saved");
     } catch (error) {
+      console.log(error);
 
     }
 
   };
+  const resetPassword = async (id: any, email: any) => {
+    const data = {
+      resetPassword: 1,
+      id,
+      email
+    }
+
+    const response = await axios.put("/api/admin/user", { data });
+
+    if (response.status == 200) return toast.success("New password sent to "+email);
+    if (response.status != 200) return toast.error("Password reset not possible");
+  }
+
 
   const onSelectJobs = (selectedList: any, selectedItem: any) => {
 
@@ -475,7 +494,7 @@ const User = ({ data }: any) => {
                         className="form-actions mt-10"
                         style={{ textAlign: "end" }}
                       >
-                        {id!=""? <button
+                        {id != "" ? <button
                           className="btn btn-warning btn-anim tst3 "
                           type="submit"
                           onClick={(e: any) => {
@@ -484,7 +503,7 @@ const User = ({ data }: any) => {
                           }}
                         >
                           Update
-                        </button>: <button
+                        </button> : <button
                           className="btn btn-success btn-anim tst3 "
                           type="submit"
                           onClick={(e: any) => {
@@ -494,7 +513,7 @@ const User = ({ data }: any) => {
                         >
                           Add
                         </button>}
-                     
+
                       </div>
                     </div>
                   </form>
@@ -560,19 +579,19 @@ const User = ({ data }: any) => {
                               </td>
                               <td>
                                 <button
-                                onClick={()=>{
-                                  setId(data.id)
-                                  setFirstName(data.firstName)
-                                  setSurname(data.surname)
-                                  setOtherNames(data.otherNames)
-                                  setPhone(data.phoneNumber)
-                                  setEmail(data.email)
-                                  setUserRole(data.userRoleId)
-                                  setPosition(data.position)
-                                  setDepartment(data.departmentId)
-                                  // setAccessibleJobs(data.Acc)
+                                  onClick={() => {
+                                    setId(data.id)
+                                    setFirstName(data.firstName)
+                                    setSurname(data.surname)
+                                    setOtherNames(data.otherNames)
+                                    setPhone(data.phoneNumber)
+                                    setEmail(data.email)
+                                    setUserRole(data.userRoleId)
+                                    setPosition(data.position)
+                                    setDepartment(data.departmentId)
+                                    // setAccessibleJobs(data.Acc)
 
-                                }}
+                                  }}
                                   type="button"
                                   className="btn btn-primary btn-sm waves-effect waves-light"
                                 >
@@ -581,8 +600,18 @@ const User = ({ data }: any) => {
                                 {" "}{" "}
                                 <button
                                   type="button"
+                                  className="btn btn-success btn-sm waves-effect waves-light"
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    resetPassword(data?.id, data?.email)
+                                  }}
+                                >
+                                  <i className="dripicons-lock" />
+                                </button>  {" "}{" "}
+                                <button
+                                  type="button"
                                   className="btn btn-danger btn-sm waves-effect waves-light"
-                                  onClick={(e)=>{
+                                  onClick={(e) => {
                                     e.preventDefault()
                                     deleteUser(data.id)
                                   }}
@@ -607,3 +636,4 @@ const User = ({ data }: any) => {
 };
 
 export default User;
+

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
-import Head from "next/head";
+import {useSession} from 'next-auth/react'
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter, redirect, usePathname } from "next/navigation";
@@ -12,6 +12,9 @@ const Header = () => {
 
   const router = useRouter();
   const pathname = usePathname()
+
+
+  const {data: session}:any = useSession()
 
   // useEffect(() => {
   //   if (!menu) redirect("/auth/login");
@@ -33,6 +36,7 @@ const Header = () => {
   //   if (response.status == 0) return;
   // };
   return (
+  <> { session?.user ?
     <header id="page-topbar">
       <div className="navbar-header">
         <div className="d-flex">
@@ -438,7 +442,7 @@ const Header = () => {
                         className="dropdown-item"
                         onClick={(e: any) => {
                           e.preventDefault();
-                          logout();
+                         // logout();
                         }}
                       >
                         Logout
@@ -448,29 +452,12 @@ const Header = () => {
                 </ul>
                </div>
 
-           
-            {/* <Link href="#">
-                    <a href="#" className="dropdown-item">
-                      Profile
-                    </a>
-                  </Link>
-                  <Link href="/auth/logout">
-                    <button
-                      href="#"
-                      className="dropdown-item"
-                      onClick={(e:any) => {
-                        e.preventDefault();
-                        logout();
-                      }}
-                    >
-                      Logout
-                    </button>
-                  </Link> */}
+          
           </nav>
         </div>
        
       </div>
-    </header>
+    </header>:<></>}</>
   );
 };
 
