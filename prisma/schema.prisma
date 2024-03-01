@@ -15,7 +15,6 @@ model Sex {
   deleted   Int?       @default(0)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  User      User?      @relation(fields: [createdBy], references: [id])
   Personal  Personal[]
 }
 
@@ -28,7 +27,6 @@ model YesNo {
   updatedAt    DateTime       @updatedAt
   Confirmation Confirmation[]
   Bonded       Bonded[]
-  User         User?          @relation(fields: [createdBy], references: [id])
 }
 
 model MaritalStatus {
@@ -39,7 +37,6 @@ model MaritalStatus {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   Personal  Personal[]
-  User      User?      @relation(fields: [createdBy], references: [id])
 }
 
 model Division {
@@ -51,7 +48,6 @@ model Division {
   updatedAt DateTime @updatedAt
 
   Department Department[]
-  User       User?        @relation(fields: [createdBy], references: [id])
 }
 
 model Department {
@@ -321,15 +317,11 @@ model User {
   Confirmation        Confirmation?
   AccessibleJob       AccessibleJob[]
   IndexNumber         IndexNumber[]
-  Sex                 Sex[]
   FilteredOutReason   FilteredOutReason[]
   Reason              Reason[]
   RejectReason        RejectReason[]
   DegreePrefix        DegreePrefix[]
   Page                Page[]
-  YesNo               YesNo[]
-  MaritalStatus       MaritalStatus[]
-  Division            Division[]
   StaffType           StaffType[]
   EducationLevel      EducationLevel[]
   Policy              Policy[]

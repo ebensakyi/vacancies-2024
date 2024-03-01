@@ -19,19 +19,23 @@ import { yes_no } from "./yes-no";
 import { superAdmin } from "./user";
 import { reasons } from "./reason";
 
-async function main() {
+async function main() { await prisma.division.createMany({
+    data: division,
+  });
+  await prisma.department.createMany({
+    data: department,
+  });await prisma.userRole.createMany({
+    data: userRole,
+  }); await prisma.user.createMany({
+    data: superAdmin,
+  });
   await prisma.sex.createMany({
     data: sex,
   });
   await prisma.degreePrefix.createMany({
     data: degreePrefix,
   });
-  await prisma.division.createMany({
-    data: division,
-  });
-  await prisma.department.createMany({
-    data: department,
-  });
+ 
   await prisma.educationLevel.createMany({
     data: educationLevel,
   });
@@ -51,9 +55,7 @@ async function main() {
   await prisma.subjectType.createMany({
     data: subjectType,
   });
-  await prisma.userRole.createMany({
-    data: userRole,
-  });
+  
   await prisma.subject.createMany({
     data: subject,
   });
@@ -69,9 +71,7 @@ async function main() {
   await prisma.yesNo.createMany({
     data: yes_no,
   });
-  await prisma.user.createMany({
-    data: superAdmin,
-  });
+ 
   await prisma.reason.createMany({
     data: reasons,
   });
