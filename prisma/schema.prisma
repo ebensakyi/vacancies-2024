@@ -39,19 +39,6 @@ model MaritalStatus {
   Personal  Personal[]
 }
 
-model Admin {
-  id         Int        @id @default(autoincrement())
-  User       User       @relation(fields: [userId], references: [id])
-  position   String?    @db.VarChar(255)
-  Department Department @relation(fields: [departmentId], references: [id])
-  deleted    Int?       @default(0)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-
-  userId       Int @unique
-  departmentId Int
-}
-
 model Division {
   id        Int      @id @default(autoincrement())
   name      String   @unique(map: "name") @db.VarChar(255)
@@ -72,7 +59,6 @@ model Department {
   updatedAt  DateTime @updatedAt
   Division   Division @relation(fields: [divisionId], references: [id])
   divisionId Int
-  Admin      Admin[]
   User       User[]
 }
 
@@ -287,22 +273,23 @@ model AccessibleJob {
 }
 
 model User {
-  id          Int        @id @default(autoincrement())
-  firstName   String?    @db.VarChar(255)
-  surname     String?    @db.VarChar(255)
-  otherNames  String?    @db.VarChar(255)
-  email       String     @unique(map: "email") @db.VarChar(255)
-  phoneNumber String?    @unique(map: "phoneNumber") @db.VarChar(10)
-  password    String?    @db.VarChar(255)
-  UserRole    UserRole   @relation(fields: [userRoleId], references: [id])
-  deleted     Int?       @default(0)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  userRoleId  Int        @default(4)
-  Department  Department? @relation(fields: [departmentId], references: [id])
-  departmentId   Int?
+  id          Int     @id @default(autoincrement())
+  firstName   String? @db.VarChar(255)
+  surname     String? @db.VarChar(255)
+  otherNames  String? @db.VarChar(255)
+  email       String  @unique(map: "email") @db.VarChar(50)
+  phoneNumber String? @unique(map: "phoneNumber") @db.VarChar(50)
+  password    String? @db.VarChar(255)
+  position    String? @db.VarChar(255)
 
-  Admin          Admin?
+  UserRole     UserRole    @relation(fields: [userRoleId], references: [id])
+  deleted      Int?        @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  userRoleId   Int         @default(4)
+  Department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId Int?
+
   Personal       Personal?
   Publication    Publication[]
   Reference      Reference[]

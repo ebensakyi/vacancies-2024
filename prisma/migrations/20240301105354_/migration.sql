@@ -37,20 +37,6 @@ CREATE TABLE `MaritalStatus` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Admin` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `position` VARCHAR(255) NULL,
-    `deleted` INTEGER NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-    `userId` INTEGER NOT NULL,
-    `departmentId` INTEGER NOT NULL,
-
-    UNIQUE INDEX `Admin_userId_key`(`userId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Division` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
@@ -302,6 +288,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(255) NOT NULL,
     `phoneNumber` VARCHAR(10) NULL,
     `password` VARCHAR(255) NULL,
+    `position` VARCHAR(255) NULL,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -597,12 +584,6 @@ CREATE TABLE `SchoolAttended` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `Admin` ADD CONSTRAINT `Admin_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Admin` ADD CONSTRAINT `Admin_departmentId_fkey` FOREIGN KEY (`departmentId`) REFERENCES `Department`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Department` ADD CONSTRAINT `Department_divisionId_fkey` FOREIGN KEY (`divisionId`) REFERENCES `Division`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

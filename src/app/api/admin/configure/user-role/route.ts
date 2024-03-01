@@ -14,9 +14,9 @@ export async function POST(request: Request) {
     };
     const response = await prisma.userRole.create({ data });
 
-    const modifiedArray = await accessiblePages?.map(item => ({
-      pageId: item?.id, // Change key id to pageId
-      userRoleId: response?.id // Add userRoleId
+    const modifiedArray = await accessiblePages?.map((item:any) => ({
+      pageId: item?.id, 
+      userRoleId: response?.id 
     }));
 
     await prisma.pageAccess.createMany({ data: modifiedArray });
@@ -43,10 +43,10 @@ export async function PUT(request: Request) {
     const data = { name }
     const response = await prisma.userRole.update({ data, where: { id } });
 
-    await prisma.pageAccess.deleteMany({ where:{userRoleId:5} });
+    await prisma.pageAccess.deleteMany({ where:{userRoleId:id} });
 
 
-    const modifiedArray = await accessiblePages?.map(item => ({
+    const modifiedArray = await accessiblePages?.map((item:any) => ({
       pageId: item?.id,
       userRoleId: response?.id
     }));

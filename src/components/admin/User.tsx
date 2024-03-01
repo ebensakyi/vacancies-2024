@@ -4,22 +4,21 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Multiselect from "multiselect-react-dropdown";
-// import Router from "next/router";
-
+import { useRouter } from "next/navigation";
 const User = ({ data }: any) => {
+  const router = useRouter()
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");
   const [otherNames, setOtherNames] = useState("");
-  // const [sex, setSex] = useState("");
+  const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [department, setDepartment] = useState("");
   const [position, setPosition] = useState("");
-  const [userRole, setUserRole] = useState();
+  const [userRole, setUserRole] = useState("");
   const [accessibleJobs, setAccessibleJobs] = useState([]);
 
-  console.log(data);
-  
+
   const save = async () => {
     try {
       const data = {
@@ -33,38 +32,135 @@ const User = ({ data }: any) => {
         userRole,
         accessibleJobs,
       };
-      if (
-        firstName == "" ||
-        surname == "" ||
-        position == "" ||
-        phone == "" ||
-        email == "" ||
-        department == ""
-      )
-        return toast.error("Please fill the form");
+      if (firstName == "")
+        return toast.error("Please enter first name");
+      if (surname == "")
+        return toast.error("Please enter surname");
+      if (phone == "")
+        return toast.error("Please enter phone number");
+      if (email == "")
+        return toast.error("Please enter email address");
+      if (position == "")
+        return toast.error("Please enter position");
+      if (userRole == "")
+        return toast.error("Please select user role ");
+      if (userRole == "2" && accessibleJobs.length == 0)
+        return toast.error("Please select 1 or more jobs for shortlisting");
+
 
       const response = await axios.post("/api/admin/user", { data });
-      let { message } = response.data;
-      let { statusCode } = response.data;
+      if (response.status == 201) {
+        return toast.error("Email or Phone number already exist");
 
-      if (statusCode == 1) {
-        setFirstName("");
-        setEmail("");
-        // Router.reload(window.location.pathname);
-        return toast.success(message);
       }
-      if (statusCode == 0) return toast.error(message);
+
+      if (response.status == 200) {
+
+        setFirstName("");
+        setOtherNames("");
+        setSurname("");
+        setPhone("");
+        setEmail("");
+        setDepartment("");
+        setPosition("");
+        setUserRole("");
+        setAccessibleJobs([])
+        // Router.reload(window.location.pathname);
+        router.refresh()
+
+        return toast.success("User added successfully");
+      }
+      if (response.status != 200) return toast.error("User not added");
     } catch (error) { }
   };
 
-  // const onSelect = (selectedList, selectedItem) => {
-  //   setAccessibleJobs([...accessibleJobs, { jobId: selectedItem.id }]);
-  // };
 
-  // const onRemove = (selectedList, removedItem) => {
-  //   const filtered = accessibleJobs.filter((m) => m.jobId !== removedItem.id);
-  //   setAccessibleJobs(filtered);
-  // };
+  const deleteUser = async (id: any) => {
+    try {
+      const data = {
+        id,
+      };
+
+
+      const response = await axios.delete("/api/admin/user", { data });
+      if (response.status == 200) {
+        router.refresh()
+
+        return toast.success("User deleted successfully");
+      }
+      if (response.status != 200) return toast.error("User not deleted");
+    } catch (error) {
+
+    }
+
+  };
+  const update = async () => {
+    try {
+      const data = {
+        id,
+        firstName,
+        surname,
+        otherNames,
+        email,
+        phone,
+        department,
+        position,
+        userRole,
+        accessibleJobs,
+      };
+      if (firstName == "")
+        return toast.error("Please enter first name");
+      if (surname == "")
+        return toast.error("Please enter surname");
+      if (phone == "")
+        return toast.error("Please enter phone number");
+      if (email == "")
+        return toast.error("Please enter email address");
+      if (position == "")
+        return toast.error("Please enter position");
+      if (userRole == "")
+        return toast.error("Please select user role ");
+      if (userRole == "2" && accessibleJobs.length == 0)
+        return toast.error("Please select 1 or more jobs for shortlisting");
+
+
+      const response = await axios.put("/api/admin/user", { data });
+      if (response.status == 200) {
+        setId("");
+        setFirstName("");
+        setOtherNames("");
+        setSurname("");
+        setPhone("");
+        setEmail("");
+        setDepartment("");
+        setPosition("");
+        setUserRole("");
+        setAccessibleJobs([])
+        router.refresh()
+
+        return toast.success("Data saved successfully");
+      }
+      if (response.status != 200) return toast.error("Data not saved");
+    } catch (error) {
+
+    }
+
+  };
+
+  const onSelectJobs = (selectedList: any, selectedItem: any) => {
+
+    setAccessibleJobs(selectedList)
+
+    // setAccessiblePages([...selectedItem, selectedItem]);
+
+  };
+
+  const onRemoveJob = (selectedList: [], removedItem: any) => {
+
+    // const filtered = accessibleJobs.filter((m) => m?.id !== removedItem?.id);
+    setAccessibleJobs(selectedList)
+
+  };
   return (
     <div id="layout-wrapper">
 
@@ -81,7 +177,7 @@ const User = ({ data }: any) => {
             <div className="row">
               <ToastContainer
                 position="top-right"
-                autoClose={15000}
+                autoClose={25000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -115,6 +211,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setFirstName(e.target.value);
                                 }}
+                                value={firstName}
                               />
                               <div className="invalid-tooltip">
                                 First name is required
@@ -139,6 +236,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setSurname(e.target.value);
                                 }}
+                                value={surname}
                               />
                               <div className="invalid-tooltip">Surname is required</div>
                             </div>
@@ -158,6 +256,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setOtherNames(e.target.value);
                                 }}
+                                value={otherNames}
                               />
                             </div>
                           </div>
@@ -209,6 +308,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setEmail(e.target.value);
                                 }}
+                                value={email}
                               />
                               <div className="invalid-tooltip">Email is required</div>
                             </div>
@@ -232,6 +332,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setPhone(e.target.value);
                                 }}
+                                value={phone}
                               />
                               <div className="invalid-tooltip">
                                 Phone number is required
@@ -253,6 +354,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setDepartment(e.target.value);
                                 }}
+                                value={department}
                               >
                                 <option value="">Select department</option>
                                 {data?.departments?.response?.map((data: any) => (
@@ -311,6 +413,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setPosition(e.target.value);
                                 }}
+                                value={position}
                               />
                               <div className="invalid-tooltip">
                                 Position is required
@@ -332,6 +435,7 @@ const User = ({ data }: any) => {
                                 onChange={(e: any) => {
                                   setUserRole(e.target.value);
                                 }}
+                                value={userRole}
                               >
                                 <option value="">Select role</option>
                                 {data?.userRoles?.response?.map((data: any) => (
@@ -368,7 +472,16 @@ const User = ({ data }: any) => {
                         className="form-actions mt-10"
                         style={{ textAlign: "end" }}
                       >
-                        <button
+                        {id!=""? <button
+                          className="btn btn-warning btn-anim tst3 "
+                          type="submit"
+                          onClick={(e: any) => {
+                            e.preventDefault();
+                            update();
+                          }}
+                        >
+                          Update
+                        </button>: <button
                           className="btn btn-success btn-anim tst3 "
                           type="submit"
                           onClick={(e: any) => {
@@ -377,7 +490,8 @@ const User = ({ data }: any) => {
                           }}
                         >
                           Add
-                        </button>
+                        </button>}
+                     
                       </div>
                     </div>
                   </form>
@@ -395,15 +509,19 @@ const User = ({ data }: any) => {
                         <tr>
                           {/* <th>#</th> */}
                           <th>Name</th>
-                          <th>Department</th>
+                          <th>Email</th>
+                          <th>Phone</th>
                           <th>User role</th>
+                          <th>Department</th>
+                          <th>Position</th>
+
                           <th>Accessible Jobs</th>
 
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data?.users?.response.map((data:any) => {
+                        {data?.users?.response.map((data: any) => {
                           return (
                             <tr key={data.id}>
                               {/* <td>{data.id}</td> */}
@@ -411,21 +529,60 @@ const User = ({ data }: any) => {
                                 {data.firstName} {data.otherNames} {data.surname}
                               </td>
                               <td>
+                                {data?.email}
+
+                              </td>
+                              <td>
+                                {data?.phoneNumber}
+
+                              </td>
+                              <td>
+                                {data.UserRole.name}
+
+                              </td>
+                              <td>
                                 {data?.Department?.name}
 
-                              </td> <td>
-                                {data.department}
-
-                              </td>
-                              <td>
-                                {data.job}
-
                               </td>
 
                               <td>
+                                {data.position}
+
+                              </td>
+                              <td>
+                                {data?.AccessibleJob?.map((job: { name: any; }) => {
+                                  return job.name
+                                })}
+
+                              </td>
+                              <td>
+                                <button
+                                onClick={()=>{
+                                  setId(data.id)
+                                  setFirstName(data.firstName)
+                                  setSurname(data.surname)
+                                  setOtherNames(data.otherNames)
+                                  setPhone(data.phoneNumber)
+                                  setEmail(data.email)
+                                  setUserRole(data.userRoleId)
+                                  setPosition(data.position)
+                                  setDepartment(data.departmentId)
+                                  // setAccessibleJobs(data.Acc)
+
+                                }}
+                                  type="button"
+                                  className="btn btn-primary btn-sm waves-effect waves-light"
+                                >
+                                  <i className="dripicons-pencil" />
+                                </button>
+                                {" "}{" "}
                                 <button
                                   type="button"
                                   className="btn btn-danger btn-sm waves-effect waves-light"
+                                  onClick={(e)=>{
+                                    e.preventDefault()
+                                    deleteUser(data.id)
+                                  }}
                                 >
                                   <i className="dripicons-trash" />
                                 </button>

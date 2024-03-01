@@ -4,8 +4,8 @@ import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
-import { calculateAge } from "../../lib/calculate-age";
 import _ from "lodash";
+import { calculateAge } from "@/lib/calculate-age";
 
 const Shortlisted = ({ broadsheet }:any) => {
   const [searchText, setSearchText] = useState();
