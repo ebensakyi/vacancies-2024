@@ -11,49 +11,53 @@ datasource db {
 model Sex {
   id        Int        @id @default(autoincrement())
   name      String     @unique(map: "name") @db.VarChar(10)
-  addedBy   Int?       @default(1)
+  createdBy Int?       @default(1)
   deleted   Int?       @default(0)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  User      User?      @relation(fields: [createdBy], references: [id])
   Personal  Personal[]
 }
 
 model YesNo {
   id           Int            @id @default(autoincrement())
   value        String?        @db.VarChar(255)
-  addedBy      Int?           @default(1)
+  createdBy    Int?           @default(1)
   deleted      Int?           @default(0)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   Confirmation Confirmation[]
   Bonded       Bonded[]
+  User         User?          @relation(fields: [createdBy], references: [id])
 }
 
 model MaritalStatus {
   id        Int        @id @default(autoincrement())
   name      String     @unique(map: "name") @db.VarChar(10)
-  addedBy   Int?       @default(1)
+  createdBy Int?       @default(1)
   deleted   Int?       @default(0)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   Personal  Personal[]
+  User      User?      @relation(fields: [createdBy], references: [id])
 }
 
 model Division {
   id        Int      @id @default(autoincrement())
   name      String   @unique(map: "name") @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   Department Department[]
+  User       User?        @relation(fields: [createdBy], references: [id])
 }
 
 model Department {
   id         Int      @id @default(autoincrement())
   name       String   @db.VarChar(255)
-  addedBy    Int?     @default(1)
+  createdBy  Int?     @default(1)
   deleted    Int?     @default(0)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -65,25 +69,27 @@ model Department {
 model StaffType {
   id        Int      @id @default(autoincrement())
   name      String?  @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Policy    Policy[]
 
   Recruitment Recruitment[]
+  User        User?         @relation(fields: [createdBy], references: [id])
 }
 
 model EducationLevel {
   id             Int              @id @default(autoincrement())
   name           String           @unique(map: "name") @db.VarChar(100)
-  addedBy        Int?             @default(1)
+  createdBy      Int?             @default(1)
   deleted        Int?             @default(0)
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   Policy         Policy[]
   SchoolAttended SchoolAttended[]
   Certificate    Certificate[]
+  User           User?            @relation(fields: [createdBy], references: [id])
 }
 
 model Policy {
@@ -96,7 +102,7 @@ model Policy {
   minimumGrade   Int
   deadline       DateTime?      @db.Date
   note           String?        @db.VarChar(1000)
-  addedBy        Int?           @default(1)
+  createdBy      Int?           @default(1)
   deleted        Int?           @default(0)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
@@ -105,6 +111,7 @@ model Policy {
   educationLevelId Int
   Job              Job[]
   Advert           Advert[]
+  User             User?    @relation(fields: [createdBy], references: [id])
 }
 
 model Job {
@@ -112,13 +119,14 @@ model Job {
   Policy        Policy          @relation(fields: [policyId], references: [id])
   name          String?         @unique(map: "name") @db.VarChar(255)
   published     Int?            @default(0)
-  addedBy       Int?            @default(1)
+  createdBy     Int?            @default(1)
   deleted       Int?            @default(0)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   policyId      Int
   AccessibleJob AccessibleJob[]
   Application   Application[]
+  User          User?           @relation(fields: [createdBy], references: [id])
 
   @@unique([policyId, name, deleted], name: "name_policy")
 }
@@ -129,28 +137,30 @@ model Advert {
   name      String?  @db.VarChar(255)
   details   String?  @db.Text
   published Int?     @default(0)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   policyId  Int
+  User      User?    @relation(fields: [createdBy], references: [id])
 }
 
 model ExamTypeNew {
   id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   IndexNumber IndexNumber[]
+  User        User?         @relation(fields: [createdBy], references: [id])
 }
 
 model ExamType {
   id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -158,6 +168,7 @@ model ExamType {
   Grade          Grade[]
   Subject        Subject[]
   GradesObtained GradesObtained[]
+  User           User?            @relation(fields: [createdBy], references: [id])
 }
 
 model Subject {
@@ -165,7 +176,7 @@ model Subject {
   ExamType    ExamType    @relation(fields: [examTypeId], references: [id])
   SubjectType SubjectType @relation(fields: [subjectTypeId], references: [id])
   name        String      @db.VarChar(255)
-  addedBy     Int?        @default(1)
+  createdBy   Int?        @default(1)
   deleted     Int?        @default(0)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -173,24 +184,26 @@ model Subject {
   examTypeId     Int
   subjectTypeId  Int
   GradesObtained GradesObtained[]
+  User           User?            @relation(fields: [createdBy], references: [id])
 }
 
 model SubjectType {
   id        Int      @id @default(autoincrement())
   name      String?  @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   Subject Subject[]
+  User    User?     @relation(fields: [createdBy], references: [id])
 }
 
 model Recruitment {
   id        Int      @id @default(autoincrement())
   name      String?  @unique(map: "name") @db.VarChar(255)
   code      String?  @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -199,27 +212,30 @@ model Recruitment {
   staffTypeId         Int
   CurrentRecruitment  CurrentRecruitment[]
   CurrentShortlisting CurrentShortlisting[]
+  User                User?                 @relation(fields: [createdBy], references: [id])
 }
 
 model CurrentRecruitment {
   id            Int           @id @default(autoincrement())
-  addedBy       Int?          @default(1)
+  createdBy     Int?          @default(1)
   deleted       Int?          @default(0)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   Recruitment   Recruitment   @relation(fields: [recruitmentId], references: [id])
   Application   Application[]
   recruitmentId Int
+  User          User?         @relation(fields: [createdBy], references: [id])
 }
 
 model CurrentShortlisting {
   id            Int         @id @default(autoincrement())
-  addedBy       Int?        @default(1)
+  createdBy     Int?        @default(1)
   deleted       Int?        @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   Recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
   recruitmentId Int
+  User          User?       @relation(fields: [createdBy], references: [id])
 }
 
 model Grade {
@@ -228,10 +244,11 @@ model Grade {
   name           String   @db.VarChar(255)
   examTypeId     Int
   interpretation Int
-  addedBy        Int?     @default(1)
+  createdBy      Int?     @default(1)
   deleted        Int?     @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  User           User?    @relation(fields: [createdBy], references: [id])
 
   GradesObtained GradesObtained[]
 }
@@ -239,19 +256,20 @@ model Grade {
 model UserRole {
   id         Int          @id @default(autoincrement())
   name       String       @unique @db.VarChar(255)
-  addedBy    Int?         @default(1)
+  createdBy  Int?         @default(1)
   deleted    Int?         @default(0)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   User       User[]
   PageAccess PageAccess[]
+  // CreatedBy  User?        @relation(fields: [createdBy], references: [id])
 }
 
 model PageAccess {
   id         Int      @id @default(autoincrement())
   UserRole   UserRole @relation(fields: [userRoleId], references: [id])
   Page       Page     @relation(fields: [pageId], references: [id])
-  addedBy    Int?     @default(1)
+  createdBy  Int?     @default(1)
   deleted    Int?     @default(0)
   userRoleId Int
   createdAt  DateTime @default(now())
@@ -263,7 +281,6 @@ model AccessibleJob {
   id        Int      @id @default(autoincrement())
   jobId     Int
   Job       Job      @relation(fields: [jobId], references: [id])
-  addedBy   Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -290,31 +307,56 @@ model User {
   Department   Department? @relation(fields: [departmentId], references: [id])
   departmentId Int?
 
-  Personal       Personal?
-  Publication    Publication[]
-  Reference      Reference[]
-  Bonded         Bonded?
-  Employment     Employment[]
-  Essay          Essay?
-  Application    Application[]
-  GradesObtained GradesObtained[]
-  SchoolAttended SchoolAttended[]
-  UserLogs       UserLogs[]
-  Certificate    Certificate[]
-  Confirmation   Confirmation?
-  AccessibleJob  AccessibleJob[]
-  IndexNumber    IndexNumber[]
+  Personal            Personal?
+  Publication         Publication[]
+  Reference           Reference[]
+  Bonded              Bonded?
+  Employment          Employment[]
+  Essay               Essay?
+  Application         Application[]
+  GradesObtained      GradesObtained[]
+  SchoolAttended      SchoolAttended[]
+  UserLogs            UserLogs[]
+  Certificate         Certificate[]
+  Confirmation        Confirmation?
+  AccessibleJob       AccessibleJob[]
+  IndexNumber         IndexNumber[]
+  Sex                 Sex[]
+  FilteredOutReason   FilteredOutReason[]
+  Reason              Reason[]
+  RejectReason        RejectReason[]
+  DegreePrefix        DegreePrefix[]
+  Page                Page[]
+  YesNo               YesNo[]
+  MaritalStatus       MaritalStatus[]
+  Division            Division[]
+  StaffType           StaffType[]
+  EducationLevel      EducationLevel[]
+  Policy              Policy[]
+  Job                 Job[]
+  Advert              Advert[]
+  ExamTypeNew         ExamTypeNew[]
+  ExamType            ExamType[]
+  Subject             Subject[]
+  SubjectType         SubjectType[]
+  Recruitment         Recruitment[]
+  CurrentRecruitment  CurrentRecruitment[]
+  CurrentShortlisting CurrentShortlisting[]
+  Grade               Grade[]
+  CreatedBy           User?                 @relation("CreatedBy", fields: [createdById], references: [id])
+  users  User[] @relation("CreatedBy") // users created by this user
+  createdById Int?    @default(1)
 }
 
 model UserLogs {
   id        Int      @id @default(autoincrement())
-  User      User     @relation(fields: [userId], references: [id])
+  User      User?    @relation(fields: [createdBy], references: [id])
   activity  String?  @db.VarChar(255)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId Int
+  createdBy Int
 }
 
 model Page {
@@ -322,11 +364,12 @@ model Page {
   name       String       @unique(map: "name") @db.VarChar(255)
   icon       String?      @db.VarChar(255)
   hasSubMenu Int?         @default(0)
-  addedBy    Int?         @default(1)
+  createdBy  Int?         @default(1)
   deleted    Int?         @default(0)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   PageAccess PageAccess[]
+  User       User?        @relation(fields: [createdBy], references: [id])
 }
 
 // model SubMenu {
@@ -334,7 +377,7 @@ model Page {
 //   name      String   @unique(map: "name") @db.VarChar(255)
 //   path      String?  @db.VarChar(255)
 //   Menu      Menu     @relation(fields: [menuId], references: [id])
-//   addedBy   Int?     @default(1)
+//   createdBy   Int?     @default(1)
 //   deleted   Int?     @default(0)
 //   createdAt DateTime @default(now())
 //   updatedAt DateTime @updatedAt
@@ -344,10 +387,11 @@ model Page {
 model DegreePrefix {
   id        Int      @id @default(autoincrement())
   name      String?  @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [createdBy], references: [id])
 }
 
 model Personal {
@@ -522,7 +566,7 @@ model Application {
 //   id          Int         @id @default(autoincrement())
 //   Application Application @relation(fields: [applicationId], references: [id])
 //   User        User        @relation(fields: [userId], references: [id])
-//   addedBy     Int?
+//   createdBy     Int?
 //   deleted     Int?        @default(0)
 //   createdAt   DateTime    @default(now())
 //   updatedAt   DateTime    @updatedAt
@@ -536,10 +580,11 @@ model Application {
 model RejectReason {
   id          Int         @id @default(autoincrement())
   Application Application @relation(fields: [applicationId], references: [id])
-  addedBy     Int?
+  createdBy   Int?
   deleted     Int?        @default(0)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+  User        User?       @relation(fields: [createdBy], references: [id])
 
   Reason        Reason @relation(fields: [reasonId], references: [id])
   applicationId Int
@@ -549,10 +594,11 @@ model RejectReason {
 model Reason {
   id        Int      @id @default(autoincrement())
   reason    String?  @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [createdBy], references: [id])
 
   RejectReason RejectReason[]
 }
@@ -560,7 +606,7 @@ model Reason {
 model ApplicationStatus {
   id        Int      @id @default(autoincrement())
   status    String?  @db.VarChar(255)
-  addedBy   Int?     @default(1)
+  createdBy Int?     @default(1)
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -570,8 +616,9 @@ model FilteredOutReason {
   id            Int     @id @default(autoincrement())
   applicationId Int
   filterReason  String? @db.VarChar(200)
+  User          User?   @relation(fields: [createdBy], references: [id])
 
-  addedBy     Int?        @default(1)
+  createdBy   Int?        @default(1)
   deleted     Int?        @default(0)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -582,7 +629,7 @@ model FilteredOutReason {
 //   id            Int      @id @default(autoincrement())
 //   reason        String?  @db.VarChar(150)
 //   applicationId Int
-//   addedBy       Int?     @default(1)
+//   createdBy       Int?     @default(1)
 //   deleted       Int?     @default(0)
 //   createdAt     DateTime @default(now())
 //   updatedAt     DateTime @updatedAt
@@ -610,15 +657,16 @@ model GradesObtained {
 }
 
 model IndexNumber {
-  id            Int          @id @default(autoincrement())
-  indexNumber   String       @db.VarChar(255)
-  year          String       @db.VarChar(255)
-  addedBy       Int?         @default(1)
-  deleted       Int?         @default(0)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  User          User         @relation(fields: [userId], references: [id])
-  userId        Int
+  id          Int      @id @default(autoincrement())
+  indexNumber String   @db.VarChar(255)
+  year        String   @db.VarChar(255)
+  createdBy   Int?     @default(1)
+  deleted     Int?     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User     @relation(fields: [userId], references: [id])
+  userId      Int
+
   ExamTypeNew   ExamTypeNew? @relation(fields: [examTypeNewId], references: [id])
   examTypeNewId Int?
 }
@@ -652,63 +700,3 @@ model SchoolAttended {
   educationLevelId Int
   userId           Int
 }
-
-// model MenuAccessType {
-//   id         Int          @id @default(autoincrement())
-//   name       String       @db.VarChar(255)
-//   addedBy    Int?         @default(1)
-//   deleted    Int?         @default(0)
-//   createdAt  DateTime     @default(now())
-//   updatedAt  DateTime     @updatedAt
-//   MenuAccess MenuAccess[]
-// }
-
-// model programme {
-//   id        Int      @id @default(autoincrement())
-//   name      String   @db.VarChar(255)
-//   addedBy   Int?
-//   deleted   Int?     @default(0)
-//   createdAt DateTime @db.DateTime(0)
-//   updatedAt DateTime @db.DateTime(0)
-// }
-
-// model jobsaccesslevel {
-//   id        Int      @id @default(autoincrement())
-//   userId    Int?
-//   jobId     Int?
-//   addedBy   Int?     @default(1)
-//   deleted   Int?     @default(0)
-//   createdAt DateTime @db.DateTime(0)
-//   updatedAt DateTime @db.DateTime(0)
-
-// }
-
-// model jobtype {
-//   id           Int      @id @default(autoincrement())
-//   pageAccessId Int
-//   type         String   @db.VarChar(255)
-//   addedBy      Int?     @default(1)
-//   active       Int?     @default(1)
-//   deleted      Int?     @default(0)
-//   createdAt    DateTime @db.DateTime(0)
-//   updatedAt    DateTime @db.DateTime(0)
-// }
-
-// model Classes {
-//   id        Int      @id @default(autoincrement())
-//   title     String?  @db.VarChar(255)
-//   addedBy   Int?     @default(1)
-//   deleted   Int?     @default(0)
-//   createdAt DateTime @db.DateTime(0)
-//   updatedAt DateTime @db.DateTime(0)
-// }
-
-// model Applicationmeta {
-//   id                   Int      @id @default(autoincrement())
-//   userId               Int      @unique(map: "userId")
-//   totalYearsExperience Int?     @default(0)
-//   age                  Int?
-//   deleted              Int?     @default(0)
-//   createdAt            DateTime @db.DateTime(0)
-//   updatedAt            DateTime @db.DateTime(0)
-// }

@@ -32,6 +32,9 @@ const User = ({ data }: any) => {
         userRole,
         accessibleJobs,
       };
+
+      console.log(data);
+      
       if (firstName == "")
         return toast.error("Please enter first name");
       if (surname == "")
@@ -459,8 +462,8 @@ const User = ({ data }: any) => {
                               </label>
                               <Multiselect
                                 options={data?.jobs?.response}
-                                // onSelect={onSelect}
-                                // onRemove={onRemove}
+                                onSelect={onSelectJobs}
+                                onRemove={onRemoveJob}
                                 displayValue="name"
                               />
                             </div>

@@ -61,7 +61,7 @@ const Policy = ({ data }: any) => {
   };
 
 
-  const updatePolicy = async (id: any) => {
+  const updatePolicy = async () => {
     try {
       if (name == "" || deadline == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" || staffType == "")
         return toast.error("Please fill the form");
@@ -348,7 +348,8 @@ const Policy = ({ data }: any) => {
                       </div>
 
                       <div className="form-actions mt-10">
-                        <button
+                        {id==""?
+                          <button
                           type="button"
                           className="btn btn-success add"
                           onClick={(e) => {
@@ -357,7 +358,18 @@ const Policy = ({ data }: any) => {
                           }}
                         >
                           Save
+                        </button>:  <button
+                          type="button"
+                          className="btn btn-warning add"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            updatePolicy();
+                          }}
+                        >
+                          Update
                         </button>
+                      }
+                      
                       </div>
                     </form>
                   </div>
@@ -407,15 +419,15 @@ const Policy = ({ data }: any) => {
                                     className="btn btn-primary btn-sm waves-effect waves-light"
                                     onClick={(e) => {
                                       e.preventDefault()
+                                      setId(data.id)
                                       setName(data.name)
                                       // setDeadline(data.deadline)
                                       setAge(data.age)
-                                      setMiniGrade(data.minimumGradeId)
+                                      setMiniGrade(data.minimumGrade)
                                       setExperience(data.experience)
-                                      setMiniEducation(data.minimumEduLevelId)
+                                      setMiniEducation(data.educationLevelId)
                                       setStaffType(data.staffTypeId)
                                       setNote(data.note)
-                                      // updatePolicy(data.id)
                                     }}
                                   >
                                     <i className="dripicons-pencil" />

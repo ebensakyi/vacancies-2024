@@ -46,11 +46,13 @@ export async function POST(request: Request) {
     const user = await prisma.user.create({ data });
 
 
+
+    //save jobs accessible to user
     let accessibleJob = res.data.accessibleJobs;
 
     let newAccessible = accessibleJob.map((aj: any) => ({
       userId: Number(user.id),
-      jobId: aj.jobId,
+      jobId: aj.id,
     }));
 
     const accessibleJobs = await prisma.accessibleJob.createMany({
@@ -115,15 +117,6 @@ export async function PUT(request: Request) {
 
 
     await prisma.accessibleJob.deleteMany({ where:{userId:id} });
-
-
-    // const modifiedArray = await accessiblePages?.map(item => ({
-    //   pageId: item?.id,
-    //   userRoleId: response?.id
-    // }));
-
-    // await prisma.accessibleJob.createMany({ data: modifiedArray });
-
 
 
     let newAccessible = accessibleJob.map((aj: any) => ({
