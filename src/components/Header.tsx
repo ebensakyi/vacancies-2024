@@ -604,7 +604,7 @@ const Header = () => {
                         : "nav-item"
                     }
                   >
-                    <Link href="/applicant/personal-info" className="nav-link" >
+                    <Link href="/applicant/select-position" className="nav-link" >
                       <i
                         className="dripicons-home
 me-2"

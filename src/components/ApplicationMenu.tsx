@@ -33,6 +33,20 @@ const ApplicationMenu = ({ whichLink}:any ) => {
       role="tablist"
     >
         <li className="nav-item waves-effect waves-light">
+            <Link href="#" className={`nav-link  ${
+                  whichLink == "select-positions" ? activeLink : ""
+                }`}>
+              
+                <span className="d-block d-sm-none">
+                  <i
+                    className="fas fa-bars
+"
+                  />
+                </span>
+                <span className="d-none d-sm-block">Select Position(s)</span>
+            </Link>
+          </li>
+        <li className="nav-item waves-effect waves-light">
           <Link href="#"  className={`nav-link  ${
                 whichLink == "personal" ? activeLink : ""
               }`}>
@@ -123,20 +137,7 @@ const ApplicationMenu = ({ whichLink}:any ) => {
                 <span className="d-none d-sm-block">References</span>
             </Link>
           </li>
-          <li className="nav-item waves-effect waves-light">
-            <Link href="#" className={`nav-link  ${
-                  whichLink == "select-positions" ? activeLink : ""
-                }`}>
-              
-                <span className="d-block d-sm-none">
-                  <i
-                    className="fas fa-bars
-"
-                  />
-                </span>
-                <span className="d-none d-sm-block">Select Position</span>
-            </Link>
-          </li>
+        
           {/* <li className="nav-item waves-effect waves-light">
           <Link href="#">
             <a

@@ -144,7 +144,7 @@ const SelectPositions = ({ data }: any) => {
                   </table>
                   <div className="form-actions mt-10">
                     <div className="col-md-12" style={{ textAlign: "end" }}>
-                      <div
+                      {/* <div
                         className="btn-group"
                         role="group"
                         aria-label="Basic example"
@@ -154,6 +154,22 @@ const SelectPositions = ({ data }: any) => {
                         </Link>
                         <Link href="/applicant/submit-application" type="button" className="btn btn-success">
                             Next
+                        </Link>
+                      </div> */}
+                      <div className="form-actions mt-10" style={{ textAlign: "end" }}>
+                        {/* <button
+                                                className="btn btn-success add"
+                                                type="button"
+                                                onClick={(e: any) => {
+                                                    e.preventDefault();
+                                                  //  save();
+                                                }}
+                                            >
+                                                Save and Proceed
+                                            </button> */}
+
+                        <Link href="/applicant/personal-info" type="button" className="btn btn-success">
+                          Save and Proceed
                         </Link>
                       </div>
                     </div>
