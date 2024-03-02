@@ -36,7 +36,7 @@ export const AddReference = ({ referencesList }) => {
         occupation: occupation.trim(),
         fullName: fullName.trim(),
       };
-      const response = await axios.post("/api/application/reference", {
+      const response = await axios.post("/api/applicant/reference", {
         data,
       });
       let { statusCode } = response.data;
@@ -58,7 +58,7 @@ export const AddReference = ({ referencesList }) => {
 
   const remove = async (id) => {
     const filtered = references.filter((p) => p.id !== id);
-    const response = await axios.delete(`/api/application/reference`, {
+    const response = await axios.delete(`/api/applicant/reference`, {
       data: id,
     });
     setReferences(filtered);
@@ -67,12 +67,12 @@ export const AddReference = ({ referencesList }) => {
   const next = async () => {
     let core = await genCode(100);
 
-    const response = await axios.post(`/api/application/reference?next=true`);
+    const response = await axios.post(`/api/applicant/reference?next=true`);
 
     let isValid = response.data.data;
 
     if (isValid)
-      return Router.push("/application/select-positions?core=" + core);
+      return Router.push("/applicant/select-positions?core=" + core);
 
     return toast.error(
       "Please enter exactly 3 references before clicking next"
@@ -259,19 +259,19 @@ export const AddReference = ({ referencesList }) => {
         <div className="col-md-12" style={{ textAlign: "end" }}>
           <div className="btn-group" role="group" aria-label="Basic example">
             {menu == "1" ? (
-              <Link href="/application/publication">
+              <Link href="/applicant/publication">
                 <a type="button" className="btn btn-success">
                   Previous
                 </a>
               </Link>
             ) : (
-              <Link href="/application/employment">
+              <Link href="/applicant/employment">
                 <a type="button" className="btn btn-success">
                   Previous
                 </a>
               </Link>
             )}
-            {/* <Link href="/application/select-positions"> */}
+            {/* <Link href="/applicant/select-positions"> */}
             <button
               type="button"
               className="btn btn-success"

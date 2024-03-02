@@ -78,7 +78,7 @@ export const AddEducation = ({
         endYear,
       };
 
-      const response = await axios.post("/api/application/school-attended", {
+      const response = await axios.post("/api/applicant/school-attended", {
         data,
       });
 
@@ -117,7 +117,7 @@ export const AddEducation = ({
       if (examType == null || examYear == null || indexNumber == null)
         return toast.error("Please fill the form");
 
-      const response = await axios.post("/api/application/index-number", {
+      const response = await axios.post("/api/applicant/index-number", {
         data,
       });
 
@@ -160,7 +160,7 @@ export const AddEducation = ({
       )
         return toast.error("Please fill the form");
 
-      const response = await axios.post("/api/application/grades-obtained", {
+      const response = await axios.post("/api/applicant/grades-obtained", {
         data,
       });
 
@@ -189,7 +189,7 @@ export const AddEducation = ({
   const removeSchool = async (id) => {
     try {
       const filteredSchools = schoolsAttended.filter((sa) => sa.id !== id);
-      const response = await axios.delete(`/api/application/school-attended`, {
+      const response = await axios.delete(`/api/applicant/school-attended`, {
         data: id,
       });
       setSchoolsAttended(filteredSchools);
@@ -202,7 +202,7 @@ export const AddEducation = ({
 
       const filteredIndexNumbers = indexNumberList.filter((ind) => ind.id !== id);
 
-      const response = await axios.delete(`/api/application/index-number`, {
+      const response = await axios.delete(`/api/applicant/index-number`, {
         data: id,
       });
       setIndexNumber(filteredIndexNumbers);
@@ -216,7 +216,7 @@ export const AddEducation = ({
   const removeGrade = async (id) => {
     try {
       const filteredGrades = gradeObtained.filter((go) => go.id !== id);
-      const response = await axios.delete(`/api/application/grades-obtained`, {
+      const response = await axios.delete(`/api/applicant/grades-obtained`, {
         data: id,
       });
       setGradeObtained(filteredGrades);
@@ -228,14 +228,14 @@ export const AddEducation = ({
 
     try {
       const response = await axios.post(
-        `/api/application/school-attended?next=true`
+        `/api/applicant/school-attended?next=true`
       );
 
       let { isSchoolValid } = response.data.data;
       let { isGradeValid } = response.data.data;
 
       if (isSchoolValid && isGradeValid)
-        return Router.push("/application/certifications?core=" + core);
+        return Router.push("/applicant/certifications?core=" + core);
 
       return toast.error(
         "Add schools attended and Add grades for English, Mathematics and any other 3 subjects for BECE and WASSCE(or equivalent). You should add at least 10 grades in all"
@@ -738,12 +738,12 @@ export const AddEducation = ({
         <div className="form-actions mt-10">
           <div className="col-md-12" style={{ textAlign: "end" }}>
             <div className="btn-group" role="group" aria-label="Basic example">
-              <Link href="/application/personal">
+              <Link href="/applicant/personal">
                 <a type="button" className="btn btn-success">
                   Previous
                 </a>
               </Link>
-              {/* <Link href="/application/certifications"> */}
+              {/* <Link href="/applicant/certifications"> */}
               <button
                 type="button"
                 className="btn btn-success"

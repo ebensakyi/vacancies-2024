@@ -21,7 +21,7 @@ export const AddEssay = ({ savedEssay }) => {
       if (essay == "")
         return toast.error("Data not saved. Enter your motivation letter");
 
-      const response = await axios.post("/api/application/essay", { data });
+      const response = await axios.post("/api/applicant/essay", { data });
       if (response.status == 1) {
         setEssay(savedEssay);
 
@@ -105,12 +105,12 @@ export const AddEssay = ({ savedEssay }) => {
         <div className="form-actions mt-10">
           <div className="col-md-12" style={{ textAlign: "end" }}>
             <div className="btn-group" role="group" aria-label="Basic example">
-              <Link href="/application/employment">
+              <Link href="/applicant/employment">
                 <a type="button" className="btn btn-success">
                   Previous
                 </a>
               </Link>
-              <Link href="/application/publication">
+              <Link href="/applicant/publication">
                 <a type="button" className="btn btn-success">
                   Next
                 </a>

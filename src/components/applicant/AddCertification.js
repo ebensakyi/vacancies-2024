@@ -43,7 +43,7 @@ export const AddCertification = ({ eduLevels, certificatesList }) => {
         educationLevel,
       };
 
-      const response = await axios.post("/api/application/certifications", {
+      const response = await axios.post("/api/applicant/certifications", {
         data,
       });
 
@@ -69,7 +69,7 @@ export const AddCertification = ({ eduLevels, certificatesList }) => {
 
   const removeCertificate = async (id) => {
     const filtered = certifications.filter((go) => go.id !== id);
-    const response = await axios.delete(`/api/application/certifications`, {
+    const response = await axios.delete(`/api/applicant/certifications`, {
       data: id,
     });
     setCertifications(filtered);
@@ -79,12 +79,12 @@ export const AddCertification = ({ eduLevels, certificatesList }) => {
     let core = await genCode(100);
 
     const response = await axios.post(
-      `/api/application/certifications?next=true`
+      `/api/applicant/certifications?next=true`
     );
 
     let isValid = response.data.data;
 
-    if (isValid) return Router.push("/application/employment?core=" + core);
+    if (isValid) return Router.push("/applicant/employment?core=" + core);
 
     return toast.error("Enter at least one certificate before clicking next");
   };
@@ -441,12 +441,12 @@ export const AddCertification = ({ eduLevels, certificatesList }) => {
       <div className="form-actions mt-10">
         <div className="col-md-12" style={{ textAlign: "end" }}>
           <div className="btn-group" role="group" aria-label="Basic example">
-            <Link href="/application/education">
+            <Link href="/applicant/education">
               <a type="button" className="btn btn-success">
                 Previous
               </a>
             </Link>
-            {/* <Link href="/application/employment"> */}
+            {/* <Link href="/applicant/employment"> */}
             <button
               type="button"
               className="btn btn-success"

@@ -1,7 +1,6 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
-import Employment from "@/src/components/application/Employment";
-import Publication from "@/src/components/application/Publication";
+import Publication from "@/src/components/applicant/Publication";
 
 
 

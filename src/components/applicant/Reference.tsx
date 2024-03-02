@@ -9,69 +9,74 @@ import ApplicationMenu from "../ApplicationMenu";
 import moment from "moment";
 import Link from "next/link";
 
-const Publication = ({ data }: any) => {
-    const [publications, setPublications] = useState([]);
+const Reference = ({ data }: any) => {
+    const [references, setReferences] = useState([]);
 
-    const [description, setDescription] = useState("");
-    const [url, setUrl] = useState("");
-    const [authors, setAuthors] = useState("");
-    const [date, setDate] = useState("");
-    const [title, setTitle] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+    const [occupation, setOccupation] = useState("");
+    const [fullName, setFullName] = useState("");
+
 
 
     const add = async () => {
         try {
             if (
-                description == null ||
-                authors == null ||
-                date == null ||
-                title == null
+                phone == "" ||
+                address == "" ||
+                occupation == "" ||
+                fullName == ""
             )
                 return toast.error("Please fill the form");
             const data = {
-                description: description.trim(),
-                url: url.trim(),
-                authors: authors.trim(),
-                date,
-                title: title.trim(),
+                phone: phone.trim(),
+                address: address.trim(),
+                occupation: occupation.trim(),
+                fullName: fullName.trim(),
             };
-            const response = await axios.post("/api/applicant/publication", {
+            const response = await axios.post("/api/applicant/reference", {
                 data,
             });
+            let { statusCode } = response.data;
 
-            if (response.status == 1) {
-                setTitle("");
-                setUrl("");
-                setAuthors("");
-                setDescription("");
-                setDate("")
+            if (statusCode == 1) {
+                setPhone("");
+                setAddress("");
+                setOccupation("");
+                setFullName("");
 
-                // setPublications([...publications, response.data.data]);
-                // Router.reload(window.location.pathname)
-
+               // setReferences([...references, response.data.data]);
+                //Router.reload(window.location.pathname);
                 return toast.success("Data saved successfully");
             }
 
-            if (response.status == 0) return toast.error("Data not saved");
-        } catch (error) {
-
-        }
-
+            if (statusCode == 0) return toast.error(response.data.message);
+        } catch (error) { }
     };
 
+    const remove = async (id: any) => {
+        const filtered = references.filter((p:any) => p.id !== id);
+        const response = await axios.delete(`/api/applicant/reference`, {
+            data: id,
+        });
+        setReferences(filtered);
+    };
 
-    const deletePublication = async (id: any) => {
-        try {
-            const filtered = publications.filter((p:any) => p.id !== id);
-            const response = await axios.delete(
-                `/api/application/publication`, { data: id }
-            );
-            setPublications(filtered);
-        } catch (error) {
+    const next = async () => {
+       // let core = await genCode(100);
 
-        }
+        const response = await axios.post(`/api/applicant/reference?next=true`);
 
-    }
+        let isValid = response.data.data;
+
+        if (isValid)
+           // return Router.push("/applicant/select-positions?core=" + core);
+
+        return toast.error(
+            "Please enter exactly 3 references before clicking next"
+        );
+    };
+
     return (
         <div id="layout-wrapper">
             <div className="main-content">
@@ -85,7 +90,7 @@ const Publication = ({ data }: any) => {
                             </div>
                         </div>
                         <div className="row">
-                            <ApplicationMenu whichLink="publications" />
+                            <ApplicationMenu whichLink="references" />
 
                             <ToastContainer
                                 position="top-right"
@@ -101,113 +106,94 @@ const Publication = ({ data }: any) => {
 
                             <div className="card">
                                 <div className="card-header">
-                                    {/* <h4 classNameName="card-title">ADD</h4> */}
+                                    <h4 className="card-title">REFERENCES</h4>
                                 </div>
                                 <div className="card-body">
+                                    <span className="badge bg-success " style={{ padding: 10 }}>
+                                        {" "}
+                                        Add 3 references here. Click on (+) to add a reference.
+                                    </span>
+
                                     <form method="POST">
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="card">
                                                     <div className="card-body">
-                                                        {/* <p style={danger}>
-                      <i
-                        className="spinner-grow spinner-grow-sm"
-                        role="status"
-                        style={danger}
-                      ></i>
-                      <b> Add publications here</b>
-                    </p> */}
                                                         <div className="row">
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
-                                                                    <label htmlFor="title">
-                                                                        Title : <span style={danger}>*</span>{" "}
+                                                                    <label htmlFor="refName">
+                                                                        Name : <span style={danger}>*</span>{" "}
                                                                     </label>
                                                                     <input
                                                                         type="text"
                                                                         className="form-control"
                                                                         required
-                                                                        id="title"
-                                                                        value={title}
+                                                                        id="refName"
+                                                                        value={fullName}
                                                                         onChange={(e: any) => {
-                                                                            setTitle(e.target.value);
+                                                                            setFullName(e.target.value);
                                                                         }}
                                                                     />
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
-                                                                    <label htmlFor="date">
-                                                                        Date : <span style={danger}>*</span>{" "}
+                                                                    <label htmlFor="refOccupation">
+                                                                        Occupation : <span style={danger}>*</span>{" "}
                                                                     </label>
                                                                     <input
-                                                                        type="date"
+                                                                        type="text"
                                                                         className="form-control "
                                                                         required
-                                                                        id="date"
-                                                                        value={date}
+                                                                        id="refOccupation"
+                                                                        value={occupation}
                                                                         onChange={(e: any) => {
-                                                                            setDate(e.target.value);
+                                                                            setOccupation(e.target.value);
                                                                         }}
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-2">
                                                                 <div className="form-group">
-                                                                    <label htmlFor="authors">
-                                                                        Other author(s) : <span style={danger}>*</span>{" "}
+                                                                    <label htmlFor="refAddress">
+                                                                        Address : <span style={danger}>*</span>{" "}
                                                                     </label>
                                                                     <input
                                                                         type="text"
                                                                         className="form-control"
                                                                         required
-                                                                        id="authors"
-                                                                        value={authors}
+                                                                        id="refAddress"
+                                                                        value={address}
                                                                         onChange={(e: any) => {
-                                                                            setAuthors(e.target.value);
+                                                                            setAddress(e.target.value);
                                                                         }}
                                                                     />
                                                                 </div>
                                                             </div>
-
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-2">
                                                                 <div className="form-group ">
                                                                     <div className="col-xs-12">
-                                                                        <label htmlFor="url">Url : </label>
+                                                                        <label htmlFor="phoneNumber">
+                                                                            Phone number : <span style={danger}>*</span>{" "}
+                                                                        </label>
 
                                                                         <input
-                                                                            type="url"
+                                                                            id="input-repeat"
+                                                                            type="number"
+                                                                            maxLength={10}
                                                                             className="form-control"
-                                                                            id="url"
-                                                                            value={url}
+                                                                            value={phone}
                                                                             onChange={(e: any) => {
-                                                                                setUrl(e.target.value);
+                                                                                setPhone(e.target.value);
                                                                             }}
                                                                         />
+                                                                        <small className="text-muted">
+                                                                            Enter in the following format 0240000000
+                                                                        </small>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-
-                                                        <div className="row">
-                                                            <div className="col-md-10">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="description">
-                                                                        Description : <span style={danger}>*</span>{" "}
-                                                                    </label>
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        required
-                                                                        id="description"
-                                                                        value={description}
-                                                                        onChange={(e: any) => {
-                                                                            setDescription(e.target.value);
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            </div>
-
                                                             <div className="col-md-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="addToTable">
@@ -222,7 +208,6 @@ const Publication = ({ data }: any) => {
                                                                             add();
                                                                         }}
                                                                     >
-                                                                        {" "}
                                                                         <i className="fas fa-plus-circle"></i>
                                                                     </button>
                                                                 </div>
@@ -238,27 +223,25 @@ const Publication = ({ data }: any) => {
                                             <div className="card">
                                                 <div className="card-body">
                                                     <div className="table-responsive">
-                                                        <table className="table mb-0" >
+                                                        <table className="table mb-0">
                                                             <thead className="table-light">
                                                                 <tr>
                                                                     <th hidden>Id</th>
-                                                                    <th>Title</th>
-                                                                    <th>Author</th>
-                                                                    <th>Url</th>
-                                                                    <th>Date</th>
-                                                                    <th>Description</th>
+                                                                    <th>Name</th>
+                                                                    <th>Occupation</th>
+                                                                    <th>Address</th>
+                                                                    <th>Phone number</th>
 
                                                                     <th>Remove</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {publications.map((e: any) => (
+                                                                {references.map((e: any) => (
                                                                     <tr key={e.id}>
-                                                                        <td>{e.title}</td>
-                                                                        <td>{e.authors}</td>
-                                                                        <td>{e.url}</td>
-                                                                        <td>{e.date}</td>
-                                                                        <td>{e.description}</td>
+                                                                        <td>{e.name}</td>
+                                                                        <td>{e.occupation}</td>
+                                                                        <td>{e.address}</td>
+                                                                        <td>{e.phone}</td>
 
                                                                         <td>
                                                                             {" "}
@@ -267,7 +250,7 @@ const Publication = ({ data }: any) => {
                                                                                 id="addToTable"
                                                                                 className="btn btn-danger "
                                                                                 onClick={() => {
-                                                                                    deletePublication(e.id);
+                                                                                    remove(e.id);
                                                                                 }}
                                                                             >
                                                                                 <i className="fas fa-minus-circle" />
@@ -287,12 +270,28 @@ const Publication = ({ data }: any) => {
                             <div className="form-actions mt-10">
                                 <div className="col-md-12" style={{ textAlign: "end" }}>
                                     <div className="btn-group" role="group" aria-label="Basic example">
-                                        <Link href="/application/essay" type="button" className="btn btn-success">
-                                                Previous
-                                        </Link>
-                                        <Link href="/application/references" type="button" className="btn btn-success">
-                                                Next
-                                        </Link>
+                                        {/* {menu == "1" ? (
+                                            <Link href="/applicant/publication">
+                                                <a type="button" className="btn btn-success">
+                                                    Previous
+                                                </a>
+                                            </Link>
+                                        ) : ( */}
+                                            <Link href="/applicant/employment" type="button" className="btn btn-success">
+                                                    Previous
+                                            </Link>
+                                        {/* )} */}
+                                        {/* <Link href="/applicant/select-positions"> */}
+                                        <button
+                                            type="button"
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                next();
+                                            }}
+                                        >
+                                            Next
+                                        </button>
+                                        {/* </Link> */}
                                     </div>
                                 </div>
                             </div>
@@ -306,4 +305,4 @@ const Publication = ({ data }: any) => {
     );
 };
 const danger = { color: "red" };
-export default Publication;
+export default Reference;

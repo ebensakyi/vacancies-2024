@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -23,7 +24,7 @@ const SelectPositions = ({ data }: any) => {
       });
       if (response.status == 1) {
         //return toast.success(response.data.message);
-        return Router.push("/application/select-positions");
+        return Router.push("/applicant/select-positions");
       }
     } catch (error) {
       console.log(error);
@@ -63,7 +64,7 @@ const SelectPositions = ({ data }: any) => {
               </div>
             </div>
             <div className="row">
-              <ApplicationMenu whichLink="references" />
+              <ApplicationMenu whichLink="select-positions" />
               <ToastContainer
                 position="top-right"
                 autoClose={15000}
@@ -148,15 +149,11 @@ const SelectPositions = ({ data }: any) => {
                         role="group"
                         aria-label="Basic example"
                       >
-                        <Link href="/application/references">
-                          <a type="button" className="btn btn-success">
+                        <Link href="/applicant/references" type="button" className="btn btn-success">
                             Previous
-                          </a>
                         </Link>
-                        <Link href="/application/submit-application">
-                          <a type="button" className="btn btn-success">
+                        <Link href="/applicant/submit-application" type="button" className="btn btn-success">
                             Next
-                          </a>
                         </Link>
                       </div>
                     </div>

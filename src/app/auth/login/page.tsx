@@ -70,9 +70,9 @@ const login = () => {
 
 
       //   if (submitted == true) {
-      //     return Router.replace("/application/list");
+      //     return Router.replace("/applicant/list");
       //   } else {
-      //     return Router.replace("/application/personal?core=");
+      //     return Router.replace("/applicant/personal?core=");
       //   }
       // }
 
@@ -81,7 +81,7 @@ const login = () => {
     }
 
     // else if (statusCode == 2) {
-    //   Router.push("/application/personal");
+    //   Router.push("/applicant/personal");
     //   return toast.success("Logged in successfully");
     // }
   };

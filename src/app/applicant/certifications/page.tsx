@@ -1,8 +1,7 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
-import Certificate from "@/src/components/application/Certificate";
-import Education from "@/src/components/application/Education";
-import { educationLevel } from '../../../../prisma/seeds/education-level';
+import Certificate from "@/src/components/applicant/Certificate";
+
 import { headers } from "next/headers";
 
 

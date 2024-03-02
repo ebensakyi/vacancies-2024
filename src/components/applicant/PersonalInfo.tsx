@@ -106,7 +106,7 @@ const PersonalInfo = ({ data }: any) => {
 
             console.log(data);
 
-            const response = await axios.post("/api/application/personal", {
+            const response = await axios.post("/api/applicant/personal", {
                 data,
             });
 
@@ -119,7 +119,7 @@ const PersonalInfo = ({ data }: any) => {
 
             if (status == 200) {
                 toast.success(message);
-                return router.push("/application/education?core=");
+                return router.push("/applicant/education?core=");
             }
 
             if (status != 200) return toast.error("Data could not be saved");

@@ -613,7 +613,7 @@ me-2"
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link href="/application/list" className="nav-link" >
+                    <Link href="/applicant/list" className="nav-link" >
                       <i
                         className="dripicons-archive me-2
                         "
@@ -623,12 +623,12 @@ me-2"
                   </li>
                   <li
                     className={
-                      pathname == "/application/faq"
+                      pathname == "/applicant/faq"
                         ? "nav-item active"
                         : "nav-item"
                     }
                   >
-                    <Link href="/application/faq" className="nav-link" >
+                    <Link href="/applicant/faq" className="nav-link" >
                       <i
                         className="dripicons-question me-2
                         "

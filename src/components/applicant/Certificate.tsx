@@ -84,7 +84,7 @@ const Certificate = ({ data }: any) => {
 
     const removeCertificate = async (id: any) => {
         const filtered = certifications.filter((go: any) => go.id !== id);
-        const response = await axios.delete(`/api/application/certifications`, {
+        const response = await axios.delete(`/api/applicant/certifications`, {
             data: id,
         });
         setCertifications(filtered);
@@ -94,12 +94,12 @@ const Certificate = ({ data }: any) => {
         // let core = await genCode(100);
 
         const response = await axios.post(
-            `/api/application/certifications?next=true`
+            `/api/applicant/certifications?next=true`
         );
 
         let isValid = response.data.data;
 
-        // if (isValid) return Router.push("/application/employment");
+        // if (isValid) return Router.push("/applicant/employment");
 
         return toast.error("Enter at least one certificate before clicking next");
     };
@@ -409,10 +409,10 @@ const Certificate = ({ data }: any) => {
                             <div className="form-actions mt-10">
                                 <div className="col-md-12" style={{ textAlign: "end" }}>
                                     <div className="btn-group" role="group" aria-label="Basic example">
-                                        <Link href="/application/education" type="button" className="btn btn-success">
+                                        <Link href="/applicant/education" type="button" className="btn btn-success">
                                             Previous
                                         </Link>
-                                        {/* <Link href="/application/employment"> */}
+                                        {/* <Link href="/applicant/employment"> */}
                                         <button
                                             type="button"
                                             className="btn btn-success"

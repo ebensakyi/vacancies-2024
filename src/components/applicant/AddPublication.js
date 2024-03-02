@@ -33,7 +33,7 @@ export const AddPublication = ({ publicationsList }) => {
         date,
         title:title.trim(),
       };
-      const response = await axios.post("/api/application/publication", {
+      const response = await axios.post("/api/applicant/publication", {
         data,
       });
 
@@ -62,7 +62,7 @@ export const AddPublication = ({ publicationsList }) => {
     try {
       const filtered = publications.filter((p) => p.id !== id);
       const response = await axios.delete(
-        `/api/application/publication`, { data: id }
+        `/api/applicant/publication`, { data: id }
       );
       setPublications(filtered);
     } catch (error) {
@@ -271,12 +271,12 @@ export const AddPublication = ({ publicationsList }) => {
       <div className="form-actions mt-10">
         <div className="col-md-12" style={{ textAlign: "end" }}>
           <div className="btn-group" role="group" aria-label="Basic example">
-            <Link href="/application/essay">
+            <Link href="/applicant/essay">
               <a type="button" className="btn btn-success">
                 Previous
               </a>
             </Link>
-            <Link href="/application/references">
+            <Link href="/applicant/references">
               <a type="button" className="btn btn-success">
                 Next
               </a>

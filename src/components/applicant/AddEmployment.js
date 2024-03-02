@@ -59,7 +59,7 @@ export const AddEmployment = ({ employmentList }) => {
       )
         return toast.error("Please fill the form");
 
-      const response = await axios.post("/api/application/employment", {
+      const response = await axios.post("/api/applicant/employment", {
         data,
       });
 
@@ -89,7 +89,7 @@ export const AddEmployment = ({ employmentList }) => {
   const removeEmployment = async (id) => {
     try {
       const filtered = employments.filter((go) => go.id !== id);
-      const response = await axios.delete(`/api/application/employment`, {
+      const response = await axios.delete(`/api/applicant/employment`, {
         data: id,
       });
       setEmployments(filtered);
@@ -103,18 +103,18 @@ export const AddEmployment = ({ employmentList }) => {
 
     try {
       const response = await axios.post(
-        `/api/application/employment?next=true`
+        `/api/applicant/employment?next=true`
       );
 
       let isValid = response.data.data;
       if (id == "toRef") {
-        if (isValid) return Router.push("/application/references?code=" + core);
+        if (isValid) return Router.push("/applicant/references?code=" + core);
 
         return toast.error(
           "Complete this section according to the instructions in green before clicking next"
         );
       } else if (id == "toEssay") {
-        if (isValid) return Router.push("/application/essay");
+        if (isValid) return Router.push("/applicant/essay");
 
         return toast.error(
           "Complete this section according to the instructions in green before clicking next"
@@ -475,7 +475,7 @@ export const AddEmployment = ({ employmentList }) => {
       <div className="form-actions mt-10">
         <div className="col-md-12" style={{ textAlign: "end" }}>
           <div className="btn-group" role="group" aria-label="Basic example">
-            <Link href="/application/certifications">
+            <Link href="/applicant/certifications">
               <a type="button" className="btn btn-success">
                 Previous
               </a>

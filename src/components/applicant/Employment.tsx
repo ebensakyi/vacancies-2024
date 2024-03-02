@@ -92,7 +92,7 @@ const Employment = ({ data }: any) => {
     const removeEmployment = async (id: any) => {
         try {
             const filtered = employments.filter((go: any) => go?.id !== id);
-            const response = await axios.delete(`/api/application/employment`, {
+            const response = await axios.delete(`/api/applicant/employment`, {
                 data: id,
             });
             setEmployments(filtered);
@@ -105,18 +105,18 @@ const Employment = ({ data }: any) => {
 
         try {
             const response = await axios.post(
-                `/api/application/employment?next=true`
+                `/api/applicant/employment?next=true`
             );
 
             let isValid = response.data.data;
             if (id == "toRef") {
-                // if (isValid) return Router.push("/application/references");
+                // if (isValid) return Router.push("/applicant/references");
 
                 return toast.error(
                     "Complete this section according to the instructions in green before clicking next"
                 );
             } else if (id == "toEssay") {
-                // if (isValid) return Router.push("/application/essay");
+                // if (isValid) return Router.push("/applicant/essay");
 
                 return toast.error(
                     "Complete this section according to the instructions in green before clicking next"
@@ -437,7 +437,7 @@ const Employment = ({ data }: any) => {
                             <div className="form-actions mt-10">
                                 <div className="col-md-12" style={{ textAlign: "end" }}>
                                     <div className="btn-group" role="group" aria-label="Basic example">
-                                        <Link href="/application/certifications" type="button" className="btn btn-success">
+                                        <Link href="/applicant/certifications" type="button" className="btn btn-success">
                                             Previous
                                         </Link>
                                         {/* {menu == "1" ? (

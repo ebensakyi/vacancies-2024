@@ -96,7 +96,7 @@ console.log(personalData);
         presentAddress:presentAddress?.trim()
 
       };
-      const response = await axios.post("/api/application/personal", {
+      const response = await axios.post("/api/applicant/personal", {
         data,
       });
 
@@ -109,7 +109,7 @@ console.log(personalData);
 
       if (statusCode == 1) {
         toast.success(message);
-        return Router.push("/application/education?core=" + core);
+        return Router.push("/applicant/education?core=" + core);
       }
 
       if (statusCode == 0) return toast.error("Data could not be saved");

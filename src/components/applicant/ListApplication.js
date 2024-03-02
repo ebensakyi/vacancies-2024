@@ -51,7 +51,7 @@ const ListApplication = ({ applicationsList }) => {
                       </td>
 
                       <td>
-                        <Link href="/application/full-application">
+                        <Link href="/applicant/full-application">
                           <a
                             target="_blank"
                             type="button"
