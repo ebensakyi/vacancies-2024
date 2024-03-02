@@ -1,7 +1,20 @@
 -- CreateTable
-CREATE TABLE `Sex` (
+CREATE TABLE `Title` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(10) NOT NULL,
+    `createdBy` INTEGER NULL DEFAULT 1,
+    `deleted` INTEGER NULL DEFAULT 0,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `name`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Sex` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(8) NOT NULL,
     `createdBy` INTEGER NULL DEFAULT 1,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -361,6 +374,7 @@ CREATE TABLE `Personal` (
     `presentAddress` VARCHAR(255) NULL,
     `sonNumber` VARCHAR(255) NULL,
     `daughterNumber` VARCHAR(255) NULL,
+    `titleId` INTEGER NULL,
 
     UNIQUE INDEX `Personal_userId_key`(`userId`),
     PRIMARY KEY (`id`)
@@ -696,6 +710,9 @@ ALTER TABLE `Personal` ADD CONSTRAINT `Personal_sexId_fkey` FOREIGN KEY (`sexId`
 
 -- AddForeignKey
 ALTER TABLE `Personal` ADD CONSTRAINT `Personal_maritalStatusId_fkey` FOREIGN KEY (`maritalStatusId`) REFERENCES `MaritalStatus`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Personal` ADD CONSTRAINT `Personal_titleId_fkey` FOREIGN KEY (`titleId`) REFERENCES `Title`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Publication` ADD CONSTRAINT `Publication_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -23,9 +23,9 @@ export async function GET(request: Request) {
   try {
     //  const res = await request.json();
 
-    const sex = await prisma.sex.findMany();
+    const response = await prisma.sex.findMany();
 
-    return NextResponse.json({sex});
+    return NextResponse.json({response});
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: error });

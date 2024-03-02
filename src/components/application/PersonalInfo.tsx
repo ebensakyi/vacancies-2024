@@ -1,21 +1,36 @@
 
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Editor } from "@tinymce/tinymce-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import ApplicationMenu from "../ApplicationMenu";
 import { useSession } from "next-auth/react";
+import { LOGIN_URL } from "@/constants";
+import moment from "moment";
+import { yes_no } from '../../../prisma/seeds/yes-no';
 
 const PersonalInfo = ({ data }: any) => {
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect(LOGIN_URL);
+        }
+    })
 
 
-  const {data: session}:any = useSession()
+    let user :any = session?.user
 
-  let user = session?.user
-  
+    useEffect(() => {
+        setSurname(user?.surname)
+        setFirstName(user?.firstName)
+        setPhone(user?.phone)
+
+    }, [])
+
+
     const router = useRouter()
     const [firstName, setFirstName] = useState("");
     const [surname, setSurname] = useState("");
@@ -35,6 +50,7 @@ const PersonalInfo = ({ data }: any) => {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [otherNumber, setOtherNumber] = useState("");
+    const [haveKids, setHaveKids] = useState("");
 
     const [day, setDay] = useState("");
     const [month, setMonth] = useState("");
@@ -45,30 +61,37 @@ const PersonalInfo = ({ data }: any) => {
     const save = async () => {
 
         try {
+            if (title == "")
+                return toast.error("Please select your title");
             if (firstName == "" || surname == "")
                 return toast.error("Please enter your first name and surname");
+            if (gender == "")
+                return toast.error("Please select your gender");
             if (maritalStatus == "")
-                return toast.error("Please select your marital status");
-
+                return toast.error("Please select your marital status"); 
+             if (dob == "")
+                return toast.error("Please enter your date of birth");
             if (birthPlace == "")
                 return toast.error("Please enter your place of birth");
-            if (day == "" || month == "" || year == "")
-                return toast.error("Please enter your date of birth");
+          
+            if (birthPlace == "") return toast.error("Please enter your place of birth");
             if (presentAddress == "") return toast.error("Please enter your present address");
 
             if (permanentAddress == "") return toast.error("Please enter your permanent address");
             if (gender == "") return toast.error("Please select your gender");
             if (hometown == "") return toast.error("Please enter your hometown");
-            if (phone.length != 10)
-                return toast.error("Please enter your a correct phone number");
+            // if (phone.length != 10)
+            //     return toast.error("Please enter your a correct phone number");
             const data = {
                 title: title?.trim(),
                 firstName: firstName?.trim(),
                 surname: surname?.trim(),
                 otherNames: otherNames?.trim(),
                 phone: phone?.trim(),
+                dob: new Date(dob),
+
                 //dob: new Date(moment(dob).format("DD-MM-YYYY")),
-                dob: day + "-" + month + "-" + year,
+                // dob: day + "-" + month + "-" + year,
                 hometown: hometown?.trim(),
                 birthPlace: birthPlace?.trim(),
                 maritalStatusId: Number(maritalStatus),
@@ -80,6 +103,9 @@ const PersonalInfo = ({ data }: any) => {
                 presentAddress: presentAddress?.trim()
 
             };
+
+            console.log(data);
+
             const response = await axios.post("/api/application/personal", {
                 data,
             });
@@ -143,30 +169,33 @@ const PersonalInfo = ({ data }: any) => {
 
                                     <form method="post">
                                         <div className="row">
-                                            <div className="col-sm-3">
+                                            <div className="col-md-3">
                                                 <div className="form-group">
-                                                    <label htmlFor="exampleInputuname">
+                                                    <label htmlFor="title">
+                                                        {" "}
                                                         Title <small>(Dr.,Mr.,Mrs etc)</small>
                                                     </label>
-                                                    <div className="input-group mb-3">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="title"
-                                                            id="title"
-                                                            aria-label="Username"
-                                                            aria-describedby="basic-addon1"
-                                                            required
-                                                            data-error="Title is required."
-                                                            defaultValue={title}
-                                                            onChange={(e: any) => {
-                                                                setTitle(e.target.value);
-                                                            }}
-                                                        />
-                                                        <div className="invalid-tooltip">Title is required</div>
-                                                    </div>
+                                                    <select
+                                                        className="custom-select form-control"
+                                                        required
+                                                        name="title"
+                                                        id="title"
+                                                        value={title}
+                                                        onChange={(e: any) => {
+                                                            setTitle(e.target.value);
+                                                        }}
+                                                    >
+                                                        <option >Select title</option>
+                                                        {data?.titles?.response?.map((s: any) => (
+                                                            <option key={s.id} value={s.id}>
+                                                                {s.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <div className="invalid-tooltip">Title is required</div>
                                                 </div>
                                             </div>
+
                                             <div className="col-sm-3">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputuname">
@@ -240,11 +269,62 @@ const PersonalInfo = ({ data }: any) => {
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-sm-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="exampleInputuname">
+                                                        Email Address <span style={danger}>*</span>
+                                                    </label>
+                                                    <div className="input-group mb-3">
+                                                        <input
+                                                            readOnly
+                                                            type="text"
+                                                            className="form-control email-inputmask"
+                                                            name="emailAddress"
+                                                            required
+                                                            id="emailAddress"
+                                                            aria-label="Username"
+                                                            aria-describedby="basic-addon1"
+                                                            data-error="Number of children is required."
+                                                            onChange={(e: any) => {
+                                                                setEmail(e.target.value);
+                                                            }}
+                                                            value={user?.email}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-sm-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="exampleInputuname">
+                                                        Phone Number <span style={danger}>*</span>
+                                                    </label>
+                                                    <div className="input-group mb-3">
+                                                        <input
+                                                            readOnly
+                                                            type="number"
+                                                            className="form-control phone-inputmask"
+                                                            name="phoneNumber"
+                                                            required
+                                                            id="phoneNumber"
+                                                            aria-label="Username"
+                                                            aria-describedby="basic-addon1"
+                                                            data-error="Number of children is required."
+                                                            defaultValue={phone}
+                                                            onChange={(e: any) => {
+                                                                setPhone(e.target.value);
+                                                            }}
+                                                            value={user?.phoneNumber}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div className="col-md-3">
                                                 <div className="form-group">
                                                     <label htmlFor="sex">
                                                         {" "}
-                                                        Sex : <span style={danger}>*</span>{" "}
+                                                        Gender : <span style={danger}>*</span>{" "}
                                                     </label>
                                                     <select
                                                         className="custom-select form-control"
@@ -266,18 +346,48 @@ const PersonalInfo = ({ data }: any) => {
                                                     <div className="invalid-tooltip">Gender is required</div>
                                                 </div>
                                             </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="maritalStatus">
+                                                        {" "}
+                                                        Marital status : <span style={danger}>*</span>{" "}
+                                                    </label>
+                                                    <select
+                                                        className="custom-select form-control"
+                                                        required
+                                                        name="maritalStatus"
+                                                        id="maritalStatus"
+                                                        value={maritalStatus}
+                                                        onChange={(e: any) => {
+                                                            setMaritalStatus(e.target.value);
+                                                        }}
+                                                    >
+                                                        <option >Select status</option>
+                                                        {data?.maritalStatuses?.response?.map((s: any) => (
+                                                            <option key={s.id} value={s.id}>
+                                                                {s.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <div className="invalid-tooltip">
+                                                        Marital status is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row">
                                             <div className="col-sm-3">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputuname">
                                                         Date of birth <span style={danger}>*</span>
                                                     </label>
                                                     <br />
-                                                    <div
+                                                    {/* <div
                                                         className="btn-group"
                                                         role="group"
                                                         aria-label="Basic example"
                                                     >
-                                                        <select
+                                                         <select
                                                             className="form-control"
                                                             onChange={(e: any) => {
                                                                 setDay(e.target.value);
@@ -391,20 +501,20 @@ const PersonalInfo = ({ data }: any) => {
                                                             <option value="2003">2003</option>
                                                             <option value="2004">2004</option>
 
-                                                        </select>
-                                                    </div>
+                                                        </select> 
+                                                    </div> */}
 
-                                                    {/* <input
-                    type="date"
-                    className="form-control"
-                    id="dateBirth"
-                    max="2005-05-11" //max="2014-05-20"
-                    required
-                    defaultValue={dob}
-                    onChange={(e:any) => {
-                      setDob(e.target.value);
-                    }}
-                  /> */}
+                                                    <input
+                                                        type="date"
+                                                        className="form-control"
+                                                        id="dateBirth"
+                                                        max="2005-05-11" //max="2014-05-20"
+                                                        required
+                                                        defaultValue={dob}
+                                                        onChange={(e: any) => {
+                                                            setDob(e.target.value);
+                                                        }}
+                                                    />
                                                     <div className="invalid-tooltip">
                                                         Date of birth is required
                                                     </div>
@@ -436,6 +546,52 @@ const PersonalInfo = ({ data }: any) => {
                                                 </div>
                                             </div>{" "}
                                             <div className="col-sm-3">
+                                                <label htmlFor="exampleInputuname">
+                                                    Present address <span style={danger}>*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    name="presentAddress"
+                                                    id="presentAddress"
+                                                    aria-label="Username"
+                                                    aria-describedby="basic-addon1"
+                                                    required
+                                                    data-error="Present Address is required."
+                                                    defaultValue={presentAddress}
+                                                    onChange={(e: any) => {
+                                                        setPresentAddress(e.target.value);
+                                                    }}
+                                                />
+                                                <div className="invalid-tooltip">
+                                                    Present address is required
+                                                </div>
+                                            </div>{" "}
+                                            <div className="col-sm-3">
+                                                <label htmlFor="exampleInputuname">
+                                                    Permanent address <span style={danger}>*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    name="permanentAddress"
+                                                    id="permanentAddress"
+                                                    aria-label="Username"
+                                                    aria-describedby="basic-addon1"
+                                                    required
+                                                    data-error="Present Address is required."
+                                                    defaultValue={permanentAddress}
+                                                    onChange={(e: any) => {
+                                                        setPermanentAddress(e.target.value);
+                                                    }}
+                                                />
+                                                <div className="invalid-tooltip">
+                                                    Present address is required
+                                                </div>
+                                            </div>{" "}
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-sm-3">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputuname">
                                                         Nationality <span style={danger}>*</span>
@@ -461,76 +617,7 @@ const PersonalInfo = ({ data }: any) => {
                                                 </div>
                                             </div>
 
-                                            <div className="col-sm-3">
-                                                <label htmlFor="exampleInputuname">
-                                                    Present address <span style={danger}>*</span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="presentAddress"
-                                                    id="presentAddress"
-                                                    aria-label="Username"
-                                                    aria-describedby="basic-addon1"
-                                                    required
-                                                    data-error="Present Address is required."
-                                                    defaultValue={presentAddress}
-                                                    onChange={(e: any) => {
-                                                        setPresentAddress(e.target.value);
-                                                    }}
-                                                />
-                                                <div className="invalid-tooltip">
-                                                    Present address is required
-                                                </div>
-                                            </div>{" "}
-                                            <div className="col-sm-3">
-                                                <div className="form-group">
-                                                    <label htmlFor="exampleInputuname">
-                                                        Email Address <span style={danger}>*</span>
-                                                    </label>
-                                                    <div className="input-group mb-3">
-                                                        <input
-                                                            readOnly
-                                                            type="text"
-                                                            className="form-control email-inputmask"
-                                                            name="emailAddress"
-                                                            required
-                                                            id="emailAddress"
-                                                            aria-label="Username"
-                                                            aria-describedby="basic-addon1"
-                                                            data-error="Number of children is required."
-                                                            defaultValue={email}
-                                                            onChange={(e: any) => {
-                                                                setEmail(e.target.value);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-3">
-                                                <div className="form-group">
-                                                    <label htmlFor="exampleInputuname">
-                                                        Phone Number <span style={danger}>*</span>
-                                                    </label>
-                                                    <div className="input-group mb-3">
-                                                        <input
-                                                            readOnly
-                                                            type="number"
-                                                            className="form-control phone-inputmask"
-                                                            name="phoneNumber"
-                                                            required
-                                                            id="phoneNumber"
-                                                            aria-label="Username"
-                                                            aria-describedby="basic-addon1"
-                                                            data-error="Number of children is required."
-                                                            defaultValue={phone}
-                                                            onChange={(e: any) => {
-                                                                setPhone(e.target.value);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <div className="col-sm-3">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputuname">Other Tel. number(s)</label>
@@ -550,60 +637,41 @@ const PersonalInfo = ({ data }: any) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-sm-3">
-                                                <label htmlFor="exampleInputuname">
-                                                    Permanent address <span style={danger}>*</span>
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="permanentAddress"
-                                                    id="permanentAddress"
-                                                    aria-label="Username"
-                                                    aria-describedby="basic-addon1"
-                                                    required
-                                                    data-error="Present Address is required."
-                                                    defaultValue={permanentAddress}
-                                                    onChange={(e: any) => {
-                                                        setPermanentAddress(e.target.value);
-                                                    }}
-                                                />
-                                                <div className="invalid-tooltip">
-                                                    Present address is required
-                                                </div>
-                                            </div>{" "}
                                             <div className="col-md-3">
                                                 <div className="form-group">
-                                                    <label htmlFor="maritalStatus">
+                                                    <label htmlFor="haveKids">
                                                         {" "}
-                                                        Marital status : <span style={danger}>*</span>{" "}
+                                                        Do you have any kids: <span style={danger}>*</span>{" "}
                                                     </label>
                                                     <select
                                                         className="custom-select form-control"
                                                         required
-                                                        name="maritalStatus"
-                                                        id="maritalStatus"
-                                                        value={maritalStatus}
+                                                        name="haveKids"
+                                                        id="haveKids"
+                                                        value={haveKids}
                                                         onChange={(e: any) => {
-                                                            setMaritalStatus(e.target.value);
+                                                            setHaveKids(e.target.value);
                                                         }}
                                                     >
-                                                        <option >Select status</option>
-                                                        {data?.maritalStatus?.response?.map((s: any) => (
+                                                        <option >Select </option>
+                                                        {data?.yesNo?.response?.map((s: any) => (
                                                             <option key={s.id} value={s.id}>
-                                                                {s.name}
+                                                                {s.value}
                                                             </option>
                                                         ))}
                                                     </select>
                                                     <div className="invalid-tooltip">
-                                                        Marital status is required
+                                                       Children is required
                                                     </div>
                                                 </div>
                                             </div>
+</div>
+{haveKids=="1"?
+<div className="row">
                                             <div className="col-sm-3">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputuname">
-                                                        Number of Sons & Ages <span style={danger}>*</span>
+                                                        Number of Sons & Ages 
                                                     </label>
                                                     <div className="input-group mb-3">
                                                         <input
@@ -627,7 +695,7 @@ const PersonalInfo = ({ data }: any) => {
                                             <div className="col-sm-3">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputuname">
-                                                        Number of Daughters & Ages <span style={danger}>*</span>
+                                                        Number of Daughters & Ages 
                                                     </label>
                                                     <div className="input-group mb-3">
                                                         <input
@@ -649,7 +717,7 @@ const PersonalInfo = ({ data }: any) => {
                                             </div>
 
 
-                                        </div>
+                                        </div>:<></>}
 
                                         <div className="form-actions mt-10" style={{ textAlign: "end" }}>
                                             <button

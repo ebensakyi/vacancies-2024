@@ -9,9 +9,9 @@ export async function POST(request: Request) {
     const data = {
       name: res.data,
     };
-    const maritalStatus = await prisma.maritalStatus.create({ data });
+    const response = await prisma.yesNo.create({ data });
 
-    return NextResponse.json({maritalStatus});
+    return NextResponse.json({response});
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({ message: error.message });
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
   try {
     //  const res = await request.json();
 
-    const response = await prisma.maritalStatus.findMany();
+    const response = await prisma.yesNo.findMany();
 
     return NextResponse.json({response});
   } catch (error) {

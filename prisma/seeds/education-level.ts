@@ -20,7 +20,7 @@ export const educationLevel = [
   {
     name: "Certification",
   },
-  {
-    name: "NA",
-  },
+  // {
+  //   name: "NA",
+  // },
 ];

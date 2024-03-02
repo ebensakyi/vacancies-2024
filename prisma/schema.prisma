@@ -20,7 +20,7 @@ model Title {
 
 model Sex {
   id        Int        @id @default(autoincrement())
-  name      String     @unique(map: "name") @db.VarChar(10)
+  name      String     @unique(map: "name") @db.VarChar(8)
   createdBy Int?       @default(1)
   deleted   Int?       @default(0)
   createdAt DateTime   @default(now())
@@ -37,6 +37,7 @@ model YesNo {
   updatedAt    DateTime       @updatedAt
   Confirmation Confirmation[]
   Bonded       Bonded[]
+  Personal     Personal[]
 }
 
 model MaritalStatus {
@@ -425,6 +426,8 @@ model Personal {
   daughterNumber String? @db.VarChar(255)
   Title          Title?  @relation(fields: [titleId], references: [id])
   titleId        Int?
+  YesNo          YesNo   @relation(fields: [haveKids], references: [id])
+  haveKids       Int
 }
 
 model Publication {

@@ -1,0 +1,470 @@
+
+"use client"
+import { useState } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Editor } from "@tinymce/tinymce-react";
+import { useRouter } from "next/navigation";
+import ApplicationMenu from "../ApplicationMenu";
+import moment from "moment";
+import Link from "next/link";
+
+const Employment = ({ data }: any) => {
+    const currentYear = new Date().getFullYear();
+    const years: any[] = [];
+
+    const [employments, setEmployments] = useState([]);
+    const [organizationName, setOrganizationName] = useState("");
+    const [startYear, setStartYear] = useState("");
+    const [endYear, setEndYear] = useState("");
+    const [startMonth, setStartMonth] = useState("");
+    const [endMonth, setEndMonth] = useState("");
+
+    // const [start, setStart] = useState("");
+    // const [end, setEnd] = useState("");
+
+    const [position, setPosition] = useState("");
+    const [salary, setSalary] = useState("");
+    const [leavingReason, setLeavingReason] = useState("");
+
+    const addEmployment = async () => {
+        try {
+            let end = endYear + "-" + endMonth;
+            let start = startYear + "-" + startMonth;
+            if (end == "Date-To") {
+                end = "Date";
+            }
+            const data = {
+                organizationName,
+                start: start,
+                end: end,
+                position,
+                salary,
+                leavingReason,
+            };
+
+            if (
+                organizationName == "" ||
+                leavingReason == "" ||
+                startMonth == "" ||
+                endMonth == "" ||
+                startYear == "" ||
+                endYear == "" ||
+                salary == "" ||
+                position == ""
+            )
+                return toast.error("Please fill the form");
+
+            const response = await axios.post("/api/application/employment", {
+                data,
+            });
+
+            let { status } = response.data;
+            if (status == 200) {
+                setOrganizationName("");
+                setPosition("");
+                setSalary("");
+                setStartMonth("");
+                setEndMonth("");
+                setStartYear("");
+                setEndYear("");
+                setLeavingReason("");
+                // setTodate(false);
+                // setEmployments([...employments, response.data.data]);
+
+                return toast.success("Employment added successfully");
+            }
+
+            if (status != 0) return toast.error("Employment not saved");
+        } catch (error) {
+            console.log(error);
+            return toast.error("A server error occurred");
+        }
+    };
+
+    const removeEmployment = async (id: any) => {
+        try {
+            const filtered = employments.filter((go: any) => go?.id !== id);
+            const response = await axios.delete(`/api/application/employment`, {
+                data: id,
+            });
+            setEmployments(filtered);
+        } catch (error) {
+            return toast.error("A server error occurred");
+        }
+    };
+
+    const next = async (id: any) => {
+
+        try {
+            const response = await axios.post(
+                `/api/application/employment?next=true`
+            );
+
+            let isValid = response.data.data;
+            if (id == "toRef") {
+                // if (isValid) return Router.push("/application/references");
+
+                return toast.error(
+                    "Complete this section according to the instructions in green before clicking next"
+                );
+            } else if (id == "toEssay") {
+                // if (isValid) return Router.push("/application/essay");
+
+                return toast.error(
+                    "Complete this section according to the instructions in green before clicking next"
+                );
+            } else {
+                return;
+            }
+        } catch (error) { }
+    };
+    return (
+        <div id="layout-wrapper">
+            <div className="main-content">
+                <div className="page-content">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-12">
+                                <div className="page-title-box d-flex align-items-center justify-content-between">
+                                    <h4 className="mb-0">EDUCATION </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <ApplicationMenu whichLink="education" />
+
+                            <ToastContainer
+                                position="top-right"
+                                autoClose={5000}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                            />
+
+                            <div className="card">
+                                <div className="card-header">
+                                    <h4 className="card-title">EMPLOYMENT</h4>
+                                </div>
+                                <div className="card-body">
+                                    <span className="badge bg-success " style={{ padding: 10 }}>
+                                        {" "}
+                                        Add all employments here. Order by most recent job. Check the
+                                        current job check box, if you are still at post. Click on (+) to add
+                                        a employment.
+                                    </span>
+                                    <form className="needs-validation" noValidate>
+                                        <div className="row">
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="organizationName">
+                                                        Name of organization : <span style={danger}>*</span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control required"
+                                                        id="organizationName"
+                                                        name="organizationName"
+                                                        value={organizationName}
+                                                        onChange={(e: any) => {
+                                                            setOrganizationName(e.target.value);
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="period">
+                                                        Start date : <span style={danger}>*</span>
+                                                    </label>
+                                                    <br />
+                                                    <div
+                                                        className="btn-group"
+                                                        role="group"
+                                                        aria-label="Basic example"
+                                                    >
+                                                        <select
+                                                            className="form-control"
+                                                            onChange={(e: any) => {
+                                                                setStartMonth(e.target.value);
+                                                            }}
+                                                        >
+                                                            <option value="">Month</option>
+                                                            <option value="01">January</option>
+                                                            <option value="02">February</option>
+                                                            <option value="03">March</option>
+                                                            <option value="04">April</option>
+                                                            <option value="05">May</option>
+                                                            <option value="06">June</option>
+                                                            <option value="07">July</option>
+                                                            <option value="08">August</option>
+                                                            <option value="09">September</option>
+                                                            <option value="10">October</option>
+                                                            <option value="11">November</option>
+                                                            <option value="12">December</option>
+                                                        </select>
+                                                        <select
+                                                            className="form-control"
+                                                            value={startYear}
+                                                            onChange={(e) => {
+                                                                setStartYear(e.target.value);
+                                                            }}
+                                                        >
+                                                            <option value="">Year</option>
+                                                            {years.map((year) => (
+                                                                <option key={year} value={year}>
+                                                                    {year}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    {/* <input
+                    type="month"
+                    className="form-control"
+                    id="period"
+                    name="daterange"
+                    value={start}
+                    onChange={(e:any) => {
+                      setStart(e.target.value);
+                    }}
+                  /> */}
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="period">
+                                                        End date : <span style={danger}>*</span>
+                                                    </label>{" "}
+                                                    <br />
+                                                    <div
+                                                        className="btn-group"
+                                                        role="group"
+                                                        aria-label="Basic example"
+                                                    >
+                                                        <select
+                                                            className="form-control"
+                                                            onChange={(e: any) => {
+                                                                setEndMonth(e.target.value);
+                                                            }}
+                                                        >
+                                                            <option value="">Month</option>
+                                                            <option value="To">*To Date</option>
+                                                            <option value="01">January</option>
+                                                            <option value="02">February</option>
+                                                            <option value="03">March</option>
+                                                            <option value="04">April</option>
+                                                            <option value="05">May</option>
+                                                            <option value="06">June</option>
+                                                            <option value="07">July</option>
+                                                            <option value="08">August</option>
+                                                            <option value="09">September</option>
+                                                            <option value="10">October</option>
+                                                            <option value="11">November</option>
+                                                            <option value="12">December</option>
+                                                        </select>
+                                                        <select
+                                                            className="form-control"
+                                                            value={startYear}
+                                                            onChange={(e) => {
+                                                                setEndYear(e.target.value);
+                                                            }}
+                                                        >
+                                                            <option value="">Year</option>
+                                                            {years.map((year) => (
+                                                                <option key={year} value={year}>
+                                                                    {year}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    {/* <input
+                    type="month"
+                    className="form-control"
+                    id="period"
+                    name="daterange"
+                    value={end}
+                    onChange={(e:any) => {
+                      setEnd(e.target.value);
+                    }}
+                  /> */}
+                                                </div>
+                                                <small className="d-inline-block ms-1" style={danger}>
+                                                    Select "*To Date" for Month and Year if you are
+                                                    currently at post at stated organization
+                                                </small>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="position">
+                                                        Position held : <span style={danger}>*</span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control required"
+                                                        id="position"
+                                                        name="position"
+                                                        value={position}
+                                                        onChange={(e: any) => {
+                                                            setPosition(e.target.value);
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="salary">
+                                                        Salary(GHS) : <span style={danger}>*</span>
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        className="form-control required"
+                                                        id="salary"
+                                                        name="salary"
+                                                        value={salary}
+                                                        maxLength={6}
+                                                        onChange={(e: any) => {
+                                                            setSalary(e.target.value);
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label htmlFor="leaveReason">
+                                                        Reason for leaving (Enter to date if you`re still at the
+                                                        entered Organization) : <span style={danger}>*</span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control required"
+                                                        id="leaveReason"
+                                                        name="leaveReason"
+                                                        value={leavingReason}
+                                                        onChange={(e: any) => {
+                                                            setLeavingReason(e.target.value);
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="addToTable">
+                                                        Add <span style={danger} />
+                                                    </label>
+                                                    <br />
+                                                    <button
+                                                        type="button"
+                                                        id="addToTable"
+                                                        className="btn btn-success  add"
+                                                        onClick={() => {
+                                                            addEmployment();
+                                                        }}
+                                                    >
+                                                        <i className="fas fa-plus-circle" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <br />
+                                    <hr />
+                                    <br /> <br />
+                                    {/* row */}
+                                    <div className="row">
+                                        <div className="col-lg-12">
+                                            <div className="table-responsive">
+                                                <table className="table mb-0">
+                                                    <thead className="table-light">
+                                                        <tr>
+                                                            <th hidden>Id</th>
+                                                            <th>Organization</th>
+                                                            <th>Period</th>
+                                                            <th>Position</th>
+                                                            <th>Salary</th>
+                                                            <th>Reason for leaving</th>
+                                                            <th>Remove</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {employments.map((e: any) => (
+                                                            <tr key={e.id}>
+                                                                <td>{e.organizationName}</td>
+                                                                <td>
+                                                                    {e.start} to {e.end}
+                                                                </td>
+                                                                <td>{e.position}</td>
+                                                                <td>GHS {e.salary}</td>
+                                                                <td>{e.leavingReason}</td>
+
+                                                                <td>
+                                                                    {" "}
+                                                                    <button
+                                                                        type="button"
+                                                                        id="addToTable"
+                                                                        className="btn btn-danger "
+                                                                        onClick={() => {
+                                                                            removeEmployment(e.id);
+                                                                        }}
+                                                                    >
+                                                                        <i className="fas fa-minus-circle" />
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="form-actions mt-10">
+                                <div className="col-md-12" style={{ textAlign: "end" }}>
+                                    <div className="btn-group" role="group" aria-label="Basic example">
+                                        <Link href="/application/certifications">
+                                            <a type="button" className="btn btn-success">
+                                                Previous
+                                            </a>
+                                        </Link>
+                                       {/* {menu == "1" ? (
+                                            <button
+                                                type="button"
+                                                className="btn btn-success"
+                                                onClick={() => {
+                                                    next("toEssay");
+                                                }}
+                                            >
+                                                Next
+                                            </button>
+                                        ) : ( */}
+
+
+                                            <button
+                                                type="button"
+                                                className="btn btn-success"
+                                                onClick={() => {
+                                                    next("toRef");
+                                                }}
+                                            >
+                                                Next
+                                            </button>
+                                        {/* )} */}
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+const danger = { color: "red" };
+export default Employment;

@@ -6,7 +6,7 @@ import PersonalInfo from "@/src/components/application/PersonalInfo";
 
 async function getSex(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/sex`);
+    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/sex`,{cache:'force-cache'});
 
 
     if (!response.ok) {
@@ -18,7 +18,7 @@ async function getSex(searchParams: any) {
 
 async function getTitle(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/title`);
+    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/title`,{cache:'force-cache'});
 
 
     if (!response.ok) {
@@ -30,7 +30,7 @@ async function getTitle(searchParams: any) {
 
 async function getMaritalStatus(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/marital-status`);
+    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/marital-status`,{cache:'force-cache'});
 
 
     if (!response.ok) {
@@ -40,6 +40,17 @@ async function getMaritalStatus(searchParams: any) {
 
 }
 
+async function getYesNo(searchParams: any) {
+    let { qry } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/yes-no`,{cache:'force-cache'});
+
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return await response.json();
+
+}
 
 async function getPersonalInfo(searchParams: any) {
     let { qry } = searchParams
@@ -61,10 +72,11 @@ export default async function Page({ searchParams }: any) {
     const sexes = await getSex(searchParams)
     const maritalStatuses = await getMaritalStatus(searchParams)
     const titles = await getTitle(searchParams)
+    const yesNo = await getYesNo(searchParams)
 
 
     let data: any = {
-        personalInfo,sexes,maritalStatuses,titles
+        personalInfo,sexes,maritalStatuses,titles,yesNo,
     }
 
     return <PersonalInfo data={data} />

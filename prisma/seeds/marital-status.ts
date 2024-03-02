@@ -5,5 +5,14 @@ export const maritalStatus = [
     {
       name: "Married",
     },
+    {
+      name: "Divorced",
+    },
+    {
+      name: "Widowed",
+    },
+    {
+      name: "Widowered",
+    },
   ];
   
