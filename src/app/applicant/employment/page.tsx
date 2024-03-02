@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
-import Education from "@/src/components/application/Education";
+import Employment from "@/src/components/application/Employment";
 
 
 
@@ -67,7 +67,7 @@ export default async function Page({ searchParams }: any) {
         users,departments,userRoles,jobs
     }
 
-    return <Education data={data} />
+    return <Employment data={data} />
 
 
 }

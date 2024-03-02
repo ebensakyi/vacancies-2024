@@ -4,15 +4,14 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Editor } from "@tinymce/tinymce-react";
-import { useRouter } from "next/navigation";
+
 import ApplicationMenu from "../ApplicationMenu";
 import moment from "moment";
 import Link from "next/link";
 
 const Employment = ({ data }: any) => {
     const currentYear = new Date().getFullYear();
-    const years: any[] = [];
+    const years = [];
 
     const [employments, setEmployments] = useState([]);
     const [organizationName, setOrganizationName] = useState("");
@@ -27,6 +26,10 @@ const Employment = ({ data }: any) => {
     const [position, setPosition] = useState("");
     const [salary, setSalary] = useState("");
     const [leavingReason, setLeavingReason] = useState("");
+
+    for (let year = currentYear; year >= 1990; year--) {
+        years.push(year);
+    }
 
     const addEmployment = async () => {
         try {
@@ -55,8 +58,11 @@ const Employment = ({ data }: any) => {
                 position == ""
             )
                 return toast.error("Please fill the form");
+            if (startYear > endYear) {
+                return toast.error("Start year cannot be greater than end year");
+            }
 
-            const response = await axios.post("/api/application/employment", {
+            const response = await axios.post("/api/applicant/employment", {
                 data,
             });
 
@@ -128,12 +134,12 @@ const Employment = ({ data }: any) => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="page-title-box d-flex align-items-center justify-content-between">
-                                    <h4 className="mb-0">EDUCATION </h4>
+                                    <h4 className="mb-0">EMPLOYMENT </h4>
                                 </div>
                             </div>
                         </div>
                         <div className="row">
-                            <ApplicationMenu whichLink="education" />
+                            <ApplicationMenu whichLink="employment" />
 
                             <ToastContainer
                                 position="top-right"
@@ -215,7 +221,7 @@ const Employment = ({ data }: any) => {
                                                                 setStartYear(e.target.value);
                                                             }}
                                                         >
-                                                            <option value="">Year</option>
+                                                            <option value="">Select Year</option>
                                                             {years.map((year) => (
                                                                 <option key={year} value={year}>
                                                                     {year}
@@ -253,7 +259,7 @@ const Employment = ({ data }: any) => {
                                                             }}
                                                         >
                                                             <option value="">Month</option>
-                                                            <option value="To">*To Date</option>
+                                                            <option value="99">To Date</option>
                                                             <option value="01">January</option>
                                                             <option value="02">February</option>
                                                             <option value="03">March</option>
@@ -269,12 +275,17 @@ const Employment = ({ data }: any) => {
                                                         </select>
                                                         <select
                                                             className="form-control"
-                                                            value={startYear}
+                                                            value={endYear}
                                                             onChange={(e) => {
                                                                 setEndYear(e.target.value);
+                                                                if(endYear =="9999"){
+                                                                    setLeavingReason("")
+                                                                }
                                                             }}
                                                         >
-                                                            <option value="">Year</option>
+                                                            <option value="">Select Year</option>
+                                                            <option value="9999">To Date</option>
+
                                                             {years.map((year) => (
                                                                 <option key={year} value={year}>
                                                                     {year}
@@ -318,7 +329,7 @@ const Employment = ({ data }: any) => {
                                             <div className="col-md-3">
                                                 <div className="form-group">
                                                     <label htmlFor="salary">
-                                                        Salary(GHS) : <span style={danger}>*</span>
+                                                        Monthly Salary(GHS) : <span style={danger}>*</span>
                                                     </label>
                                                     <input
                                                         type="number"
@@ -333,24 +344,24 @@ const Employment = ({ data }: any) => {
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group">
-                                                    <label htmlFor="leaveReason">
-                                                        Reason for leaving (Enter to date if you`re still at the
-                                                        entered Organization) : <span style={danger}>*</span>
-                                                    </label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control required"
-                                                        id="leaveReason"
-                                                        name="leaveReason"
-                                                        value={leavingReason}
-                                                        onChange={(e: any) => {
-                                                            setLeavingReason(e.target.value);
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
+                                            {endYear != "9999" ?
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label htmlFor="leaveReason">
+                                                            Reason for leaving  : <span style={danger}>*</span>
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            className="form-control required"
+                                                            id="leaveReason"
+                                                            name="leaveReason"
+                                                            value={leavingReason}
+                                                            onChange={(e: any) => {
+                                                                setLeavingReason(e.target.value);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div> : <></>}
                                             <div className="col-md-3">
                                                 <div className="form-group">
                                                     <label htmlFor="addToTable">
@@ -426,12 +437,10 @@ const Employment = ({ data }: any) => {
                             <div className="form-actions mt-10">
                                 <div className="col-md-12" style={{ textAlign: "end" }}>
                                     <div className="btn-group" role="group" aria-label="Basic example">
-                                        <Link href="/application/certifications">
-                                            <a type="button" className="btn btn-success">
-                                                Previous
-                                            </a>
+                                        <Link href="/application/certifications" type="button" className="btn btn-success">
+                                            Previous
                                         </Link>
-                                       {/* {menu == "1" ? (
+                                        {/* {menu == "1" ? (
                                             <button
                                                 type="button"
                                                 className="btn btn-success"
@@ -444,15 +453,15 @@ const Employment = ({ data }: any) => {
                                         ) : ( */}
 
 
-                                            <button
-                                                type="button"
-                                                className="btn btn-success"
-                                                onClick={() => {
-                                                    next("toRef");
-                                                }}
-                                            >
-                                                Next
-                                            </button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                next("toRef");
+                                            }}
+                                        >
+                                            Next
+                                        </button>
                                         {/* )} */}
                                     </div>
                                 </div>

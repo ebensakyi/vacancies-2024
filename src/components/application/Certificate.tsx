@@ -265,7 +265,6 @@ const Certificate = ({ data }: any) => {
                                                                     </select>
                                                                     <select
                                                                         className="form-control"
-                                                                        value={startYear}
                                                                         onChange={(e) => {
                                                                             setEndYear(e.target.value);
                                                                         }}
