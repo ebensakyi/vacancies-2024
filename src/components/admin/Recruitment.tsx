@@ -15,8 +15,8 @@ const Recruitment = ({ data }: any) => {
       if (name == "" || staffType == "" || deadline == "")
         return toast.error("Fill the form and try again");
 
-      const response = await axios.post("/api/admin/configure/recruitment", {
-        data: { name, staffType },
+      const response = await axios.post("/api/admin/recruitment", {
+        data: { name, staffType,deadline,startDate },
       });
       if (response.status == 200) {
         setName("");
@@ -107,7 +107,7 @@ const Recruitment = ({ data }: any) => {
                                 <input
                                   type="date"
                                   className="form-control required"
-                                  value={name}
+                                  value={deadline}
                                   onChange={(e: any) => {
                                     setDeadline(e.target.value);
                                   }}
@@ -177,19 +177,21 @@ const Recruitment = ({ data }: any) => {
                       <table className="table mb-0">
                         <thead className="table-light">
                           <tr>
-                            <th>#</th>
-                            <th>Code</th>
+                            {/* <th>#</th> */}
                             <th>Name</th>
+                            <th>Start date</th>
+                            <th>Deadline</th>
                             <th>Staff type</th>
                             {/* <th>Action</th> */}
                           </tr>
                         </thead>
                         <tbody>
-                          {data?.staffTypes?.response?.map((r: any) => {
+                          {data?.recruitments?.response?.map((r: any) => {
                             return (
                               <tr key={r.id}>
-                                <td>{r.id}</td>
-                                <td>{r.code}</td>
+                                {/* <td>{r.id}</td> */}
+                                <td>{r.name}</td>
+                                <td>{r.name}</td>
                                 <td>{r.name}</td>
                                 <td>{r?.StaffType?.name}</td>
                                 {/* <td>
