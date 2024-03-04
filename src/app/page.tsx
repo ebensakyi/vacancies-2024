@@ -1,7 +1,6 @@
 import { SERVER_BASE_URL } from "@/constants";
 import moment from "moment";
 import Link from "next/link";
-import Dashboard from "../components/admin/Dashboard";
 import Footer from "../components/Footer";
   async function getJobAds() {
     try {

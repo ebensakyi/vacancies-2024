@@ -107,14 +107,13 @@ CREATE TABLE `Policy` (
     `age` INTEGER NOT NULL,
     `experience` INTEGER NULL,
     `minimumGrade` INTEGER NOT NULL,
-    `deadline` DATE NULL,
     `note` VARCHAR(1000) NULL,
     `createdBy` INTEGER NULL DEFAULT 1,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `staffTypeId` INTEGER NOT NULL,
     `educationLevelId` INTEGER NOT NULL,
+    `staffTypeId` INTEGER NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -209,6 +208,8 @@ CREATE TABLE `Recruitment` (
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
+    `startDate` DATE NULL,
+    `deadline` DATE NULL,
     `staffTypeId` INTEGER NOT NULL,
 
     UNIQUE INDEX `name`(`name`),
@@ -375,6 +376,7 @@ CREATE TABLE `Personal` (
     `sonNumber` VARCHAR(255) NULL,
     `daughterNumber` VARCHAR(255) NULL,
     `titleId` INTEGER NULL,
+    `haveKids` INTEGER NOT NULL,
 
     UNIQUE INDEX `Personal_userId_key`(`userId`),
     PRIMARY KEY (`id`)
@@ -613,10 +615,10 @@ ALTER TABLE `EducationLevel` ADD CONSTRAINT `EducationLevel_createdBy_fkey` FORE
 ALTER TABLE `Policy` ADD CONSTRAINT `Policy_educationLevelId_fkey` FOREIGN KEY (`educationLevelId`) REFERENCES `EducationLevel`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Policy` ADD CONSTRAINT `Policy_staffTypeId_fkey` FOREIGN KEY (`staffTypeId`) REFERENCES `StaffType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Policy` ADD CONSTRAINT `Policy_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Policy` ADD CONSTRAINT `Policy_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Policy` ADD CONSTRAINT `Policy_staffTypeId_fkey` FOREIGN KEY (`staffTypeId`) REFERENCES `StaffType`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Job` ADD CONSTRAINT `Job_policyId_fkey` FOREIGN KEY (`policyId`) REFERENCES `Policy`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -713,6 +715,9 @@ ALTER TABLE `Personal` ADD CONSTRAINT `Personal_maritalStatusId_fkey` FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE `Personal` ADD CONSTRAINT `Personal_titleId_fkey` FOREIGN KEY (`titleId`) REFERENCES `Title`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Personal` ADD CONSTRAINT `Personal_haveKids_fkey` FOREIGN KEY (`haveKids`) REFERENCES `YesNo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Publication` ADD CONSTRAINT `Publication_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

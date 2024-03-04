@@ -20,7 +20,9 @@ import { superAdmin } from "./user";
 import { reasons } from "./reason";
 import { titles } from "./title";
 
-async function main() { await prisma.division.createMany({
+async function main() { 
+  
+  await prisma.division.createMany({
     data: division,
   });
   await prisma.department.createMany({

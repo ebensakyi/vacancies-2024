@@ -18,39 +18,36 @@ const Policy = ({ data }: any) => {
   }
   const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [deadline, setDeadline] = useState("");
   const [age, setAge] = useState("");
   const [miniGrade, setMiniGrade] = useState("");
   const [miniEducation, setMiniEducation] = useState("");
   const [experience, setExperience] = useState("");
-  const [staffType, setStaffType] = useState("");
+  const [recruitment, setRecruitment] = useState("");
   const [note, setNote] = useState("");
 
 
   const save = async () => {
     try {
-      if (name == "" || deadline == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" || staffType == "")
+      if (name == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" || recruitment == "")
         return toast.error("Please fill the form");
 
       const data = {
         name,
-        deadline,
+        recruitment,
         age,
         miniGrade,
         miniEducation,
         experience,
-        staffType,
         note,
       };
       const response = await axios.post("/api/admin/policy", { data });
       if (response.status == 200) {
         setName("")
-        setDeadline("")
+        setRecruitment("")
         setAge("")
         setMiniEducation("")
         setMiniGrade("")
         setExperience("")
-        setStaffType("")
         setNote("")
         router.refresh();
 
@@ -63,30 +60,29 @@ const Policy = ({ data }: any) => {
 
   const updatePolicy = async () => {
     try {
-      if (name == "" || deadline == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" || staffType == "")
+      if (name == "" || recruitment == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" )
         return toast.error("Please fill the form");
 
       const data = {
         id,
         name,
-        deadline,
+        recruitment,
         age,
         miniGrade,
         miniEducation,
         experience,
-        staffType,
         note,
       };
       const response = await axios.put("/api/admin/policy", { data });
       if (response.status == 200) {
         setId("")
         setName("")
-        setDeadline("")
+       
         setAge("")
         setMiniEducation("")
         setMiniGrade("")
         setExperience("")
-        setStaffType("")
+        setRecruitment("")
         setNote("")
         router.refresh();
 
@@ -164,24 +160,29 @@ const Policy = ({ data }: any) => {
                           </div>
                         </div>
                         <div className="col-md-4">
-                          <div className="form-group">
-                            <div className="mb-3 position-relative">
-                              <label className="form-label" htmlFor="deadline">
-                                Deadline : <span className="danger">*</span>{" "}
-                              </label>
-                              <input
-                                type="date"
-                                className="form-control required"
-                                id="mdate"
-                                value={deadline}
-                                required
-                                onChange={(e: any) => {
-                                  setDeadline(e.target.value);
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
+                                                        <div className="form-group">
+                                                            <div className="mb-3 position-relative">
+                                                                <label className="form-label" htmlFor="note">
+                                                                    Recruitment : <span className="danger">*</span>
+                                                                </label>
+                                                                <select
+                                                                    className="custom-select form-control required"
+                                                                    required
+                                                                    onChange={(e: any) => {
+                                                                        setRecruitment(e.target.value);
+                                                                    }}
+                                                                    value={recruitment}
+                                                                >
+                                                                    <option value="">Select staff</option>
+                                                                    {data?.recrtuitment?.response?.map((data: any) => (
+                                                                        <option key={data.id} value={data.id}>
+                                                                            {data.name}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                         <div className="col-md-4">
                           <div className="form-group">
                             <div className="mb-3 position-relative">
@@ -287,30 +288,7 @@ const Policy = ({ data }: any) => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-md-4">
-                          <div className="form-group">
-                            <div className="mb-3 position-relative">
-                              <label className="form-label" htmlFor="note">
-                                Staff type : <span className="danger">*</span>
-                              </label>
-                              <select
-                                className="custom-select form-control required"
-                                required
-                                onChange={(e: any) => {
-                                  setStaffType(e.target.value);
-                                }}
-                                value={staffType}
-                              >
-                                <option value="">Select staff</option>
-                                {data?.staffTypes?.response?.map((data: any) => (
-                                  <option key={data.id} value={data.id}>
-                                    {data.name}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-                        </div>
+                        
 
                         {/* <div className="col-md-4">
                 <div className="form-group">

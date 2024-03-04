@@ -1,15 +1,22 @@
-import { withAuth } from "next-auth/middleware"
+export {default} from "next-auth/middleware"
+
+
+export const config = {   
+   matcher: ["/admin/:path*", "/applicant/:path*"]
+}
+
+// import { withAuth } from "next-auth/middleware"
 
 
 
 
-import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+// import { NextResponse } from "next/server";
+// import { getToken } from "next-auth/jwt";
 
-export async function middleware(request: any) {
+// export async function middleware(request: any) {
   
-  const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
-  console.log("MW TOKEN ",token);
+//   const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
+//   console.log("MW TOKEN ",token);
   
 
 
@@ -48,11 +55,11 @@ export async function middleware(request: any) {
   //   default:
   //    // return NextResponse.redirect(new URL("/auth/login", request.url));
   // }
-}
+// }
 
-export const config = {
-  matcher: [
-    // Match all routes except the ones that start with /login and api and the static folder
-    "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
-  ],
-}
+// export const config = {
+//   matcher: [
+//     // Match all routes except the ones that start with /login and api and the static folder
+//     "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+//   ],
+// }

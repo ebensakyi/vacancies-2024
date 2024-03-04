@@ -9,7 +9,7 @@ import Link from "next/link";
 import Footer from "@/src/components/Footer";
 import { signIn,signOut } from "next-auth/react";
 
-const login = () => {
+const Page = () => {
   // let gen,
   //   core = "";
   const [email, setEmail] = useState("");
@@ -37,6 +37,7 @@ const login = () => {
         email,
         password,
         callbackUrl: "/"
+
       })
 
       console.log(result);
@@ -226,4 +227,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Page;

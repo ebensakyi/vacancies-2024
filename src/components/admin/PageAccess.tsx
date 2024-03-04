@@ -62,7 +62,7 @@ const PageAccess = ({ results }:any) => {
                         multiple
 
                         onChange={(e:any) => {
-                          setPages([...pages, e.target.value]);
+                         // setPages([...pages, e.target.value]);
                         }}
                       >
                         <option value="">Select policy</option>

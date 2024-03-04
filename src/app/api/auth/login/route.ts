@@ -10,6 +10,9 @@ export async function POST(request: Request) {
     let email = res.email;
     let password = res.password;
 
+    let name
+    let role
+
     let user: any = await prisma.user.findFirst({
       where: {
         email: email,
@@ -59,7 +62,7 @@ export async function POST(request: Request) {
 
       const token = jwt.sign(user, process.env.TOKEN_SECRET || "");
 
-      let response = { ...user, token, privileges };
+      let response = { ...user, token, privileges, name: user.firstName + " " + user.surname + " " + user.otherNames, role: user.userRoleId };
 
       return NextResponse.json(response);
     }
@@ -70,4 +73,4 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {}
+export async function GET(request: Request) { }

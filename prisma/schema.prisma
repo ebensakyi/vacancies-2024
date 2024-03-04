@@ -104,21 +104,20 @@ model Policy {
   name           String?        @db.VarChar(255)
   age            Int
   EducationLevel EducationLevel @relation(fields: [educationLevelId], references: [id])
-  StaffType      StaffType      @relation(fields: [staffTypeId], references: [id])
   experience     Int?
   minimumGrade   Int
-  deadline       DateTime?      @db.Date
   note           String?        @db.VarChar(1000)
   createdBy      Int?           @default(1)
   deleted        Int?           @default(0)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  staffTypeId      Int
   educationLevelId Int
   Job              Job[]
   Advert           Advert[]
-  User             User?    @relation(fields: [createdBy], references: [id])
+  User             User?      @relation(fields: [createdBy], references: [id])
+  StaffType        StaffType? @relation(fields: [staffTypeId], references: [id])
+  staffTypeId      Int?
 }
 
 model Job {
@@ -207,13 +206,15 @@ model SubjectType {
 }
 
 model Recruitment {
-  id        Int      @id @default(autoincrement())
-  name      String?  @unique(map: "name") @db.VarChar(255)
-  code      String?  @db.VarChar(255)
-  createdBy Int?     @default(1)
-  deleted   Int?     @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int       @id @default(autoincrement())
+  name      String?   @unique(map: "name") @db.VarChar(255)
+  code      String?   @db.VarChar(255)
+  createdBy Int?      @default(1)
+  deleted   Int?      @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  startDate DateTime? @db.Date
+  deadline  DateTime? @db.Date
 
   StaffType           StaffType             @relation(fields: [staffTypeId], references: [id])
   staffTypeId         Int
