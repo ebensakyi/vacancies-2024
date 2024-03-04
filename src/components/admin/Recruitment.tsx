@@ -13,12 +13,12 @@ const Recruitment = ({ data }: any) => {
   const save = async () => {
     try {
       if (name == "" || staffType == "" || deadline == "")
-        return toast.error("Data not saved. Enter sex");
+        return toast.error("Fill the form and try again");
 
-      const response = await axios.post("/api/admin/recruitment", {
+      const response = await axios.post("/api/admin/configure/recruitment", {
         data: { name, staffType },
       });
-      if (response.status == 1) {
+      if (response.status == 200) {
         setName("");
         setStaffType("");
         setDeadline("");
@@ -26,7 +26,7 @@ const Recruitment = ({ data }: any) => {
         // Router.reload(window.location.pathname);
         return toast.success("Data saved successfully");
       }
-      if (response.status == 0) return toast.error("Data not saved");
+      if (response.status != 200) return toast.error("Data not saved");
     } catch (error) { }
   };
   return (
