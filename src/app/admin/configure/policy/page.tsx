@@ -29,17 +29,7 @@ async function getEducationLevel(searchParams: any) {
 
 }
 
-async function getStaffType(searchParams: any) {
-    let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/staff-type?qry=${qry}`, { cache: 'no-store' });
 
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch data')
-    }
-    return await response.json();
-
-}
 
 
 
@@ -47,12 +37,11 @@ export default async function Page({ searchParams }: any) {
 
 
     const levels = await getEducationLevel(searchParams)
-    const staffTypes = await getStaffType(searchParams)
     const policies = await getPolicies(searchParams)
 
 
     let data: any = {
-        levels,staffTypes,policies
+        levels,policies
     }
 
     return <Policy data={data} />

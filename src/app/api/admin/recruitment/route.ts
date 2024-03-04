@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       name: res.data.name,
       deadline: new Date(res.data.deadline),
       startDate: new Date(res.data.startDate),
-      
+
       staffTypeId: Number(res.data.staffType),
 
     };
@@ -31,15 +31,16 @@ export async function PUT(request: Request) {
     const data = {
       name: res.data.name,
       deadline: new Date(res.data.deadline),
-      age: Number(res.data.age),
-      minimumGrade: Number(res.data.miniGrade),
-      experience: Number(res.data.experience),
-      note: res.data.note,
-      educationLevelId: Number(res.data.miniEducation),
+      startDate: new Date(res.data.startDate),
+
       staffTypeId: Number(res.data.staffType),
 
+
     };
-    const response = await prisma.policy.update({ data,where:{id: Number(res.data.id)} });
+    const response = await prisma.recruitment.update({
+      data,
+      where: { id: Number(res.data.id) }
+    });
 
 
     return NextResponse.json(response);
@@ -53,9 +54,9 @@ export async function PUT(request: Request) {
 export async function GET(request: Request) {
   try {
     //  const res = await request.json();
-    const response = await prisma.policy.findMany({
+    const response = await prisma.recruitment.findMany({
       where: { deleted: 0 },
-      include: { EducationLevel: true, StaffType: true }
+      include: { StaffType: true }
     });
 
 

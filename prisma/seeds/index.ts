@@ -14,7 +14,6 @@ import { subjectType } from "./subject-type";
 import { userRole } from "./user-role";
 import { subject } from "./subject";
 import { maritalStatus } from "./marital-status";
-import { rt } from "./recruitment-type";
 import { yes_no } from "./yes-no";
 import { superAdmin } from "./user";
 import { reasons } from "./reason";
@@ -65,9 +64,7 @@ async function main() {
   await prisma.maritalStatus.createMany({
     data: maritalStatus,
   });
-  await prisma.recruitment.createMany({
-    data: rt,
-  });
+
   // await prisma.policy.createMany({
   //   data: policy,
   // });

@@ -372,7 +372,7 @@ const Policy = ({ data }: any) => {
                             <th>Minimum Edu</th>
                             <th>Minimum Grade</th>
                             <th>Experience</th>
-                            <th>Staff type</th>
+                            <th>Recruitment</th>
 
                             <th>Action</th>
                           </tr>
@@ -388,7 +388,7 @@ const Policy = ({ data }: any) => {
                                 <td>{data.EducationLevel.name}</td>
                                 <td>{data.minimumGrade}</td>
                                 <td>{data.experience}</td>
-                                <td>{data.StaffType.name}</td>
+                                <td>{data.Recruitment.name}</td>
 
                                 <td>
 
@@ -404,7 +404,7 @@ const Policy = ({ data }: any) => {
                                       setMiniGrade(data.minimumGrade)
                                       setExperience(data.experience)
                                       setMiniEducation(data.educationLevelId)
-                                      setStaffType(data.staffTypeId)
+                                      setRecruitment(data.recr)
                                       setNote(data.note)
                                     }}
                                   >
