@@ -1,20 +1,33 @@
 export const examType = [
+ 
   {
-    name: "BECE",
+    name: "WASSCE SCHOOL",
   },
   {
-    name: "WASSCE",
+    name: "WASSCE PRIVATE",
+  },
+   {
+    name: "BECE SCHOOL",
   },
   {
-    name: "SSCE",
+    name: "BECE PRIVATE",
   },
   {
-    name: "ABCE/GBCE",
+    name: "SSCE SCHOOL",
   },
   {
-    name: "A'LEVEL",
+    name: "SSCE PRIVATE",
   },
   {
-    name: "O'LEVEL",
+    name: "ABCE SCHOOL",
+  },
+  {
+    name: "GBCE SCHOOL",
+  },
+  {
+    name: "ABCE PRIVATE",
+  },
+  {
+    name: "GBCE PRIVATE",
   },
 ];

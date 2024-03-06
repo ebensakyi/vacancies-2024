@@ -117,7 +117,7 @@ model Policy {
   User             User?       @relation(fields: [createdBy], references: [id])
   Recruitment      Recruitment @relation(fields: [recruitmentId], references: [id])
 
-  recruitmentId    Int
+  recruitmentId Int
 }
 
 model Job {
@@ -151,17 +151,17 @@ model Advert {
   User      User?    @relation(fields: [createdBy], references: [id])
 }
 
-model ExamTypeNew {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)
-  createdBy Int?     @default(1)
-  deleted   Int?     @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// model ExamTypeNew {
+//   id        Int      @id @default(autoincrement())
+//   name      String   @db.VarChar(255)
+//   createdBy Int?     @default(1)
+//   deleted   Int?     @default(0)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
 
-  IndexNumber IndexNumber[]
-  User        User?         @relation(fields: [createdBy], references: [id])
-}
+//   IndexNumber IndexNumber[]
+//   User        User?         @relation(fields: [createdBy], references: [id])
+// }
 
 model ExamType {
   id        Int      @id @default(autoincrement())
@@ -175,6 +175,7 @@ model ExamType {
   Subject        Subject[]
   GradesObtained GradesObtained[]
   User           User?            @relation(fields: [createdBy], references: [id])
+  IndexNumber    IndexNumber[]
 }
 
 model Subject {
@@ -189,7 +190,6 @@ model Subject {
 
   examTypeId     Int
   subjectTypeId  Int
-  GradesObtained GradesObtained[]
   User           User?            @relation(fields: [createdBy], references: [id])
 }
 
@@ -225,14 +225,14 @@ model Recruitment {
 }
 
 model CurrentRecruitment {
-  id            Int           @id @default(autoincrement())
-  createdBy     Int?          @default(1)
-  deleted       Int?          @default(0)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  Recruitment   Recruitment   @relation(fields: [recruitmentId], references: [id])
+  id            Int         @id @default(autoincrement())
+  createdBy     Int?        @default(1)
+  deleted       Int?        @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  Recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
   recruitmentId Int
-  User          User?         @relation(fields: [createdBy], references: [id])
+  User          User?       @relation(fields: [createdBy], references: [id])
 }
 
 model CurrentShortlisting {
@@ -258,7 +258,6 @@ model Grade {
   updatedAt      DateTime @updatedAt
   User           User?    @relation(fields: [createdBy], references: [id])
 
-  GradesObtained GradesObtained[]
 }
 
 model UserRole {
@@ -340,7 +339,6 @@ model User {
   Policy              Policy[]
   Job                 Job[]
   Advert              Advert[]
-  ExamTypeNew         ExamTypeNew[]
   ExamType            ExamType[]
   Subject             Subject[]
   SubjectType         SubjectType[]
@@ -405,15 +403,15 @@ model Personal {
   residenceTel     String?       @db.VarChar(255)
   hometown         String?       @db.VarChar(255)
   birthPlace       String?       @db.VarChar(255)
-  dob              DateTime?       @db.Date
+  dob              DateTime?     @db.Date
   ageAtApplication Int?
   Sex              Sex           @relation(fields: [sexId], references: [id])
   MaritalStatus    MaritalStatus @relation(fields: [maritalStatusId], references: [id])
-  childrenNumber   Int?    
-  
-  deleted          Int?          @default(0)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  childrenNumber   Int?
+
+  deleted   Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   maritalStatusId Int
   sexId           Int
@@ -422,12 +420,12 @@ model Personal {
   permanentAddress String? @db.VarChar(255)
   presentAddress   String? @db.VarChar(255)
 
-  sonsInfo     String? @db.VarChar(255)
+  sonsInfo      String? @db.VarChar(255)
   daughtersInfo String? @db.VarChar(255)
-  Title          Title?  @relation(fields: [titleId], references: [id])
-  titleId        Int?
-  YesNo          YesNo   @relation(fields: [haveKids], references: [id])
-  haveKids       Int
+  Title         Title?  @relation(fields: [titleId], references: [id])
+  titleId       Int?
+  YesNo         YesNo   @relation(fields: [haveKids], references: [id])
+  haveKids      Int
 }
 
 model Publication {
@@ -538,12 +536,12 @@ model Application {
 
   User User @relation(fields: [userId], references: [id])
 
-  Job                  Job                 @relation(fields: [jobId], references: [id])
-  RejectReason         RejectReason[]
+  Job               Job                 @relation(fields: [jobId], references: [id])
+  RejectReason      RejectReason[]
   // @@unique([userId, jobId], name: "userId_jobId")
-  FilteredOutReason    FilteredOutReason[]
-//   currentRecruitmentId Int
-//   CurrentRecruitment   CurrentRecruitment  @relation(fields: [currentRecruitmentId], references: [id])
+  FilteredOutReason FilteredOutReason[]
+  //   currentRecruitmentId Int
+  //   CurrentRecruitment   CurrentRecruitment  @relation(fields: [currentRecruitmentId], references: [id])
 }
 
 // model ApplicationMenu {
@@ -645,38 +643,52 @@ model FilteredOutReason {
 //   FilteredOutReason FilteredOutReason[]
 // }
 
-model GradesObtained {
-  id        Int      @id @default(autoincrement())
-  User      User     @relation(fields: [userId], references: [id])
-  ExamType  ExamType @relation(fields: [examTypeId], references: [id])
-  Subject   Subject  @relation(fields: [subjectId], references: [id])
-  Grade     Grade    @relation(fields: [gradeId], references: [id])
-  year      String?  @db.VarChar(255)
-  deleted   Int?     @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  examTypeId Int
-  userId     Int
-  subjectId  Int
-  gradeId    Int
-
-  @@unique([userId, year, examTypeId, subjectId, gradeId], name: "gradesObtainedComp")
+model IndexNumber {
+  id             Int              @id @default(autoincrement())
+  indexNumber    String           @db.VarChar(20)
+  year           String           @db.VarChar(255)
+  createdBy      Int?             @default(1)
+  deleted        Int?             @default(0)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  User           User             @relation(fields: [userId], references: [id])
+  userId         Int
+  ExamType       ExamType         @relation(fields: [examTypeId], references: [id])
+  examTypeId     Int
+  GradesObtained GradesObtained[]
 }
 
-model IndexNumber {
-  id          Int      @id @default(autoincrement())
-  indexNumber String   @db.VarChar(255)
-  year        String   @db.VarChar(255)
-  createdBy   Int?     @default(1)
-  deleted     Int?     @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  User        User     @relation(fields: [userId], references: [id])
-  userId      Int
+model GradesObtained {
+  id              Int     @id @default(autoincrement())
+  User            User    @relation(fields: [userId], references: [id])
+  // ExamType  ExamType @relation(fields: [examTypeId], references: [id])
+  // Subject   Subject  @relation(fields: [subjectId], references: [id])
+  // Grade     Grade    @relation(fields: [gradeId], references: [id])
+  subjectCode     String? @db.VarChar(10)
+  subject         String? @db.VarChar(40)
+  grade           String? @db.VarChar(40)
+  candidateName   String? @db.VarChar(100)
+  candidateDob    String? @db.VarChar(40)
+  candidateGender String? @db.VarChar(40)
 
-  ExamTypeNew   ExamTypeNew? @relation(fields: [examTypeNewId], references: [id])
-  examTypeNewId Int?
+  deleted     Int?        @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  IndexNumber IndexNumber @relation(fields: [indexNumberId], references: [id])
+
+  // examTypeId Int
+  userId Int
+  // subjectId  Int
+  // gradeId    Int
+
+  // @@unique([userId, year, examTypeId, subjectId, gradeId], name: "gradesObtainedComp")
+  ExamType      ExamType? @relation(fields: [examTypeId], references: [id])
+  examTypeId    Int?
+  // Subject       Subject?  @relation(fields: [subjectId], references: [id])
+  // subjectId     Int?
+  // Grade         Grade?    @relation(fields: [gradeId], references: [id])
+  // gradeId       Int?
+  indexNumberId Int
 }
 
 model Certificate {

@@ -11,7 +11,11 @@ import moment from "moment";
 import Link from "next/link";
 
 const Education = ({ data }: any) => {
+    const router = useRouter();
     const [schoolsAttended, setSchoolsAttended] = useState([]);
+
+    console.log(data);
+
 
     const [educationLevel, setEducationLevel] = useState("");
     const [schoolName, setSchoolName] = useState("");
@@ -27,10 +31,6 @@ const Education = ({ data }: any) => {
     const [indexNumber, setIndexNumber] = useState("");
     const [indexNumberList, setIndexNumberList] = useState([]);
 
-    const [gradesState, setGradeState] = useState([]);
-    const [subjectsState, setSubjectsState] = useState([]);
-
-    const router = useRouter();
 
 
     const addSchool = async () => {
@@ -49,27 +49,29 @@ const Education = ({ data }: any) => {
                 endYear,
             };
 
-            const response = await axios.post("/api/applicant/school-attended", {
+            const response = await axios.post("/api/applicant/education/schools-attended", {
                 data,
             });
 
-            let { statusCode } = response.data;
-            let { message } = response.data;
+            let { status } = response;
 
-            let savedSchool = response.data.data;
 
-            if (statusCode == 1) {
-
+            if (status == 200) {
+                setEducationLevel("")
+                setSchoolName("")
+                setStartYear("")
+                setEndYear("")
 
                 //  setSchoolsAttended([...schoolsAttended, savedSchool]);
 
-
+                router.refresh()
                 return toast.success("School added successfully");
             }
 
-            if (statusCode == 0) return toast.error(message);
+            if (status != 200) return toast.error("An error occurred");
         } catch (error) {
-            console.log(error);
+            return toast.error("An error occurred");
+
         }
     };
 
@@ -153,12 +155,26 @@ const Education = ({ data }: any) => {
 
     const removeSchool = async (id: any) => {
         try {
-            const filteredSchools = schoolsAttended.filter((sa: any) => sa.id !== id);
-            const response = await axios.delete(`/api/applicant/school-attended`, {
+            // const filteredSchools = schoolsAttended.filter((sa: any) => sa.id !== id);
+            const response = await axios.delete(`/api/applicant/education/schools-attended`, {
                 data: id,
             });
-            setSchoolsAttended(filteredSchools);
-        } catch (error) { }
+            // setSchoolsAttended(filteredSchools);
+
+            let { status } = response;
+
+
+            if (status == 200) {
+
+
+                //  setSchoolsAttended([...schoolsAttended, savedSchool]);
+                router.refresh()
+
+                return toast.success("School removed successfully");
+            }
+
+            if (status != 200) return toast.error("An error occurred");
+        } catch (error) { return toast.error("An error occurred"); }
     };
 
     const removeIndexNumber = async (id: any) => {
@@ -238,150 +254,150 @@ const Education = ({ data }: any) => {
                                     </span>
 
                                     <div className="row" style={{ marginTop: "20px" }}>
-                                    <div className="col-lg-12">
+                                        <div className="col-lg-12">
 
-                                        <form method="POST">
-                                            <div className="row">
-                                                <div className="col-md-2">
-                                                    <div className="form-group">
-                                                        <label htmlFor="">
-                                                            Level of education: <span style={danger}>*</span>
-                                                        </label>
-                                                        <select
-                                                            className="form-control "
-                                                            value={educationLevel}
-                                                            onChange={(e: any) => {
-                                                                setEducationLevel(e.target.value);
-                                                            }}
-                                                        >
-                                                            <option value="">Select level</option>
-                                                            {data?.eduLevels?.response?.map((ed: any) => (
-                                                                <option key={ed.id} value={ed.id}>
-                                                                    {ed.name}
-                                                                </option>
-                                                            ))}
-                                                        </select>
+                                            <form method="POST">
+                                                <div className="row">
+                                                    <div className="col-md-2">
+                                                        <div className="form-group">
+                                                            <label htmlFor="">
+                                                                Level of education: <span style={danger}>*</span>
+                                                            </label>
+                                                            <select
+                                                                className="form-control "
+                                                                value={educationLevel}
+                                                                onChange={(e: any) => {
+                                                                    setEducationLevel(e.target.value);
+                                                                }}
+                                                            >
+                                                                <option value="">Select level</option>
+                                                                {data?.educationLevels?.response?.map((ed: any) => (
+                                                                    <option key={ed.id} value={ed.id}>
+                                                                        {ed.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <div className="form-group">
+                                                            <label htmlFor="institutionName">
+                                                                Name of school: <span style={danger}>*</span>
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control "
+                                                                id="institutionName"
+                                                                value={schoolName}
+                                                                onChange={(e: any) => {
+                                                                    setSchoolName(e.target.value);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <div className="form-group">
+                                                            <label htmlFor="start">
+                                                                Start month/year : <span style={danger}>*</span>
+                                                            </label>
+                                                            <input
+                                                                type="month"
+                                                                className="custom-select form-control required"
+                                                                id="start"
+                                                                value={startYear}
+                                                                onChange={(e: any) => {
+                                                                    setStartYear(e.target.value);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <div className="form-group">
+                                                            <label htmlFor="end">
+                                                                End month/year : <span style={danger}>*</span>{" "}
+                                                            </label>
+                                                            <input
+                                                                type="month"
+                                                                className="custom-select form-control required"
+                                                                id="end"
+                                                                value={endYear}
+                                                                onChange={(e: any) => {
+                                                                    setEndYear(e.target.value);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <div className="form-group">
+                                                            <label htmlFor="addToTable">
+                                                                Add <span style={danger} />
+                                                            </label>
+                                                            <br />
+                                                            <button
+                                                                type="button"
+                                                                id="addToTable"
+                                                                className="btn btn-success  add"
+                                                                onClick={() => {
+                                                                    addSchool();
+                                                                }}
+                                                            >
+                                                                {" "}
+                                                                <i className="fas fa-plus-circle" />
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-4">
-                                                    <div className="form-group">
-                                                        <label htmlFor="institutionName">
-                                                            Name of school: <span style={danger}>*</span>
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control "
-                                                            id="institutionName"
-                                                            value={schoolName}
-                                                            onChange={(e: any) => {
-                                                                setSchoolName(e.target.value);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <div className="form-group">
-                                                        <label htmlFor="start">
-                                                            Start month/year : <span style={danger}>*</span>
-                                                        </label>
-                                                        <input
-                                                            type="month"
-                                                            className="custom-select form-control required"
-                                                            id="start"
-                                                            value={startYear}
-                                                            onChange={(e: any) => {
-                                                                setStartYear(e.target.value);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <div className="form-group">
-                                                        <label htmlFor="end">
-                                                            End month/year : <span style={danger}>*</span>{" "}
-                                                        </label>
-                                                        <input
-                                                            type="month"
-                                                            className="custom-select form-control required"
-                                                            id="end"
-                                                            value={endYear}
-                                                            onChange={(e: any) => {
-                                                                setEndYear(e.target.value);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <div className="form-group">
-                                                        <label htmlFor="addToTable">
-                                                            Add <span style={danger} />
-                                                        </label>
-                                                        <br />
-                                                        <button
-                                                            type="button"
-                                                            id="addToTable"
-                                                            className="btn btn-success  add"
-                                                            onClick={() => {
-                                                                addSchool();
-                                                            }}
-                                                        >
-                                                            {" "}
-                                                            <i className="fas fa-plus-circle" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div className="row" style={{ marginTop: 80 }}>
-                                            <div className="table-responsive">
-                                                <table className="table mb-0">
-                                                    <thead className="table-light">
-                                                        <tr>
-                                                            <th>School</th>
-                                                            <th>Education level</th>
+                                            </form>
+                                            <div className="row" style={{ marginTop: 80 }}>
+                                                <div className="table-responsive">
+                                                    <table className="table mb-0">
+                                                        <thead className="table-light">
+                                                            <tr>
+                                                                <th>School</th>
+                                                                <th>Education level</th>
 
-                                                            <th>Start Month/Year</th>
-                                                            <th>End Month/Year</th>
-                                                            <th>Remove</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {data?.schoolsAttended?.response?.map((sx: any) => (
-                                                            <tr key={sx.id}>
-                                                                <td>{sx.institutionName}</td>
-                                                                <td>{sx.EducationLevel.name}</td>
-                                                                <td>
-                                                                    {moment(sx.institutionStart, "YYYY-MM").format(
-                                                                        "MM-YYYY"
-                                                                    )}{" "}
-                                                                </td>
-                                                                <td>
-                                                                    {moment(sx.institutionEnd, "YYYY-MM").format(
-                                                                        "MM-YYYY"
-                                                                    )}
-                                                                </td>
-                                                                <td>
-                                                                    <button
-                                                                        type="button"
-                                                                        id="addToTable"
-                                                                        className="btn btn-danger "
-                                                                        onClick={(e: any) => {
-                                                                            removeSchool(sx.id);
-                                                                        }}
-                                                                    >
-                                                                        <i className="fas fa-minus-circle" />
-                                                                    </button>
-                                                                </td>
+                                                                <th>Start Month/Year</th>
+                                                                <th>End Month/Year</th>
+                                                                <th>Remove</th>
                                                             </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>{" "}
+                                                        </thead>
+                                                        <tbody>
+                                                            {data?.schoolsAttended?.response?.map((sx: any) => (
+                                                                <tr key={sx.id}>
+                                                                    <td>{sx.institutionName}</td>
+                                                                    <td>{sx.EducationLevel.name}</td>
+                                                                    <td>
+                                                                        {moment(sx.institutionStart, "YYYY-MM").format(
+                                                                            "MM-YYYY"
+                                                                        )}{" "}
+                                                                    </td>
+                                                                    <td>
+                                                                        {moment(sx.institutionEnd, "YYYY-MM").format(
+                                                                            "MM-YYYY"
+                                                                        )}
+                                                                    </td>
+                                                                    <td>
+                                                                        <button
+                                                                            type="button"
+                                                                            id="addToTable"
+                                                                            className="btn btn-danger "
+                                                                            onClick={(e: any) => {
+                                                                                removeSchool(sx.id);
+                                                                            }}
+                                                                        >
+                                                                            <i className="fas fa-minus-circle" />
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>{" "}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                         <div className="card">
                             <div className="card-header">
@@ -420,7 +436,7 @@ const Education = ({ data }: any) => {
                                                                 }}
                                                             >
                                                                 <option value="">Select examination</option>
-                                                                {data?.examTypesNew?.response?.map((ex: any) => (
+                                                                {data?.examTypes?.response?.map((ex: any) => (
                                                                     <option key={ex.id} value={ex.id}>
                                                                         {ex.name}
                                                                     </option>

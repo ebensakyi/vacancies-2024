@@ -6,7 +6,6 @@ import { division } from "./division";
 import { department } from "./department";
 import { educationLevel } from "./education-level";
 import { examType } from "./exam-type";
-import { examTypeNew } from "./exam-type-new";
 import { grade } from "./grade";
 import { pages } from "./pages";
 import { staffType } from "./staff-type";
@@ -75,9 +74,7 @@ async function main() {
   await prisma.reason.createMany({
     data: reasons,
   });
-  await prisma.examTypeNew.createMany({
-    data: examTypeNew,
-  });
+
 
   await prisma.title.createMany({
     data: titles,

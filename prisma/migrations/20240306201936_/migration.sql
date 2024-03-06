@@ -150,18 +150,6 @@ CREATE TABLE `Advert` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `ExamTypeNew` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `createdBy` INTEGER NULL DEFAULT 1,
-    `deleted` INTEGER NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `ExamType` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
@@ -357,11 +345,10 @@ CREATE TABLE `DegreePrefix` (
 -- CreateTable
 CREATE TABLE `Personal` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `address` VARCHAR(255) NULL,
     `residenceTel` VARCHAR(255) NULL,
     `hometown` VARCHAR(255) NULL,
     `birthPlace` VARCHAR(255) NULL,
-    `dob` VARCHAR(20) NULL,
+    `dob` DATE NULL,
     `ageAtApplication` INTEGER NULL,
     `childrenNumber` INTEGER NULL,
     `deleted` INTEGER NULL DEFAULT 0,
@@ -370,7 +357,6 @@ CREATE TABLE `Personal` (
     `maritalStatusId` INTEGER NOT NULL,
     `sexId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
-    `title` VARCHAR(255) NULL,
     `permanentAddress` VARCHAR(255) NULL,
     `presentAddress` VARCHAR(255) NULL,
     `sonsInfo` VARCHAR(255) NULL,
@@ -540,32 +526,35 @@ CREATE TABLE `FilteredOutReason` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `GradesObtained` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `year` VARCHAR(255) NULL,
-    `deleted` INTEGER NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-    `examTypeId` INTEGER NOT NULL,
-    `userId` INTEGER NOT NULL,
-    `subjectId` INTEGER NOT NULL,
-    `gradeId` INTEGER NOT NULL,
-
-    UNIQUE INDEX `GradesObtained_userId_year_examTypeId_subjectId_gradeId_key`(`userId`, `year`, `examTypeId`, `subjectId`, `gradeId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `IndexNumber` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `indexNumber` VARCHAR(255) NOT NULL,
+    `indexNumber` VARCHAR(20) NOT NULL,
     `year` VARCHAR(255) NOT NULL,
     `createdBy` INTEGER NULL DEFAULT 1,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` INTEGER NOT NULL,
-    `examTypeNewId` INTEGER NULL,
+    `examTypeId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `GradesObtained` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `subjectCode` VARCHAR(10) NULL,
+    `subject` VARCHAR(40) NULL,
+    `grade` VARCHAR(40) NULL,
+    `candidateName` VARCHAR(100) NULL,
+    `candidateDob` VARCHAR(40) NULL,
+    `candidateGender` VARCHAR(40) NULL,
+    `deleted` INTEGER NULL DEFAULT 0,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `examTypeId` INTEGER NULL,
+    `indexNumberId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -630,9 +619,6 @@ ALTER TABLE `Advert` ADD CONSTRAINT `Advert_policyId_fkey` FOREIGN KEY (`policyI
 
 -- AddForeignKey
 ALTER TABLE `Advert` ADD CONSTRAINT `Advert_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `ExamTypeNew` ADD CONSTRAINT `ExamTypeNew_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ExamType` ADD CONSTRAINT `ExamType_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -767,22 +753,19 @@ ALTER TABLE `FilteredOutReason` ADD CONSTRAINT `FilteredOutReason_createdBy_fkey
 ALTER TABLE `FilteredOutReason` ADD CONSTRAINT `FilteredOutReason_applicationId_fkey` FOREIGN KEY (`applicationId`) REFERENCES `Application`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_examTypeId_fkey` FOREIGN KEY (`examTypeId`) REFERENCES `ExamType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `Subject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_gradeId_fkey` FOREIGN KEY (`gradeId`) REFERENCES `Grade`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `IndexNumber` ADD CONSTRAINT `IndexNumber_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `IndexNumber` ADD CONSTRAINT `IndexNumber_examTypeNewId_fkey` FOREIGN KEY (`examTypeNewId`) REFERENCES `ExamTypeNew`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `IndexNumber` ADD CONSTRAINT `IndexNumber_examTypeId_fkey` FOREIGN KEY (`examTypeId`) REFERENCES `ExamType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_indexNumberId_fkey` FOREIGN KEY (`indexNumberId`) REFERENCES `IndexNumber`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_examTypeId_fkey` FOREIGN KEY (`examTypeId`) REFERENCES `ExamType`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Certificate` ADD CONSTRAINT `Certificate_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

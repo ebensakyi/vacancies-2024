@@ -4,9 +4,9 @@ import Education from "@/src/components/applicant/Education";
 
 
 
-async function getDepartment(searchParams: any) {
+async function getEducationLevel(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/department?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/education-level?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {
@@ -16,9 +16,9 @@ async function getDepartment(searchParams: any) {
 
 }
 
-async function getUsers(searchParams: any) {
+async function getSchoolsAttended(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/user?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/education/schools-attended?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {
@@ -28,9 +28,9 @@ async function getUsers(searchParams: any) {
 
 }
 
-async function getUserRoles(searchParams: any) {
+async function getExamTypes(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/user-role?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/exam-type?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {
@@ -41,30 +41,18 @@ async function getUserRoles(searchParams: any) {
 }
 
 
-async function getJobs(searchParams: any) {
-    let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/job?qry=${qry}`, { cache: 'no-store' });
-
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch data')
-    }
-    return await response.json();
-
-}
 
 
 export default async function Page({ searchParams }: any) {
 
 
-    const users = await getUsers(searchParams)
-    const departments = await getDepartment(searchParams)
-    const userRoles = await getUserRoles(searchParams)
-    const jobs = await getJobs(searchParams)
+    const educationLevels = await getEducationLevel(searchParams)
+    const examTypes = await getExamTypes(searchParams)
+    const schoolsAttended = await getSchoolsAttended(searchParams)
 
 
     let data: any = {
-        users,departments,userRoles,jobs
+        educationLevels,examTypes,schoolsAttended
     }
 
     return <Education data={data} />
