@@ -30,15 +30,29 @@ async function getStaffType(searchParams: any) {
 }
 
 
+async function getRecruitments(searchParams: any) {
+    let { qry } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/recruitment?qry=${qry}`, { cache: 'no-store' });
+
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return await response.json();
+
+}
+
+
 export default async function Page({ searchParams }: any) {
 
 
     const userRoles = await getUserRoles(searchParams)
     const staffTypes = await getStaffType(searchParams)
+    const recruitments = await getRecruitments(searchParams)
 
 
     let data: any = {
-        userRoles,staffTypes
+        userRoles,staffTypes,recruitments
     }
 
     return <Recruitment data={data} />

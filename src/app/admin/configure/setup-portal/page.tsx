@@ -18,16 +18,29 @@ async function getUserRoles(searchParams: any) {
 }
 
 
+async function getRecruitments(searchParams: any) {
+    let { qry } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/recruitment?qry=${qry}`, { cache: 'no-store' });
+
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return await response.json();
+
+}
+
 
 
 export default async function Page({ searchParams }: any) {
 
 
     const userRoles = await getUserRoles(searchParams)
+    const recruitments = await getUserRoles(searchParams)
 
 
     let data: any = {
-        userRoles
+        userRoles,recruitments
     }
 
     return <SetupPortal data={data} />

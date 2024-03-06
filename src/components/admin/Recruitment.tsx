@@ -3,8 +3,11 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import moment from "moment";
 
 const Recruitment = ({ data }: any) => {
+
+  
   const [name, setName] = useState("");
   const [staffType, setStaffType] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -191,8 +194,8 @@ const Recruitment = ({ data }: any) => {
                               <tr key={r.id}>
                                 {/* <td>{r.id}</td> */}
                                 <td>{r.name}</td>
-                                <td>{r.name}</td>
-                                <td>{r.name}</td>
+                                <td> {moment(r.startDate).format("DD-MM-YYYY")}</td>
+                                <td>{moment(r.deadline).format("DD-MM-YYYY")}</td>
                                 <td>{r?.StaffType?.name}</td>
                                 {/* <td>
                           <button

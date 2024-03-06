@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
 import ApplicationMenu from "../ApplicationMenu";
-import moment from "moment";
 import Link from "next/link";
 import { Router } from "next/router";
 

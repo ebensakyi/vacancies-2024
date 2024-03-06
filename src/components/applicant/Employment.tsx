@@ -6,7 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import ApplicationMenu from "../ApplicationMenu";
-import moment from "moment";
 import Link from "next/link";
 
 const Employment = ({ data }: any) => {

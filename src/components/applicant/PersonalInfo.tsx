@@ -10,7 +10,6 @@ import ApplicationMenu from "../ApplicationMenu";
 import { useSession } from "next-auth/react";
 import { LOGIN_URL } from "@/constants";
 import moment from "moment";
-import { yes_no } from '../../../prisma/seeds/yes-no';
 
 const PersonalInfo = ({ data }: any) => {
     const { data: session } = useSession({

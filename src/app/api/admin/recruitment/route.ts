@@ -14,6 +14,9 @@ export async function POST(request: Request) {
       staffTypeId: Number(res.data.staffType),
 
     };
+
+    console.log("DATA ",data);
+    
     const response = await prisma.recruitment.create({ data });
 
 
@@ -59,6 +62,7 @@ export async function GET(request: Request) {
       include: { StaffType: true }
     });
 
+    
 
     return NextResponse.json({ response });
   } catch (error) {

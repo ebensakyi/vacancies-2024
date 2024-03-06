@@ -208,13 +208,14 @@ model SubjectType {
 model Recruitment {
   id        Int       @id @default(autoincrement())
   name      String?   @unique(map: "name") @db.VarChar(255)
-  code      String?   @db.VarChar(255)
+  code      String?   @db.VarChar(255) 
+  startDate DateTime? @db.Date
+  deadline  DateTime? @db.Date
   createdBy Int?      @default(1)
   deleted   Int?      @default(0)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  startDate DateTime? @db.Date
-  deadline  DateTime? @db.Date
+ 
 
   StaffType           StaffType             @relation(fields: [staffTypeId], references: [id])
   staffTypeId         Int

@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Router from "next/router";
-const SetupPortal = ({ recruitment, current }: any) => {
+const SetupPortal = ({ data }: any) => {
   //let cr = currentRecruitment.StaffType.name;
 
   const [cr, setCr] = useState("");
@@ -29,7 +29,19 @@ const SetupPortal = ({ recruitment, current }: any) => {
     } catch (error) { }
   };
   return (
-    <>
+    <div id="layout-wrapper">
+      {/* <Header /> */}
+      <div className="main-content">
+        <div className="page-content">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <div className="page-title-box d-flex align-items-center justify-content-between">
+                  <h4 className="mb-0">RECRUITMENT</h4>
+                </div>
+              </div>
+            </div>
+            <div className="row">
       <ToastContainer
         position="top-right"
         autoClose={15000}
@@ -71,7 +83,7 @@ const SetupPortal = ({ recruitment, current }: any) => {
                           <option value="">
                             Select staff you're recruiting
                           </option>
-                          {recruitment.map((st:any) => (
+                          {data?.recruitment?.response?.map((st:any) => (
                             <option key={st.id} value={st.id}>
                               {st.name} - {st.StaffType.name}
                             </option>
@@ -96,7 +108,7 @@ const SetupPortal = ({ recruitment, current }: any) => {
                           }}
                         >
                           <option value="">Select shortlisting</option>
-                          {recruitment.map((st:any) => (
+                          {data?.recruitment?.response?.map((st:any) => (
                             <option key={st.id} value={st.id}>
                               {st.name} - {st.StaffType.name}
                             </option>
@@ -146,30 +158,30 @@ const SetupPortal = ({ recruitment, current }: any) => {
                 <div className="row">
                   <span>
                     Recruitment:
-                    <h5>{current.cr.Recruitment != null ? current.cr.Recruitment.name : ""}</h5>
+                    {/* <h5>{current.cr.Recruitment != null ? current.cr.Recruitment.name : ""}</h5> */}
                   </span>
                   <span>
                     Staff type:
-                    <h5>{current.cr.Recruitment != null ? current.cr.Recruitment.StaffType.name : ""}</h5>
+                    {/* <h5>{current.cr.Recruitment != null ? current.cr.Recruitment.StaffType.name : ""}</h5> */}
                   </span>
                   <span>
                     Year:
-                    <h5>({current.cr.Recruitment != null ? current.cr.Recruitment.code : ""})</h5>
+                    {/* <h5>({current.cr.Recruitment != null ? current.cr.Recruitment.code : ""})</h5> */}
                   </span>
                 </div>
                 <hr />
                 <div className="row">
                   <span>
                     Shortlisting:
-                    <h5>{current.cr.Recruitment != null ? current.cs.Recruitment.name : ""}</h5>
+                    {/* <h5>{current.cr.Recruitment != null ? current.cs.Recruitment.name : ""}</h5> */}
                   </span>
                   <span>
                     Staff type:
-                    <h5>{current.cr.Recruitment != null ? current.cs.Recruitment.StaffType.name : ""}</h5>
+                    {/* <h5>{current.cr.Recruitment != null ? current.cs.Recruitment.StaffType.name : ""}</h5> */}
                   </span>
                   <span>
                     Year:
-                    <h5>({current.cr.Recruitment != null ? current.cs.Recruitment.code : ""})</h5>
+                    {/* <h5>({current.cr.Recruitment != null ? current.cs.Recruitment.code : ""})</h5> */}
                   </span>
                 </div>
               </div>
@@ -177,7 +189,11 @@ const SetupPortal = ({ recruitment, current }: any) => {
           </div>
         </div>
       </div>
-    </>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
   );
 };
 
