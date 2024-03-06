@@ -80,7 +80,6 @@ model StaffType {
   deleted   Int?     @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Policy    Policy[]
 
   Recruitment Recruitment[]
   User        User?         @relation(fields: [createdBy], references: [id])
@@ -115,9 +114,10 @@ model Policy {
   educationLevelId Int
   Job              Job[]
   Advert           Advert[]
-  User             User?      @relation(fields: [createdBy], references: [id])
-  StaffType        StaffType? @relation(fields: [staffTypeId], references: [id])
-  staffTypeId      Int?
+  User             User?       @relation(fields: [createdBy], references: [id])
+  Recruitment      Recruitment @relation(fields: [recruitmentId], references: [id])
+
+  recruitmentId    Int
 }
 
 model Job {
@@ -208,20 +208,20 @@ model SubjectType {
 model Recruitment {
   id        Int       @id @default(autoincrement())
   name      String?   @unique(map: "name") @db.VarChar(255)
-  code      String?   @db.VarChar(255) 
+  code      String?   @db.VarChar(255)
   startDate DateTime? @db.Date
   deadline  DateTime? @db.Date
   createdBy Int?      @default(1)
   deleted   Int?      @default(0)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
- 
 
   StaffType           StaffType             @relation(fields: [staffTypeId], references: [id])
   staffTypeId         Int
   CurrentRecruitment  CurrentRecruitment[]
   CurrentShortlisting CurrentShortlisting[]
   User                User?                 @relation(fields: [createdBy], references: [id])
+  Policy              Policy[]
 }
 
 model CurrentRecruitment {

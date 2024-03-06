@@ -113,7 +113,7 @@ CREATE TABLE `Policy` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `educationLevelId` INTEGER NOT NULL,
-    `staffTypeId` INTEGER NULL,
+    `recruitmentId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -618,7 +618,7 @@ ALTER TABLE `Policy` ADD CONSTRAINT `Policy_educationLevelId_fkey` FOREIGN KEY (
 ALTER TABLE `Policy` ADD CONSTRAINT `Policy_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Policy` ADD CONSTRAINT `Policy_staffTypeId_fkey` FOREIGN KEY (`staffTypeId`) REFERENCES `StaffType`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Policy` ADD CONSTRAINT `Policy_recruitmentId_fkey` FOREIGN KEY (`recruitmentId`) REFERENCES `Recruitment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Job` ADD CONSTRAINT `Job_policyId_fkey` FOREIGN KEY (`policyId`) REFERENCES `Policy`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

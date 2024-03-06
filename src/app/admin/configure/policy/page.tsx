@@ -30,6 +30,18 @@ async function getEducationLevel(searchParams: any) {
 }
 
 
+async function getRecruitments(searchParams: any) {
+    let { qry } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/recruitment?qry=${qry}`, { cache: 'no-store' });
+
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return await response.json();
+
+}
+
 
 
 
@@ -38,10 +50,11 @@ export default async function Page({ searchParams }: any) {
 
     const levels = await getEducationLevel(searchParams)
     const policies = await getPolicies(searchParams)
+    const recruitments = await getRecruitments(searchParams)
 
 
     let data: any = {
-        levels,policies
+        levels,policies,recruitments
     }
 
     return <Policy data={data} />

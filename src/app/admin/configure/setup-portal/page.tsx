@@ -36,7 +36,7 @@ export default async function Page({ searchParams }: any) {
 
 
     const userRoles = await getUserRoles(searchParams)
-    const recruitments = await getUserRoles(searchParams)
+    const recruitments = await getRecruitments(searchParams)
 
 
     let data: any = {

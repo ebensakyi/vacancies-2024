@@ -8,7 +8,6 @@ import moment from "moment";
 
 const Policy = ({ data }: any) => {
   const router = useRouter()
-  console.log(data);
 
 
   const ages = [];
@@ -60,7 +59,7 @@ const Policy = ({ data }: any) => {
 
   const updatePolicy = async () => {
     try {
-      if (name == "" || recruitment == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "" )
+      if (name == "" || recruitment == "" || age == "" || miniGrade == "" || miniEducation == "" || experience == "")
         return toast.error("Please fill the form");
 
       const data = {
@@ -77,7 +76,7 @@ const Policy = ({ data }: any) => {
       if (response.status == 200) {
         setId("")
         setName("")
-       
+
         setAge("")
         setMiniEducation("")
         setMiniGrade("")
@@ -160,29 +159,29 @@ const Policy = ({ data }: any) => {
                           </div>
                         </div>
                         <div className="col-md-4">
-                                                        <div className="form-group">
-                                                            <div className="mb-3 position-relative">
-                                                                <label className="form-label" htmlFor="note">
-                                                                    Recruitment : <span className="danger">*</span>
-                                                                </label>
-                                                                <select
-                                                                    className="custom-select form-control required"
-                                                                    required
-                                                                    onChange={(e: any) => {
-                                                                        setRecruitment(e.target.value);
-                                                                    }}
-                                                                    value={recruitment}
-                                                                >
-                                                                    <option value="">Select staff</option>
-                                                                    {data?.recrtuitment?.response?.map((data: any) => (
-                                                                        <option key={data.id} value={data.id}>
-                                                                            {data.name}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                          <div className="form-group">
+                            <div className="mb-3 position-relative">
+                              <label className="form-label" htmlFor="note">
+                                Recruitment : <span className="danger">*</span>
+                              </label>
+                              <select
+                                className="custom-select form-control required"
+                                required
+                                onChange={(e: any) => {
+                                  setRecruitment(e.target.value);
+                                }}
+                                value={recruitment}
+                              >
+                                <option value="">Select recruitment</option>
+                                {data?.recruitments?.response?.map((data: any) => (
+                                  <option key={data.id} value={data.id}>
+                                    {data.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
                         <div className="col-md-4">
                           <div className="form-group">
                             <div className="mb-3 position-relative">
@@ -288,7 +287,7 @@ const Policy = ({ data }: any) => {
                             </div>
                           </div>
                         </div>
-                        
+
 
                         {/* <div className="col-md-4">
                 <div className="form-group">
@@ -326,28 +325,28 @@ const Policy = ({ data }: any) => {
                       </div>
 
                       <div className="form-actions mt-10">
-                        {id==""?
+                        {id == "" ?
                           <button
-                          type="button"
-                          className="btn btn-success add"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            save();
-                          }}
-                        >
-                          Save
-                        </button>:  <button
-                          type="button"
-                          className="btn btn-warning add"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            updatePolicy();
-                          }}
-                        >
-                          Update
-                        </button>
-                      }
-                      
+                            type="button"
+                            className="btn btn-success add"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              save();
+                            }}
+                          >
+                            Save
+                          </button> : <button
+                            type="button"
+                            className="btn btn-warning add"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              updatePolicy();
+                            }}
+                          >
+                            Update
+                          </button>
+                        }
+
                       </div>
                     </form>
                   </div>
@@ -409,7 +408,7 @@ const Policy = ({ data }: any) => {
                                     }}
                                   >
                                     <i className="dripicons-pencil" />
-                                  </button>  {" "} 
+                                  </button>  {" "}
                                   <button
                                     type="button"
                                     className="btn btn-danger btn-sm waves-effect waves-light"

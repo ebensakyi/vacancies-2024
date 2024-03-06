@@ -4,9 +4,10 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
+import { useRouter, redirect } from "next/navigation";
 
 const Recruitment = ({ data }: any) => {
-
+const router = useRouter()
   
   const [name, setName] = useState("");
   const [staffType, setStaffType] = useState("");
@@ -26,7 +27,7 @@ const Recruitment = ({ data }: any) => {
         setStaffType("");
         setDeadline("");
         setStartDate("")
-        // Router.reload(window.location.pathname);
+    router.refresh();
         return toast.success("Data saved successfully");
       }
       if (response.status != 200) return toast.error("Data not saved");
