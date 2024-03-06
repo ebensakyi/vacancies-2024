@@ -15,7 +15,6 @@ const Header = () => {
   let user = session?.user
 
 
-  console.log(user);
 
 
   return (
@@ -141,10 +140,10 @@ const Header = () => {
                 <i className="uil uil-lock-alt font-size-18 align-middle me-1 text-muted" />{" "}
                 <span className="align-middle">Lock screen</span>
               </a> */}
-                  <a className="dropdown-item" href="#">
+                  <button className="dropdown-item" onClick={()=>{signOut()}}>
                     <i className="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted" />{" "}
                     <span className="align-middle">Sign out</span>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="dropdown d-inline-block">
@@ -315,10 +314,6 @@ const Header = () => {
 
                       </Link> */}
 
-                        <Link href="/admin/configure/user-role" className="dropdown-item">
-
-                          User role
-                        </Link>
 
 
                       </div>
@@ -421,6 +416,11 @@ const Header = () => {
                         className="dropdown-menu"
                         aria-labelledby="topnav-pages"
                       >
+                        <Link href="/admin/configure/user-role" className="dropdown-item">
+
+                          User role
+                        </Link>
+
                         <Link href="/admin/user/admin" className="dropdown-item">
                           Admin Users
                         </Link>

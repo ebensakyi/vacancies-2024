@@ -78,161 +78,174 @@ const BroadsheetPositionSummary = ({ jobSummary }: any) => {
   // const handleAction = async () => { };
 
   return (
-    <div className="row">
-      <ToastContainer
-        position="top-right"
-        autoClose={15000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <div className="col-12">
-        <div className="card">
-          <div className="card-body">
-            {/* <h4 className="card-title">Position records</h4>
+    <div id="layout-wrapper">
+      {/* <Header /> */}
+      <div className="main-content">
+        <div className="page-content">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <div className="page-title-box d-flex align-items-center justify-content-between">
+                  <h4 className="mb-0">POSITIONS SUMMARY</h4>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+
+              <ToastContainer
+                position="top-right"
+                autoClose={15000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
+              <div className="col-12">
+                <div className="card">
+                  <div className="card-body">
+                    {/* <h4 className="card-title">Position records</h4>
             <p className="card-title-desc">
               Click on view to view the broadsheet of a position.
             </p> */}
-            <table
-              className="table table-striped table-bordered nowrap"
-              style={{
-                borderCollapse: "collapse",
-                borderSpacing: 0,
-                width: "100%",
-              }}
-            >
-              <thead>
-                <tr>
-                  {/* <th>#</th> */}
-                  <th>Job title</th>
-                  <th>Total applicants</th>
-                  <th>Unworked applicants</th>
-                  <th>Shortlisted applicants</th>
-                  <th>Rejected applicants</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jobSummary?.map((job: any) => {
-                  return (
-                    <tr>
-                      {/* <td>{job.id}</td> */}
-                      <td>{job.name}</td>
-                      <td>
-                        <span className="badge bg-primary font-size-12">
-                          {job.applicationCount}
-                        </span>
-                      </td>
+                    <table
+                      className="table table-striped table-bordered nowrap"
+                      style={{
+                        borderCollapse: "collapse",
+                        borderSpacing: 0,
+                        width: "100%",
+                      }}
+                    >
+                      <thead>
+                        <tr>
+                          {/* <th>#</th> */}
+                          <th>Job title</th>
+                          <th>Total applicants</th>
+                          <th>Unworked applicants</th>
+                          <th>Shortlisted applicants</th>
+                          <th>Rejected applicants</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {jobSummary?.map((job: any) => {
+                          return (
+                            <tr>
+                              {/* <td>{job.id}</td> */}
+                              <td>{job.name}</td>
+                              <td>
+                                <span className="badge bg-primary font-size-12">
+                                  {job.applicationCount}
+                                </span>
+                              </td>
 
-                      <td>
-                        <span className="badge bg-dark font-size-12">
-                          {job.unworkedApplicationCount}
-                        </span>
-                      </td>
-                      <td>
-                        <span className="badge bg-success font-size-12">
-                          {job.shortlistedApplicationCount}
-                        </span>
-                      </td>
-                      <td>
-                        <span className="badge bg-danger font-size-12">
-                          {job.rejectedApplicationCount}
-                        </span>
-                      </td>
+                              <td>
+                                <span className="badge bg-dark font-size-12">
+                                  {job.unworkedApplicationCount}
+                                </span>
+                              </td>
+                              <td>
+                                <span className="badge bg-success font-size-12">
+                                  {job.shortlistedApplicationCount}
+                                </span>
+                              </td>
+                              <td>
+                                <span className="badge bg-danger font-size-12">
+                                  {job.rejectedApplicationCount}
+                                </span>
+                              </td>
 
-                      <td>
-                        <select
-                          className="custom-select form-control"
-                          onChange={async (e: any) => await generate(e.target.value)}
-                        >
-                          <optgroup label="View">
-                            <option
+                              <td>
+                                <select
+                                  className="custom-select form-control"
+                                  onChange={async (e: any) => await generate(e.target.value)}
+                                >
+                                  <optgroup label="View">
+                                    <option
 
-                            >
-                              Select action
-                            </option>
-                            <option
-                              value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=1`}
-                            >
-                              All
-                            </option>
-                            <option
-                              value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=-1`}
-                            >
-                              Unworked
-                            </option>
-                            <option
-                              value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=1`}
-                            >
-                              Shortlisted
-                            </option>
-                            <option
-                              value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=0`}
-                            >
-                              Rejected
-                            </option>
-                          </optgroup>
-                          <optgroup label="Download PDF">
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=`}
-                            >
-                              All
-                            </option>
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=-1`}
-                            >
-                              Unworked
-                            </option>
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=1`}
-                            >
-                              Shortlisted
-                            </option>
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=0`}
-                            >
-                              Rejected
-                            </option>
-                          </optgroup>
-                          <optgroup label="Download XLS">
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=`}
-                            >
-                              All
-                            </option>
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=-1`}
-                            >
-                              Unworked
-                            </option>
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=1`}
-                            >
-                              Shortlisted
-                            </option>
-                            <option
-                              value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=0`}
-                            >
-                              Rejected
-                            </option>
-                          </optgroup>
-                        </select>
+                                    >
+                                      Select action
+                                    </option>
+                                    <option
+                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=1`}
+                                    >
+                                      All
+                                    </option>
+                                    <option
+                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=-1`}
+                                    >
+                                      Unworked
+                                    </option>
+                                    <option
+                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=1`}
+                                    >
+                                      Shortlisted
+                                    </option>
+                                    <option
+                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=0`}
+                                    >
+                                      Rejected
+                                    </option>
+                                  </optgroup>
+                                  <optgroup label="Download PDF">
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=`}
+                                    >
+                                      All
+                                    </option>
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=-1`}
+                                    >
+                                      Unworked
+                                    </option>
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=1`}
+                                    >
+                                      Shortlisted
+                                    </option>
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=0`}
+                                    >
+                                      Rejected
+                                    </option>
+                                  </optgroup>
+                                  <optgroup label="Download XLS">
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=`}
+                                    >
+                                      All
+                                    </option>
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=-1`}
+                                    >
+                                      Unworked
+                                    </option>
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=1`}
+                                    >
+                                      Shortlisted
+                                    </option>
+                                    <option
+                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=0`}
+                                    >
+                                      Rejected
+                                    </option>
+                                  </optgroup>
+                                </select>
 
-                        <br />
-                        <br />
-                      </td>
-                      <td>
-                        <div className="d-flex flex-wrap gap-2">
-                          {/* <button type="button" className="btn btn-warning waves-effect waves-light  btn-sm ">
+                                <br />
+                                <br />
+                              </td>
+                              <td>
+                                <div className="d-flex flex-wrap gap-2">
+                                  {/* <button type="button" className="btn btn-warning waves-effect waves-light  btn-sm ">
                                                 <i className="uil uil-exclamation-triangle me-2"></i> Warning
                                             </button> */}
-                        </div>
+                                </div>
 
-                        {/* <button
+                                {/* <button
                           className="btn btn-success btn-sm "
                           onClick={(e:any) => {
                             e.preventDefault();
@@ -243,9 +256,9 @@ const BroadsheetPositionSummary = ({ jobSummary }: any) => {
                             ? "Generating broadsheet"
                             : "Generate"}
                         </button> */}
-                      </td>
+                              </td>
 
-                      {/* <td>
+                              {/* <td>
                         {job.id == currentId && path != null ? (
                           <a
                             href={path}
@@ -261,15 +274,19 @@ const BroadsheetPositionSummary = ({ jobSummary }: any) => {
                         <td>
                          
                         </td> */}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>{" "}
+              {/* end col */}
+            </div>
           </div>
         </div>
-      </div>{" "}
-      {/* end col */}
+      </div>
     </div>
   );
 };
