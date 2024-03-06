@@ -5,16 +5,31 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Editor } from "@tinymce/tinymce-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import ApplicationMenu from "../ApplicationMenu";
 import moment from "moment";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { LOGIN_URL } from "@/constants";
 
 const Education = ({ data }: any) => {
+    const currentYear = new Date().getFullYear();
+
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect(LOGIN_URL);
+        }
+    })
+
+    const years = [];
+
+    for (let year = currentYear; year >=1990 ; year--) {
+        years.push(year);
+    }
     const router = useRouter();
     const [schoolsAttended, setSchoolsAttended] = useState([]);
 
-    console.log(data);
 
 
     const [educationLevel, setEducationLevel] = useState("");
@@ -23,13 +38,11 @@ const Education = ({ data }: any) => {
     const [endYear, setEndYear] = useState("");
     /////////////////////////////////////////////////////////////////
 
-    const [gradeObtained, setGradeObtained] = useState([]);
     const [examYear, setExamYear] = useState("");
     const [examType, setExamType] = useState("");
     const [subject, setSubject] = useState("");
     const [grade, setGrade] = useState("");
     const [indexNumber, setIndexNumber] = useState("");
-    const [indexNumberList, setIndexNumberList] = useState([]);
 
 
 
@@ -83,30 +96,25 @@ const Education = ({ data }: any) => {
                 indexNumber,
             };
 
-            if (examType == null || examYear == null || indexNumber == null)
+            if (examType == "" || examYear == "" || indexNumber == "")
                 return toast.error("Please fill the form");
 
-            const response = await axios.post("/api/applicant/index-number", {
+            const response = await axios.post("/api/applicant/education/index-numbers", {
                 data,
             });
 
-            let { statusCode } = response.data;
-            let indx = response.data.data;
-            let { message } = response.data;
+            let { status } = response.data;
 
-            if (statusCode == 1) {
+            if (status == 200) {
                 setIndexNumber("");
                 setExamType("");
                 setExamYear("");
 
-                // setGradeObtained([...gradeObtained, savedGrade]);
-                // setIndexNumbers([...indexNumbers, indx]);
-                setIndexNumberList(indx);
-                // router.replace(router.asPath);
+    
                 return toast.success("Index number added successfully");
             }
 
-            if (statusCode == 0) return toast.error(message);
+            if (status != 200) return toast.error("Index number not added");
         } catch (error) {
             console.log(error);
         }
@@ -181,7 +189,7 @@ const Education = ({ data }: any) => {
         try {
 
 
-            const filteredIndexNumbers = indexNumberList?.filter((ind: { id: any; }) => ind.id !== id);
+            // const filteredIndexNumbers = indexNumberList?.filter((ind: { id: any; }) => ind.id !== id);
 
             const response = await axios.delete(`/api/applicant/index-number`, {
                 data: id,
@@ -446,20 +454,28 @@ const Education = ({ data }: any) => {
                                                     </div>{" "}
                                                     <div className="col-md-2">
                                                         <div className="form-group">
-                                                            <label className="control-label">
-                                                                Month/Year <span style={danger}>*</span>
-                                                            </label>
-                                                            <input
-                                                                type="month"
-                                                                className="custom-select form-control"
-                                                                id="year"
-                                                                value={examYear}
-                                                                onChange={(e: any) => {
-                                                                    setExamYear(e.target.value);
-                                                                }}
-                                                            />
+                                                            <div className="mb-3 position-relative">
+                                                                <label className="form-label" htmlFor="age">
+                                                                Year of exams : <span className="danger">*</span>{" "}
+                                                                </label>
+                                                                <select
+                                                                        className="form-control"
+                                                                        value={examYear}
+                                                                        onChange={(e) => {
+                                                                            setExamYear(e.target.value);
+                                                                        }}
+                                                                    >
+                                                                        <option value="">Year</option>
+                                                                        {years.map((year) => (
+                                                                            <option key={year} value={year}>
+                                                                                {year}
+                                                                            </option>
+                                                                        ))}
+                                                                    </select>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    
                                                     <div className="col-md-2">
                                                         <div className="form-group">
                                                             <label className="control-label">

@@ -528,14 +528,17 @@ CREATE TABLE `FilteredOutReason` (
 -- CreateTable
 CREATE TABLE `IndexNumber` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `indexNumber` VARCHAR(20) NOT NULL,
-    `year` VARCHAR(255) NOT NULL,
+    `candidateNumber` VARCHAR(20) NOT NULL,
+    `examYear` VARCHAR(40) NOT NULL,
+    `candidateName` VARCHAR(100) NULL,
+    `candidateDob` VARCHAR(40) NULL,
+    `candidateGender` VARCHAR(40) NULL,
+    `userId` INTEGER NOT NULL,
+    `examTypeId` INTEGER NOT NULL,
     `createdBy` INTEGER NULL DEFAULT 1,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `userId` INTEGER NOT NULL,
-    `examTypeId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -546,14 +549,11 @@ CREATE TABLE `GradesObtained` (
     `subjectCode` VARCHAR(10) NULL,
     `subject` VARCHAR(40) NULL,
     `grade` VARCHAR(40) NULL,
-    `candidateName` VARCHAR(100) NULL,
-    `candidateDob` VARCHAR(40) NULL,
-    `candidateGender` VARCHAR(40) NULL,
+    `interpretation` VARCHAR(40) NULL,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` INTEGER NOT NULL,
-    `examTypeId` INTEGER NULL,
     `indexNumberId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -763,9 +763,6 @@ ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_userId_fkey` FOREIGN
 
 -- AddForeignKey
 ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_indexNumberId_fkey` FOREIGN KEY (`indexNumberId`) REFERENCES `IndexNumber`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `GradesObtained` ADD CONSTRAINT `GradesObtained_examTypeId_fkey` FOREIGN KEY (`examTypeId`) REFERENCES `ExamType`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Certificate` ADD CONSTRAINT `Certificate_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
