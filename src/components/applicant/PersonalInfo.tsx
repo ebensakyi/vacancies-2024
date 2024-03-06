@@ -23,15 +23,11 @@ const PersonalInfo = ({ data }: any) => {
 
     let user: any = session?.user
 
-    useEffect(() => {
-        setSurname(user?.surname)
-        setFirstName(user?.firstName)
-        setPhone(user?.phone)
-
-    }, [])
 
 
     const router = useRouter()
+    const [personalInfoId, setPersonalInfoId] = useState(null);
+
     const [firstName, setFirstName] = useState("");
     const [surname, setSurname] = useState("");
     const [otherNames, setOtherNames] = useState("");
@@ -50,12 +46,37 @@ const PersonalInfo = ({ data }: any) => {
 
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [otherNumber, setOtherNumber] = useState("");
     const [haveKids, setHaveKids] = useState("");
+    const [residenceTel, setResidenceTel] = useState("");
 
     const [day, setDay] = useState("");
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
+
+    useEffect(() => {
+        setPersonalInfoId(data?.personalInfo?.response?.id)
+        setSurname(user?.surname)
+        setFirstName(user?.firstName)
+        setOtherNames(user?.otherNames)
+
+        setPhone(user?.phone)
+        setPermanentAddress(data?.personalInfo?.response?.permanentAddress)
+        setPresentAddress(data?.personalInfo?.response?.presentAddress)
+        setDob(data?.personalInfo?.response?.dob)
+        setGender(data?.personalInfo?.response?.sexId)
+        setHometown(data?.personalInfo?.response?.hometown)
+        setMaritalStatus(data?.personalInfo?.response?.maritalStatusId)
+
+        setBirthPlace(data?.personalInfo?.response?.birthPlace)
+        setChildrenNumber(data?.personalInfo?.response?.childrenNumber)
+        setSonsInfo(data?.personalInfo?.response?.sonsInfo)
+        setDaughtersInfo(data?.personalInfo?.response?.daughtersInfo)
+        setHaveKids(data?.personalInfo?.response?.haveKids)
+        setResidenceTel(data?.personalInfo?.response?.residenceTel)
+        setTitle(data?.personalInfo?.response?.titleId)
+
+    }, [])
+
 
 
 
@@ -84,7 +105,8 @@ const PersonalInfo = ({ data }: any) => {
             // if (phone.length != 10)
             //     return toast.error("Please enter your a correct phone number");
             const data = {
-                title: title?.trim(),
+                id: personalInfoId,
+                title: title,
                 firstName: firstName?.trim(),
                 surname: surname?.trim(),
                 otherNames: otherNames?.trim(),
@@ -97,29 +119,34 @@ const PersonalInfo = ({ data }: any) => {
                 birthPlace: birthPlace?.trim(),
                 maritalStatusId: Number(maritalStatus),
                 sexId: Number(gender),
-                residenceTel: otherNumber,
-                childrenNumber:childrenNumber,
+                residenceTel: residenceTel,
+                childrenNumber: childrenNumber,
                 sonsInfo: sonsInfo?.trim(),
                 daughtersInfo: daughtersInfo?.trim(),
                 permanentAddress: permanentAddress?.trim(),
                 presentAddress: presentAddress?.trim(),
                 haveKids: haveKids
             };
+            let response
+            if (personalInfoId == null) {
+                response = await axios.post("/api/applicant/personal", {
+                    data,
+                });
+
+            } else {
+                response = await axios.put("/api/applicant/personal", {
+                    data,
+                });
+            }
+
+            console.log(response);
+
+            let { status } = response;
 
 
-            const response = await axios.post("/api/applicant/personal", {
-                data,
-            });
-
-            let { status } = response.data;
-            let { message } = response.data;
-
-            // let { isValid } = response.data.data;
-            // if (!isValid)
-            //   return toast.error("Complete this section before moving to next");
 
             if (status == 200) {
-                toast.success(message);
+                toast.success("Personal info saved");
                 return router.push("/applicant/education?core=");
             }
 
@@ -204,6 +231,8 @@ const PersonalInfo = ({ data }: any) => {
                                                     </label>
                                                     <div className="input-group mb-3">
                                                         <input
+                                                            readOnly
+
                                                             type="text"
                                                             className="form-control"
                                                             name="firstName"
@@ -230,6 +259,8 @@ const PersonalInfo = ({ data }: any) => {
                                                     </label>
                                                     <div className="input-group mb-3">
                                                         <input
+                                                            readOnly
+
                                                             type="text"
                                                             className="form-control"
                                                             name="surname"
@@ -242,7 +273,7 @@ const PersonalInfo = ({ data }: any) => {
                                                             onChange={(e: any) => {
                                                                 setSurname(e.target.value);
                                                             }}
-                                                            value={user?.surname}
+                                                            value={surname}
 
                                                         />
                                                         <div className="invalid-tooltip">Surname is required</div>
@@ -254,6 +285,8 @@ const PersonalInfo = ({ data }: any) => {
                                                     <label htmlFor="exampleInputuname">Other name(s)</label>
                                                     <div className="input-group mb-3">
                                                         <input
+                                                            readOnly
+
                                                             type="text"
                                                             className="form-control"
                                                             name="otherNames"
@@ -264,7 +297,7 @@ const PersonalInfo = ({ data }: any) => {
                                                             onChange={(e: any) => {
                                                                 setOtherNames(e.target.value);
                                                             }}
-                                                            value={user?.otherName}
+                                                            value={user?.otherNames}
 
                                                         />
                                                     </div>
@@ -630,9 +663,9 @@ const PersonalInfo = ({ data }: any) => {
                                                             id="residenceTel"
                                                             aria-label="Username"
                                                             aria-describedby="basic-addon1"
-                                                            defaultValue={otherNumber}
+                                                            defaultValue={residenceTel}
                                                             onChange={(e: any) => {
-                                                                setOtherNumber(e.target.value);
+                                                                setResidenceTel(e.target.value);
                                                             }}
                                                         />
                                                     </div>
@@ -669,16 +702,16 @@ const PersonalInfo = ({ data }: any) => {
                                         </div>
                                         {haveKids == "1" ?
                                             <div className="row">
-                                                 <div className="col-sm-3">
+                                                <div className="col-sm-3">
                                                     <div className="form-group">
                                                         <label htmlFor="exampleInputuname">
                                                             Number of children
                                                         </label>
                                                         <div className="input-group mb-3">
                                                             <input
-                                                                type="text"
+                                                                type="number"
                                                                 className="form-control"
-                                                               
+
                                                                 aria-label="Username"
                                                                 aria-describedby="basic-addon1"
                                                                 required
@@ -748,18 +781,18 @@ const PersonalInfo = ({ data }: any) => {
                                                 <Link href="/applicant/essay" type="button" className="btn btn-success">
                                                     Previous
                                                 </Link>
- <button
-                                                className="btn btn-success add"
-                                                type="button"
-                                                onClick={(e: any) => {
-                                                    e.preventDefault();
-                                                    save();
-                                                }}
-                                            >
-                                                Next
-                                            </button>
+                                                <button
+                                                    className="btn btn-success add"
+                                                    type="button"
+                                                    onClick={(e: any) => {
+                                                        e.preventDefault();
+                                                        save();
+                                                    }}
+                                                >
+                                                    Next
+                                                </button>
                                             </div>
-                                           
+
                                         </div>
                                     </form>
                                 </div>

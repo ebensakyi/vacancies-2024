@@ -402,7 +402,6 @@ model DegreePrefix {
 model Personal {
   id               Int           @id @default(autoincrement())
   User             User          @relation(fields: [userId], references: [id])
-  address          String?       @db.VarChar(255)
   residenceTel     String?       @db.VarChar(255)
   hometown         String?       @db.VarChar(255)
   birthPlace       String?       @db.VarChar(255)
@@ -420,7 +419,6 @@ model Personal {
   sexId           Int
   userId          Int @unique
 
-  title            String? @db.VarChar(255)
   permanentAddress String? @db.VarChar(255)
   presentAddress   String? @db.VarChar(255)
 

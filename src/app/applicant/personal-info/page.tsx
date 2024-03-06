@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
 import PersonalInfo from "@/src/components/applicant/PersonalInfo";
+import { headers } from "next/headers";
 
 
 
@@ -54,7 +55,7 @@ async function getYesNo(searchParams: any) {
 
 async function getPersonalInfo(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/job?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/personal?qry=${qry}`, { cache: 'no-store',headers:headers() });
 
 
     if (!response.ok) {
