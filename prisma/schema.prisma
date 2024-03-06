@@ -231,7 +231,6 @@ model CurrentRecruitment {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   Recruitment   Recruitment   @relation(fields: [recruitmentId], references: [id])
-  Application   Application[]
   recruitmentId Int
   User          User?         @relation(fields: [createdBy], references: [id])
 }
@@ -407,11 +406,12 @@ model Personal {
   residenceTel     String?       @db.VarChar(255)
   hometown         String?       @db.VarChar(255)
   birthPlace       String?       @db.VarChar(255)
-  dob              String?       @db.VarChar(20)
+  dob              DateTime?       @db.Date
   ageAtApplication Int?
   Sex              Sex           @relation(fields: [sexId], references: [id])
   MaritalStatus    MaritalStatus @relation(fields: [maritalStatusId], references: [id])
-  childrenNumber   String?       @db.VarChar(20)
+  childrenNumber   Int?    
+  
   deleted          Int?          @default(0)
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
@@ -424,8 +424,8 @@ model Personal {
   permanentAddress String? @db.VarChar(255)
   presentAddress   String? @db.VarChar(255)
 
-  sonNumber      String? @db.VarChar(255)
-  daughterNumber String? @db.VarChar(255)
+  sonsInfo     String? @db.VarChar(255)
+  daughtersInfo String? @db.VarChar(255)
   Title          Title?  @relation(fields: [titleId], references: [id])
   titleId        Int?
   YesNo          YesNo   @relation(fields: [haveKids], references: [id])
@@ -544,8 +544,8 @@ model Application {
   RejectReason         RejectReason[]
   // @@unique([userId, jobId], name: "userId_jobId")
   FilteredOutReason    FilteredOutReason[]
-  currentRecruitmentId Int
-  CurrentRecruitment   CurrentRecruitment  @relation(fields: [currentRecruitmentId], references: [id])
+//   currentRecruitmentId Int
+//   CurrentRecruitment   CurrentRecruitment  @relation(fields: [currentRecruitmentId], references: [id])
 }
 
 // model ApplicationMenu {

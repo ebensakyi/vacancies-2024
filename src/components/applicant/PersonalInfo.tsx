@@ -10,6 +10,7 @@ import ApplicationMenu from "../ApplicationMenu";
 import { useSession } from "next-auth/react";
 import { LOGIN_URL } from "@/constants";
 import moment from "moment";
+import Link from "next/link";
 
 const PersonalInfo = ({ data }: any) => {
     const { data: session } = useSession({
@@ -20,7 +21,7 @@ const PersonalInfo = ({ data }: any) => {
     })
 
 
-    let user :any = session?.user
+    let user: any = session?.user
 
     useEffect(() => {
         setSurname(user?.surname)
@@ -43,8 +44,9 @@ const PersonalInfo = ({ data }: any) => {
     const [hometown, setHometown] = useState("");
     const [birthPlace, setBirthPlace] = useState("");
     const [maritalStatus, setMaritalStatus] = useState("");
-    const [sonNumber, setSonNumber] = useState("");
-    const [daughterNumber, setDaughterNumber] = useState("");
+    const [sonsInfo, setSonsInfo] = useState("");
+    const [daughtersInfo, setDaughtersInfo] = useState("");
+    const [childrenNumber, setChildrenNumber] = useState("");
 
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -67,12 +69,12 @@ const PersonalInfo = ({ data }: any) => {
             if (gender == "")
                 return toast.error("Please select your gender");
             if (maritalStatus == "")
-                return toast.error("Please select your marital status"); 
-             if (dob == "")
+                return toast.error("Please select your marital status");
+            if (dob == "")
                 return toast.error("Please enter your date of birth");
             if (birthPlace == "")
                 return toast.error("Please enter your place of birth");
-          
+
             if (birthPlace == "") return toast.error("Please enter your place of birth");
             if (presentAddress == "") return toast.error("Please enter your present address");
 
@@ -96,14 +98,14 @@ const PersonalInfo = ({ data }: any) => {
                 maritalStatusId: Number(maritalStatus),
                 sexId: Number(gender),
                 residenceTel: otherNumber,
-                sonNumber: sonNumber?.trim(),
-                daughterNumber: daughterNumber?.trim(),
+                childrenNumber:childrenNumber,
+                sonsInfo: sonsInfo?.trim(),
+                daughtersInfo: daughtersInfo?.trim(),
                 permanentAddress: permanentAddress?.trim(),
-                presentAddress: presentAddress?.trim()
-
+                presentAddress: presentAddress?.trim(),
+                haveKids: haveKids
             };
 
-            console.log(data);
 
             const response = await axios.post("/api/applicant/personal", {
                 data,
@@ -660,66 +662,93 @@ const PersonalInfo = ({ data }: any) => {
                                                         ))}
                                                     </select>
                                                     <div className="invalid-tooltip">
-                                                       Children is required
+                                                        Children is required
                                                     </div>
                                                 </div>
                                             </div>
-</div>
-{haveKids=="1"?
-<div className="row">
-                                            <div className="col-sm-3">
-                                                <div className="form-group">
-                                                    <label htmlFor="exampleInputuname">
-                                                        Number of Sons & Ages 
-                                                    </label>
-                                                    <div className="input-group mb-3">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="sonNumber"
-                                                            id="sonNumber"
-                                                            aria-label="Username"
-                                                            aria-describedby="basic-addon1"
-                                                            required
-                                                            data-error="Number of children is required."
-                                                            defaultValue={sonNumber}
-                                                            onChange={(e: any) => {
-                                                                setSonNumber(e.target.value);
-                                                            }}
-                                                        />
+                                        </div>
+                                        {haveKids == "1" ?
+                                            <div className="row">
+                                                 <div className="col-sm-3">
+                                                    <div className="form-group">
+                                                        <label htmlFor="exampleInputuname">
+                                                            Number of children
+                                                        </label>
+                                                        <div className="input-group mb-3">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                               
+                                                                aria-label="Username"
+                                                                aria-describedby="basic-addon1"
+                                                                required
+                                                                data-error="Number of children is required."
+                                                                defaultValue={childrenNumber}
+                                                                onChange={(e: any) => {
+                                                                    setChildrenNumber(e.target.value);
+                                                                }}
+                                                            />
 
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-sm-3">
-                                                <div className="form-group">
-                                                    <label htmlFor="exampleInputuname">
-                                                        Number of Daughters & Ages 
-                                                    </label>
-                                                    <div className="input-group mb-3">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="daughterNumber"
-                                                            id="daughterNumber"
-                                                            aria-label="daughterNumber"
-                                                            aria-describedby="basic-addon1"
-                                                            required
-                                                            defaultValue={daughterNumber}
-                                                            onChange={(e: any) => {
-                                                                setDaughterNumber(e.target.value);
-                                                            }}
-                                                        />
+                                                <div className="col-sm-3">
+                                                    <div className="form-group">
+                                                        <label htmlFor="exampleInputuname">
+                                                            Number of Sons & Ages
+                                                        </label>
+                                                        <div className="input-group mb-3">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="sonNumber"
+                                                                id="sonNumber"
+                                                                aria-label="Username"
+                                                                aria-describedby="basic-addon1"
+                                                                required
+                                                                data-error="Number of children is required."
+                                                                defaultValue={sonsInfo}
+                                                                onChange={(e: any) => {
+                                                                    setSonsInfo(e.target.value);
+                                                                }}
+                                                            />
 
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div className="col-sm-3">
+                                                    <div className="form-group">
+                                                        <label htmlFor="exampleInputuname">
+                                                            Number of Daughters & Ages
+                                                        </label>
+                                                        <div className="input-group mb-3">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="daughterNumber"
+                                                                id="daughterNumber"
+                                                                aria-label="daughterNumber"
+                                                                aria-describedby="basic-addon1"
+                                                                required
+                                                                defaultValue={daughtersInfo}
+                                                                onChange={(e: any) => {
+                                                                    setDaughtersInfo(e.target.value);
+                                                                }}
+                                                            />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
 
 
-                                        </div>:<></>}
+                                            </div> : <></>}
 
                                         <div className="form-actions mt-10" style={{ textAlign: "end" }}>
-                                            <button
+                                            <div className="btn-group" role="group" aria-label="Basic example">
+                                                <Link href="/applicant/essay" type="button" className="btn btn-success">
+                                                    Previous
+                                                </Link>
+ <button
                                                 className="btn btn-success add"
                                                 type="button"
                                                 onClick={(e: any) => {
@@ -727,8 +756,10 @@ const PersonalInfo = ({ data }: any) => {
                                                     save();
                                                 }}
                                             >
-                                                Save and Proceed
+                                                Next
                                             </button>
+                                            </div>
+                                           
                                         </div>
                                     </form>
                                 </div>

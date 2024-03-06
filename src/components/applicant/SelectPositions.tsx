@@ -3,28 +3,34 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Router from "next/router";
 import Link from "next/link";
 import ApplicationMenu from "../ApplicationMenu";
+import { useRouter } from "next/navigation";
 
 const SelectPositions = ({ data }: any) => {
+  const router = useRouter()
   const [jobs, setJobs] = useState([]);
 
 
 
   const onSelect = async (selectedItem: any) => {
     try {
-      //setJobs([...jobs, { jobId: selectedItem }]);
 
       const data = {
         jobId: selectedItem,
       };
-      const response = await axios.post("/api/applicant/select-positions", {
+      const response = await axios.post("/api/applicant/select-position", {
         data,
       });
-      if (response.status == 1) {
-        //return toast.success(response.data.message);
-        return Router.push("/applicant/select-positions");
+
+     let jobName = response.data.response.Job.name;
+     
+      
+      if (response.status == 200) {
+        toast.success(`${jobName} is added succesfully`);
+        router.refresh()
+
+      return toast.success(response.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -40,10 +46,16 @@ const SelectPositions = ({ data }: any) => {
       const data = {
         jobId: removedItem,
       };
-      const response = await axios.delete("/api/applicant/select-positions", {
+      const response = await axios.delete("/api/applicant/select-position", {
         data,
       });
+
+      let jobName = response.data.response.Job.name;
+      
       if (response.status == 200) {
+        toast.error(`${jobName} is removed succesfully`);
+
+        router.refresh()
         // return Router.push("/applicant/select-positions");
 
       }
@@ -118,9 +130,9 @@ const SelectPositions = ({ data }: any) => {
                                   className="form-check-input"
                                   type="checkbox"
                                   id="formCheckRight2"
-                                  // checked={
-                                  //   selectedPositions.includes(job.id) ? true : false
-                                  // }
+                                  checked={
+                                    data?.selectedPositions?.response.includes(job.id) ? true : false
+                                  }
                                   onChange={(e: any) => {
                                     if (e.target.checked) {
                                       return onSelect(job.id);

@@ -363,7 +363,7 @@ CREATE TABLE `Personal` (
     `birthPlace` VARCHAR(255) NULL,
     `dob` VARCHAR(20) NULL,
     `ageAtApplication` INTEGER NULL,
-    `childrenNumber` VARCHAR(20) NULL,
+    `childrenNumber` INTEGER NULL,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -373,8 +373,8 @@ CREATE TABLE `Personal` (
     `title` VARCHAR(255) NULL,
     `permanentAddress` VARCHAR(255) NULL,
     `presentAddress` VARCHAR(255) NULL,
-    `sonNumber` VARCHAR(255) NULL,
-    `daughterNumber` VARCHAR(255) NULL,
+    `sonsInfo` VARCHAR(255) NULL,
+    `daughtersInfo` VARCHAR(255) NULL,
     `titleId` INTEGER NULL,
     `haveKids` INTEGER NOT NULL,
 
@@ -485,7 +485,6 @@ CREATE TABLE `Application` (
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` INTEGER NOT NULL,
     `shortlistedById` INTEGER NULL,
-    `currentRecruitmentId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -748,9 +747,6 @@ ALTER TABLE `Application` ADD CONSTRAINT `Application_userId_fkey` FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE `Application` ADD CONSTRAINT `Application_jobId_fkey` FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Application` ADD CONSTRAINT `Application_currentRecruitmentId_fkey` FOREIGN KEY (`currentRecruitmentId`) REFERENCES `CurrentRecruitment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `RejectReason` ADD CONSTRAINT `RejectReason_applicationId_fkey` FOREIGN KEY (`applicationId`) REFERENCES `Application`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

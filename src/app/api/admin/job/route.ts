@@ -61,7 +61,17 @@ export async function PUT(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    //  const res = await request.json();
+    let { searchParams } = new URL(request.url);
+
+
+    let pub: any = searchParams.get("pub")?.toString();
+    
+    if(pub) {
+      const response = await prisma.job.findMany({ where: { published: 1 }, include: { Policy: true } });
+      return NextResponse.json({ response }, { status: 200 });
+
+    }
+    
     const response = await prisma.job.findMany({ where: { deleted: 0 }, include: { Policy: true } });
     //const response = await prisma.job.findMany({ select: { id: true, name: true } });
 
