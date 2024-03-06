@@ -4,13 +4,21 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Editor } from "@tinymce/tinymce-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import ApplicationMenu from "../ApplicationMenu";
 import Link from "next/link";
-import { Router } from "next/router";
+import { useSession } from "next-auth/react";
+import { LOGIN_URL } from "@/constants";
 
 const Certificate = ({ data }: any) => {
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect(LOGIN_URL);
+        }
+    })
+
+    
     const currentYear = new Date().getFullYear();
     const years = [];
 
@@ -61,8 +69,7 @@ const Certificate = ({ data }: any) => {
                 data,
             });
 
-            let { status } = response.data;
-            let savedCert: any = response.data.data;
+            let { status } = response;
 
             if (status == 200) {
                 setEducationLevel("");
@@ -73,6 +80,7 @@ const Certificate = ({ data }: any) => {
                 setEndYear("");
                 setCertificateObtained("");
 
+                router.refresh()
                 // setCertifications([...certifications, savedCert]);
                 return toast.success("Certificate added successfully");
             }

@@ -12,16 +12,17 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { LOGIN_URL } from "@/constants";
 
-const Education = ({ data }: any) => {
-    const currentYear = new Date().getFullYear();
-
-    const { data: session } = useSession({
+const Education = ({ data }: any) => { 
+      const { data: session } = useSession({
         required: true,
         onUnauthenticated() {
             redirect(LOGIN_URL);
         }
     })
 
+    const currentYear = new Date().getFullYear();
+
+ 
     const years = [];
 
     for (let year = currentYear; year >=1990 ; year--) {
