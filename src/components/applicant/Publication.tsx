@@ -22,10 +22,10 @@ const Publication = ({ data }: any) => {
     const add = async () => {
         try {
             if (
-                description == null ||
-                authors == null ||
-                date == null ||
-                title == null
+                description == "" ||
+                authors == "" ||
+                date == "" ||
+                title == ""
             )
                 return toast.error("Please fill the form");
             const data = {

@@ -1,14 +1,13 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
-import Employment from "@/src/components/applicant/Employment";
 import { Essay } from "@/src/components/applicant/Essay";
 
 
 
 
-async function getEmployments(searchParams: any) {
+async function getEssay(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/employment?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/essay?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {
@@ -22,11 +21,11 @@ async function getEmployments(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
 
-    const employments = await getEmployments(searchParams)
+    const essay = await getEssay(searchParams)
   
 
     let data: any = {
-       employments
+        essay
     }
 
     return <Essay data={data} />

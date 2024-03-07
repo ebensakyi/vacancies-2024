@@ -8,28 +8,59 @@ import { Editor } from "@tinymce/tinymce-react";
 import ApplicationMenu from "../ApplicationMenu";
 
 export const Essay = ({ data }: any) => {
+  const [essayId, setEssayId] = useState("");
   const [essay, setEssay] = useState("");
+
+
 
   //let savedLetter = savedEssay.essay;
 
-  // useEffect(() => {
-  //   setEssay(savedEssay);
-  // }, []);
+  useEffect(() => {
+    setEssayId(data?.essay?.response?.id);
+  }, []);
   const save = async () => {
     try {
       const data = {
         essay,
       };
       if (essay == "")
-        return toast.error("Data not saved. Enter your motivation letter");
+        return toast.error("Enter your motivation letter");
 
       const response = await axios.post("/api/applicant/essay", { data });
-      if (response.status == 1) {
-        //  setEssay(savedEssay);
+      console.log(response);
 
-        return toast.success(response.data.message);
+      if (response.status == 200) {
+        let id = response.data.response.id
+        setEssayId(id)
+
+
+        return toast.success("Data saved successfully");
       }
-      if (response.status == 0) return toast.error("Data not saved");
+      if (response.status != 200) return toast.error("Data not saved");
+    } catch (error) {
+
+    }
+
+  };
+
+  const update = async () => {
+    try {
+      const data = {
+        essayId,
+        essay,
+      };
+      if (essay == "")
+        return toast.error("Enter your motivation letter");
+
+      const response = await axios.put("/api/applicant/essay", { data });
+
+      if (response.status == 200) {
+        let id = response.data.response.id
+        setEssayId(id)
+
+        return toast.success("Data updated successfully");
+      }
+      if (response.status != 200) return toast.error("Data not saved");
     } catch (error) {
 
     }
@@ -49,7 +80,7 @@ export const Essay = ({ data }: any) => {
               </div>
             </div>
             <div className="row">
-            <ApplicationMenu whichLink="essay" />
+              <ApplicationMenu whichLink="essay" />
 
               <ToastContainer
                 position="top-right"
@@ -78,7 +109,7 @@ export const Essay = ({ data }: any) => {
                           <div className="mb-3 position-relative">
                             <Editor
                               apiKey="231hohc8dmkwpp8k8vawvs3oatywgw9p3x2n9bnsu7e5mabx"
-                              initialValue={data.essay}
+                              initialValue={data?.essay?.response?.essay}
                               // initialValue="<h1>This is the initial content of the editor.</h1>"
                               init={{
                                 height: 500,
@@ -102,16 +133,26 @@ export const Essay = ({ data }: any) => {
                         </div>
                       </div>
                       <div className="form-actions mt-10" style={{ textAlign: "end" }}>
-                        <button
-                          className="btn btn-success add"
-                          type="button"
-                          onClick={(e: any) => {
-                            e.preventDefault();
-                            save();
-                          }}
-                        >
-                          Save
-                        </button>
+                        {essayId == "" ?
+                          <button
+                            className="btn btn-success add"
+                            type="button"
+                            onClick={(e: any) => {
+                              e.preventDefault();
+                              save();
+                            }}
+                          >
+                            Save
+                          </button> : <button
+                            className="btn btn-warning add"
+                            type="button"
+                            onClick={(e: any) => {
+                              e.preventDefault();
+                              update();
+                            }}
+                          >
+                            Update
+                          </button>}
                       </div>
                     </form>
                   </div>
@@ -119,13 +160,13 @@ export const Essay = ({ data }: any) => {
                 <div className="form-actions mt-10">
                   <div className="col-md-12" style={{ textAlign: "end" }}>
                     <div className="btn-group" role="group" aria-label="Basic example">
-                      <Link href="/applicant/employment"type="button" className="btn btn-success">
-                       
-                          Previous
-                      
+                      <Link href="/applicant/employment" type="button" className="btn btn-success">
+
+                        Previous
+
                       </Link>
                       <Link href="/applicant/publication" type="button" className="btn btn-success">
-                          Next
+                        Next
                       </Link>
                     </div>
                   </div>
