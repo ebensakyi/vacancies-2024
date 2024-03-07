@@ -5,13 +5,15 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function GET(request: Request) {
   try {
-    const res = await request.json();
-
     const session: any = await getServerSession(authOptions);
     const userId = session?.user?.id;
+    let { searchParams } = new URL(request.url);
 
-    const response = await prisma.application.findMany({
-      where: { userId: userId, id: Number(res.data.id) },
+    let id: any = searchParams.get("id")?.toString();
+
+    const fullApplication = await prisma.application.findFirst({
+      where: { userId: userId,deleted:0 },
+      orderBy: { id: "desc" },
       include: {
         User: {
           include: {
@@ -44,8 +46,18 @@ export async function GET(request: Request) {
             },
           },
         },
+        Job: true,
       },
     });
+    const positions = await prisma.application.findMany({
+      where: {
+        userId: userId,
+        deleted: 0,
+      },
+      include: {Job:true}
+    });
+
+    let response = { fullApplication, positions };
 
     return NextResponse.json({ response });
   } catch (error: any) {

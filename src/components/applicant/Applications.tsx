@@ -1,3 +1,4 @@
+'use client'
 import { LOGIN_URL } from "@/constants";
 import moment from "moment";
 import { useSession } from "next-auth/react";
@@ -11,6 +12,9 @@ const Applications = ({ data }: any) => {
         redirect(LOGIN_URL);
     }
 })
+
+console.log(data);
+
   return (
     <div id="layout-wrapper">
       <div className="main-content">
@@ -51,7 +55,7 @@ const Applications = ({ data }: any) => {
                               <tr key={co.id}>
                                 <td>{co.Job.name}</td>
                                 <td>
-                                  {moment(co.Job.Policy.deadline).format(
+                                  {moment(co.Job.Policy.Recruitment.deadline).format(
                                     "DD/MM/YYYY"
                                   )}
                                 </td>
@@ -74,14 +78,11 @@ const Applications = ({ data }: any) => {
                                 </td>
 
                                 <td>
-                                  <Link href="/applicant/full-application">
-                                    <a
-                                      target="_blank"
+                                  <Link href="/applicant/full-application"target="_blank"
                                       type="button"
-                                      className="btn btn-warning"
-                                    >
+                                      className="btn btn-warning">
+                                  
                                       View
-                                    </a>
                                   </Link>
                                 </td>
                               </tr>

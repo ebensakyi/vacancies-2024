@@ -1,29 +1,80 @@
-"use client"
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
+import { jsPDF } from "jspdf";
+import * as moment from "moment";
 
 import { useRef, useEffect } from "react";
 
-const FullApplication = ({application, jobs }:any) => {
-  let rt = Cookies.get("rt");
+const FullApplication = ({ data }:any) => {
+  console.log(data);
+  
 
+  const contentRef = useRef();
 
+  // var date = moment(Date.now).format("YYYY-MM-DDT23:59:00.000[Z]");
+  // console.log("date ",date);
 
- 
+  let pdfName = `${data.firstName}  ${data.otherNames || ""}  ${
+    data.surname || ""
+  }`;
+  const generatePdf = (content: any) => {
+    const doc = new jsPDF();
+
+    // doc.html(content, 10, 10);
+    // doc.save(`${pdfName}.pdf`);
+    doc.html(document.body, {
+      callback: function (doc) {
+        doc.save(`${pdfName}.pdf`);
+      },
+      x: 10,
+      y: 10,
+    });
+  };
+
   return (
-      <div className="col-xl-12" >
-       
-        <div className="card">
-          <div className="card-header">
-            {/* <h4 className="card-title">ADD</h4> */}
-          </div>
-          <div className="card-body">
-            <div className="row">
-              <div className="card">
-                SHORTLIST 
-                <hr />
+    <div className="col-xl-12">
+      <div className="card">
+        <div className="card-header">
+          {/* <h4 className="card-title">ADD</h4> */}
+        </div>
+        <div className="card-body">
+          <div className="row">
+            <div className="card">
+              <div className="col-lg-12">
+                <div style={{ textAlign: "right", marginTop: 0 }}>
+                  {/* <button
+                      id="print"
+                      type="button"
+                      className="btn btn-danger add"
+                      onClick={() => {
+                        generatePdf();
+                      }}
+                    >
+                      <i className="mdi mdi-file-pdf" />
+                      Save as PDf
+                    </button> */}
+
+                  <button
+                    className="btn btn-warning add"
+                    onClick={() => {
+                      const printContents =
+                        document.getElementById("printableArea").innerHTML;
+                      const originalContents = document.body.innerHTML;
+                      document.body.innerHTML = printContents;
+                      window.print();
+                      document.body.innerHTML = originalContents;
+                    }}
+                  >
+                    {" "}
+                    <i className="fa fa-fw fa-print" />
+                    Print application
+                  </button>
+                </div>
+              </div>
+              <hr />
+              <div id="printableArea">
                 <div className="row">
-                  <div className="col-lg-12 " id="printableArea">
+                  <div className="col-lg-12 ">
                     <center>
                       <img
                         src="/logo.png"
@@ -34,8 +85,8 @@ const FullApplication = ({application, jobs }:any) => {
                       />
                       <br />
                       <h3>
-                        {`${application.firstName}  ${application.otherNames || ""}  ${
-                          application.surname || ""
+                        {`${data?.firstName}  ${data?.otherNames || ""}  ${
+                          data?.surname || ""
                         }`}
                       </h3>
                     </center>
@@ -62,10 +113,9 @@ const FullApplication = ({application, jobs }:any) => {
                                   }}
                                 >
                                   <h3 style={{ marginTop: 10 }}>
-                                    {jobs.map((j:any) => {
+                                    {jobs.map((j: { Job: { name: any; }; }) => {
                                       let job = `${j.Job.name}, `;
-                                      job = job.substring(0, job.length - 1);
-                                      return job;
+                                      return job.replace(/,$/, " ");
                                     })}
                                   </h3>
                                 </div>
@@ -83,7 +133,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 required
                                 id="firstName"
                                 name="firstName"
-                                defaultValue={application.firstName}
+                                defaultValue={data.firstName}
                                 readOnly
                               />
                             </div>
@@ -96,7 +146,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control"
                                 required
                                 id="surName"
-                                defaultValue={application.surname}
+                                defaultValue={data.surname}
                                 readOnly
                               />
                             </div>
@@ -111,7 +161,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 type="text"
                                 className="form-control"
                                 id="otherName"
-                                defaultValue={application.otherNames}
+                                defaultValue={data.otherNames}
                                 readOnly
                               />
                             </div>
@@ -127,7 +177,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control"
                                 required
                                 id="presentAddress"
-                                defaultValue={application.Personal.address}
+                                defaultValue={data.Personal.address}
                                 readOnly
                               />
                             </div>
@@ -139,11 +189,11 @@ const FullApplication = ({application, jobs }:any) => {
                                 Date of birth :
                               </label>
                               <input
-                                type="date"
+                                type="text"
                                 className="form-control"
                                 required
                                 id="dateBirth"
-                                defaultValue={application.Personal.dob}
+                                defaultValue={data.Personal.dob}
                                 readOnly
                               />
                             </div>
@@ -156,7 +206,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control"
                                 required
                                 id="sex"
-                                defaultValue={application.Personal.Sex.name}
+                                defaultValue={data.Personal.Sex.name}
                                 readOnly
                               />
                             </div>
@@ -171,7 +221,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control"
                                 required
                                 id="homeTown"
-                                defaultValue={application.Personal.hometown}
+                                defaultValue={data.Personal.hometown}
                                 readOnly
                               />
                             </div>
@@ -187,7 +237,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control"
                                 required
                                 id="placeBirth"
-                                defaultValue={application.Personal.birthPlace}
+                                defaultValue={data.Personal.birthPlace}
                                 readOnly
                               />{" "}
                             </div>
@@ -202,7 +252,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 type="text"
                                 className="form-control"
                                 required
-                                defaultValue={application.Personal.MaritalStatus.name}
+                                defaultValue={data.Personal.MaritalStatus.name}
                                 readOnly
                               />
                             </div>
@@ -219,7 +269,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control"
                                 id="childrenNumber"
                                 required
-                                defaultValue={application.Personal.childrenNumber}
+                                defaultValue={data.Personal.childrenNumber}
                                 readOnly
                               />
                             </div>
@@ -235,7 +285,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control email-inputmask"
                                 required
                                 id="emailAddress"
-                                defaultValue={application.email}
+                                defaultValue={data.email}
                                 readOnly
                               />
                             </div>
@@ -250,7 +300,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control phone-inputmask"
                                 id="phoneNumber"
                                 required
-                                defaultValue={application.phoneNumber}
+                                defaultValue={data.phoneNumber}
                                 readOnly
                               />
                             </div>
@@ -266,7 +316,7 @@ const FullApplication = ({application, jobs }:any) => {
                                 className="form-control phone-inputmask"
                                 id="residenceTel"
                                 required
-                                defaultValue={application.Personal.residenceTel}
+                                defaultValue={data.Personal.residenceTel}
                                 readOnly
                               />
                             </div>
@@ -302,12 +352,12 @@ const FullApplication = ({application, jobs }:any) => {
                                     <th hidden>Id</th>
                                     <th>Education Level</th>
                                     <th>Institution</th>
-                                    <th>Start</th>
-                                    <th>End</th>
+                                    <th>From</th>
+                                    <th>To</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {application.SchoolAttended.map((e:any) => (
+                                  {data.SchoolAttended.map((e:any) => (
                                     <tr key={e.id}>
                                       <td>{e.EducationLevel.name}</td>
                                       <td>{e.institutionName}</td>
@@ -349,12 +399,37 @@ const FullApplication = ({application, jobs }:any) => {
                               </tr>
                             </thead>
                             <tbody>
-                              {application.GradesObtained.map((e:any) => (
+                              {data.GradesObtained.map((e:any) => (
                                 <tr key={e.id}>
                                   <td>{e.year}</td>
                                   <td>{e.ExamType.name}</td>
                                   <td>{e.Subject.name}</td>
                                   <td>{e.Grade.name}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <div className="table-responsive">
+                          <table
+                            className="table full-color-table "
+                            id="indexNumberTable"
+                          >
+                            <thead>
+                              <tr>
+                                <th hidden>Id</th>
+                                <th>Exam</th>
+                                <th>Year</th>
+                                <th>Index Number</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {data.IndexNumber.map((e:any) => (
+                                <tr key={e.id}>
+                                  <td>{e.ExamTypeNew.name}</td>
+                                  <td>{e.year}</td>
+                                  <td>{e.indexNumber}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -382,13 +457,13 @@ const FullApplication = ({application, jobs }:any) => {
                                 <thead>
                                   <tr>
                                     <th>Institution</th>
-                                    <th>Start</th>
-                                    <th>End</th>
+                                    <th>From</th>
+                                    <th>To</th>
                                     <th>Certificate</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {application.Certificate.map((e:any) => (
+                                  {data.Certificate.map((e:any) => (
                                     <tr key={e.id}>
                                       <td>{e.institution}</td>
                                       <td>{e.from}</td>
@@ -426,14 +501,14 @@ const FullApplication = ({application, jobs }:any) => {
                               <tr>
                                 <th>Organization</th>
                                 <th>Position</th>
-                                <th>Start</th>
-                                <th>End</th>
+                                <th>From</th>
+                                <th>To</th>
                                 <th>Salary</th>
                                 <th>Reason for leaving</th>
                               </tr>
                             </thead>
                             <tbody>
-                              {application.Employment.map((e:any) => (
+                              {data.Employment.map((e:any) => (
                                 <tr key={e.id}>
                                   <td>{e.organizationName}</td>
                                   <td>{e.position}</td>
@@ -450,7 +525,7 @@ const FullApplication = ({application, jobs }:any) => {
                     </div>
                   </div>
                 </div>
-                {rt == "1" ? (
+                {rt == 1 ? (
                   <>
                     <div className="row">
                       <div className="col-lg-12">
@@ -477,7 +552,7 @@ const FullApplication = ({application, jobs }:any) => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {application.Publication.map((e:any) => (
+                                  {data.Publication.map((e:any) => (
                                     <tr key={e.id}>
                                       <td>{e.date}</td>
                                       <td>{e.title}</td>
@@ -505,7 +580,7 @@ const FullApplication = ({application, jobs }:any) => {
                             </h4>
                           </div>
                           <div className="card-body">
-                            {ReactHtmlParser(application.Essay.essay)}
+                            {ReactHtmlParser(data.Essay.essay)}
                           </div>
                         </div>
                       </div>
@@ -538,7 +613,7 @@ const FullApplication = ({application, jobs }:any) => {
                               </tr>
                             </thead>
                             <tbody>
-                              {application.Reference.map((e:any) => (
+                              {data.Reference.map((e:any) => (
                                 <tr key={e.id}>
                                   <td>{e.name}</td>
                                   <td>{e.occupation}</td>
@@ -552,6 +627,17 @@ const FullApplication = ({application, jobs }:any) => {
                       </div>
                     </div>
                   </div>
+
+                  <label
+                    className="form-check-label"
+                    htmlFor="formCheckRight2"
+                    style={{ color: "red" }}
+                  >
+                    I confirm that, I have gone through my application and I am
+                    sure every information is correct. I agree to bear the
+                    consequencies for any wrong information provided.
+                    {}
+                  </label>
                 </div>
                 {/* <div className="row">
                 <div className="col-lg-12">
@@ -577,7 +663,7 @@ const FullApplication = ({application, jobs }:any) => {
                               id="bonded"
                               name="firstName"
                               defaultValue={
-                                application.Bonded ? application.Bonded.YesNo.value : null
+                                data.Bonded ? data.Bonded.YesNo.value : null
                               }
                               readOnly
                             />
@@ -595,7 +681,7 @@ const FullApplication = ({application, jobs }:any) => {
                               required
                               id="details"
                               defaultValue={
-                                application.Bonded ? application.Bonded.details : null
+                                data.Bonded ? data.Bonded.details : null
                               }
                               readOnly
                             />
@@ -616,8 +702,8 @@ const FullApplication = ({application, jobs }:any) => {
                               id="bonded"
                               name="firstName"
                               defaultValue={
-                                application.Confirmation
-                                  ? application.Confirmation.YesNo.value
+                                data.Confirmation
+                                  ? data.Confirmation.YesNo.value
                                   : null
                               }
                               readOnly
@@ -634,6 +720,7 @@ const FullApplication = ({application, jobs }:any) => {
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

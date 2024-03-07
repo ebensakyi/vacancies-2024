@@ -20,12 +20,30 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
-     const res = await request.json();
      const session: any = await getServerSession(authOptions);
      const userId = session?.user?.id
 
-const response = await prisma.application.findMany({where:{userId}})
 
+     const response = await prisma.application.findMany({
+       where: {
+         userId:userId,
+         deleted: 0,
+       },
+       include: {
+         Job: {
+           include: {
+             Policy: {
+              include: {
+                Recruitment:true
+              }
+             },
+           },
+         },
+       },
+     });
+
+     console.log(response);
+     
     return NextResponse.json({response});
   } catch (error) {
     console.log(error);

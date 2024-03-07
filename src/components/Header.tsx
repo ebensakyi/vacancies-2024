@@ -610,7 +610,7 @@ me-2"
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link href="/applicant/list" className="nav-link" >
+                        <Link href="/applicant/applications" className="nav-link" >
                           <i
                             className="dripicons-archive me-2
                         "
