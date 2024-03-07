@@ -36,7 +36,6 @@ export const Essay = ({ data }: any) => {
         return toast.error("Enter your motivation letter");
 
       const response = await axios.post("/api/applicant/essay", { data });
-      console.log(response);
 
       if (response.status == 200) {
         let id = response.data.response.id

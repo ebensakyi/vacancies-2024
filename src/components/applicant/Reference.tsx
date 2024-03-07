@@ -291,28 +291,16 @@ const Reference = ({ data }: any) => {
                             <div className="form-actions mt-10">
                                 <div className="col-md-12" style={{ textAlign: "end" }}>
                                     <div className="btn-group" role="group" aria-label="Basic example">
-                                        {/* {menu == "1" ? (
-                                            <Link href="/applicant/publication">
-                                                <a type="button" className="btn btn-success">
+                                      
+                                      {/* CHECK STAFF TYPE FOR PEVIOUS */}
+                                            <Link href="/applicant/publication" type="button" className="btn btn-success">
                                                     Previous
-                                                </a>
                                             </Link>
-                                        ) : ( */}
-                                            <Link href="/applicant/employment" type="button" className="btn btn-success">
-                                                    Previous
+                                            <Link href="/applicant/submit-application" type="button" className="btn btn-success">
+                                                    Next
                                             </Link>
                                         {/* )} */}
-                                        {/* <Link href="/applicant/select-positions"> */}
-                                        <button
-                                            type="button"
-                                            className="btn btn-success"
-                                            onClick={() => {
-                                                next();
-                                            }}
-                                        >
-                                            Next
-                                        </button>
-                                        {/* </Link> */}
+                                       
                                     </div>
                                 </div>
                             </div>

@@ -48,3 +48,22 @@ export async function GET(request: Request) {
   }
 
 }
+
+
+export async function DELETE(request: Request) {
+  try {
+    const session: any = await getServerSession(authOptions);
+
+    let userId = session?.user?.id;
+    const res = await request.json();
+
+    const response = await prisma.reference.delete({
+      where: { id: res, userId },
+    });
+
+    return NextResponse.json({ response });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: error });
+  }
+}
