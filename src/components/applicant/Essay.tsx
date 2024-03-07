@@ -6,8 +6,17 @@ import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import { Editor } from "@tinymce/tinymce-react";
 import ApplicationMenu from "../ApplicationMenu";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { LOGIN_URL } from "@/constants";
 
 export const Essay = ({ data }: any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(LOGIN_URL);
+    }
+})
   const [essayId, setEssayId] = useState("");
   const [essay, setEssay] = useState("");
 

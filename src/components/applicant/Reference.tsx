@@ -8,8 +8,18 @@ import "react-toastify/dist/ReactToastify.css";
 import ApplicationMenu from "../ApplicationMenu";
 import moment from "moment";
 import Link from "next/link";
+import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { LOGIN_URL } from "@/constants";
 
 const Reference = ({ data }: any) => {
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect(LOGIN_URL);
+        }
+    })
+    const router = useRouter()
     const [references, setReferences] = useState([]);
 
     const [phone, setPhone] = useState("");
@@ -34,38 +44,49 @@ const Reference = ({ data }: any) => {
                 occupation: occupation.trim(),
                 fullName: fullName.trim(),
             };
-            const response = await axios.post("/api/applicant/reference", {
+            const response = await axios.post("/api/applicant/references", {
                 data,
             });
-            let { statusCode } = response.data;
+            let { status } = response;
 
-            if (statusCode == 1) {
+            if (status == 200) {
                 setPhone("");
                 setAddress("");
                 setOccupation("");
                 setFullName("");
 
-               // setReferences([...references, response.data.data]);
-                //Router.reload(window.location.pathname);
+                router.refresh()
+               
                 return toast.success("Data saved successfully");
             }
 
-            if (statusCode == 0) return toast.error(response.data.message);
-        } catch (error) { }
+            if (status != 200) return toast.error("Data not saved");
+        } catch (error) {
+            return toast.error("Data not saved");
+         }
     };
 
     const remove = async (id: any) => {
-        const filtered = references.filter((p:any) => p.id !== id);
-        const response = await axios.delete(`/api/applicant/reference`, {
+        const response = await axios.delete(`/api/applicant/references`, {
             data: id,
-        });
-        setReferences(filtered);
+        });  
+        let { status } = response;
+
+        router.refresh()
+
+        if (status == 200) {
+           
+           
+            return toast.success("Reference removed successfully");
+        }
+
+        if (status != 200) return toast.error("Reference not remove");
     };
 
     const next = async () => {
        // let core = await genCode(100);
 
-        const response = await axios.post(`/api/applicant/reference?next=true`);
+        const response = await axios.post(`/api/applicant/references?next=true`);
 
         let isValid = response.data.data;
 
@@ -236,7 +257,7 @@ const Reference = ({ data }: any) => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {references.map((e: any) => (
+                                                                {data?.references?.response?.map((e: any) => (
                                                                     <tr key={e.id}>
                                                                         <td>{e.name}</td>
                                                                         <td>{e.occupation}</td>

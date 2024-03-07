@@ -5,9 +5,9 @@ import Reference from "@/src/components/applicant/Reference";
 
 
 
-async function getJobs(searchParams: any) {
+async function getReferences(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/job?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/references?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {
@@ -21,11 +21,11 @@ async function getJobs(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
 
-    const jobs = await getJobs(searchParams)
+    const references = await getReferences(searchParams)
 
 
     let data: any = {
-     jobs
+        references
     }
 
     return <Reference data={data} />

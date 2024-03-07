@@ -13,15 +13,13 @@ export async function POST(request: Request) {
 
     let data = {
       userId: userId,
-      description: res.data.description,
-      url: res.data.url,
-      authors: res.data.authors,
-      date: res.data.date,
-      title: res.data.title,
+      phone: res.data.phone,
+      address: res.data.address,
+      occupation: res.data.occupation,
+      name: res.data.fullName,
     };
 
-    
-    const response = await prisma.publication.create({
+    const response = await prisma.reference.create({
       data,
     });
 
@@ -39,7 +37,7 @@ export async function GET(request: Request) {
     const session: any = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
-    const response = await prisma.publication.findMany({
+    const response = await prisma.reference.findMany({
       where: { userId },
     });
 
@@ -49,24 +47,4 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: error });
   }
 
-
-}
-
-
-export async function DELETE(request: Request) {
-  try {
-    const session: any = await getServerSession(authOptions);
-
-    let userId = session?.user?.id;
-    const res = await request.json();
-
-    const response = await prisma.publication.delete({
-      where: { id: res, userId },
-    });
-
-    return NextResponse.json({ response });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: error });
-  }
 }

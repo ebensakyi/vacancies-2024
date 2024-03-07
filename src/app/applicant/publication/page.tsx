@@ -5,9 +5,9 @@ import Publication from "@/src/components/applicant/Publication";
 
 
 
-async function getJobs(searchParams: any) {
+async function getPublications(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/job?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/publication?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {
@@ -21,11 +21,11 @@ async function getJobs(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
 
-    const jobs = await getJobs(searchParams)
+    const publications = await getPublications(searchParams)
 
 
     let data: any = {
-     jobs
+        publications
     }
 
     return <Publication data={data} />

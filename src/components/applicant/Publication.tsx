@@ -8,8 +8,17 @@ import "react-toastify/dist/ReactToastify.css";
 import ApplicationMenu from "../ApplicationMenu";
 import moment from "moment";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { LOGIN_URL } from "@/constants";
 
 const Publication = ({ data }: any) => {
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect(LOGIN_URL);
+        }
+    })
     const [publications, setPublications] = useState([]);
 
     const [description, setDescription] = useState("");
@@ -252,7 +261,7 @@ const Publication = ({ data }: any) => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {publications.map((e: any) => (
+                                                                {data?.publications?.response?.map((e: any) => (
                                                                     <tr key={e.id}>
                                                                         <td>{e.title}</td>
                                                                         <td>{e.authors}</td>
