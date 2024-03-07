@@ -265,6 +265,9 @@ const Employment = ({ data }: any) => {
                                                             className="form-control"
                                                             onChange={(e: any) => {
                                                                 setEndMonth(e.target.value);
+                                                                if(e.target.value=="99"){                                                                    
+                                                                    setEndYear("9999")
+                                                                }
                                                             }}
                                                         >
                                                             <option value="">Month</option>
