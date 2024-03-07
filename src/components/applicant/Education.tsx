@@ -50,10 +50,10 @@ const Education = ({ data }: any) => {
     const addSchool = async () => {
         try {
             if (
-                educationLevel == null ||
-                schoolName == null ||
-                startYear == null ||
-                endYear == null
+                educationLevel == "" ||
+                schoolName == "" ||
+                startYear == "" ||
+                endYear == ""
             )
                 return toast.error("Please fill the form");
             const data = {

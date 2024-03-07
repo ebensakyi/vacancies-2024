@@ -8,10 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import Footer from "@/src/components/Footer";
 import { signIn,signOut } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 const Page = () => {
-  // let gen,
-  //   core = "";
+  const searchParams = useSearchParams()
+
+  const error = searchParams.get("error")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -102,6 +104,7 @@ const Page = () => {
       />
 
       <div className="account-pages my-5 pt-sm-5">
+     
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -124,7 +127,10 @@ const Page = () => {
             </div>
           </div>
           <div className="row align-items-center justify-content-center">
-            <div className="col-md-8 col-lg-6 col-xl-5">
+            <div className="col-md-8 col-lg-6 col-xl-5"> {error == "CredentialsSignin" ? <div className="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                    Wrong phone number or password
+                    <button type="button" className="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div> : <></>}
               <div className="card">
                 <div className="card-body p-4">
                   <div className="text-center mt-2">

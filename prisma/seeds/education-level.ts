@@ -6,16 +6,16 @@ export const educationLevel = [
     name: "Secondary Education",
   },
   {
-    name: "HND Education",
+    name: "HND",
   },
   {
-    name: "First Degree Education",
+    name: "First Degree",
   },
   {
-    name: "Master's Degree Education",
+    name: "Master's Degree",
   },
   {
-    name: "Doctorate Degree Education",
+    name: "Doctorate Degree",
   },
   {
     name: "Certification",

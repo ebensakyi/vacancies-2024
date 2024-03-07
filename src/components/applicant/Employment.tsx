@@ -7,8 +7,17 @@ import "react-toastify/dist/ReactToastify.css";
 
 import ApplicationMenu from "../ApplicationMenu";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { LOGIN_URL } from "@/constants";
 
 const Employment = ({ data }: any) => {
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect(LOGIN_URL);
+        }
+    })
     const currentYear = new Date().getFullYear();
     const years = [];
 
@@ -34,9 +43,7 @@ const Employment = ({ data }: any) => {
         try {
             let end = endYear + "-" + endMonth;
             let start = startYear + "-" + startMonth;
-            if (end == "Date-To") {
-                end = "Date";
-            }
+           
             const data = {
                 organizationName,
                 start: start,
@@ -48,7 +55,6 @@ const Employment = ({ data }: any) => {
 
             if (
                 organizationName == "" ||
-                leavingReason == "" ||
                 startMonth == "" ||
                 endMonth == "" ||
                 startYear == "" ||
@@ -57,6 +63,10 @@ const Employment = ({ data }: any) => {
                 position == ""
             )
                 return toast.error("Please fill the form");
+
+            if (endYear != "9999" && leavingReason == "") {
+                return toast.error("Please enter reason for leaving");
+            }
             if (startYear > endYear) {
                 return toast.error("Start year cannot be greater than end year");
             }
@@ -65,7 +75,7 @@ const Employment = ({ data }: any) => {
                 data,
             });
 
-            let { status } = response.data;
+            let { status } = response;
             if (status == 200) {
                 setOrganizationName("");
                 setPosition("");
@@ -81,7 +91,7 @@ const Employment = ({ data }: any) => {
                 return toast.success("Employment added successfully");
             }
 
-            if (status != 0) return toast.error("Employment not saved");
+            if (status != 200) return toast.error("Employment not saved");
         } catch (error) {
             console.log(error);
             return toast.error("A server error occurred");
@@ -277,7 +287,7 @@ const Employment = ({ data }: any) => {
                                                             value={endYear}
                                                             onChange={(e) => {
                                                                 setEndYear(e.target.value);
-                                                                if(endYear =="9999"){
+                                                                if (endYear == "9999") {
                                                                     setLeavingReason("")
                                                                 }
                                                             }}

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       data,
     });
 
-    return NextResponse.json({});
+    return NextResponse.json({ response });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({ message: error.message });
@@ -31,13 +31,34 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    const res = await request.json();
     const session: any = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
-    const response = await prisma.certificate.findMany({ where: { userId } });
+    const response = await prisma.certificate.findMany({
+      where: { userId },
+      include: { EducationLevel: true },
+    });
 
-    return NextResponse.json({response});
+    return NextResponse.json({ response });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: error });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const session: any = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+    const res = await request.json();
+
+    
+
+    const response = await prisma.certificate.delete({
+      where: { userId, id: res },
+    });
+
+    return NextResponse.json({ response });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: error });

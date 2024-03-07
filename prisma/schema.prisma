@@ -171,10 +171,10 @@ model ExamType {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Grade          Grade[]
-  Subject        Subject[]
-  User           User?            @relation(fields: [createdBy], references: [id])
-  IndexNumber    IndexNumber[]
+  Grade       Grade[]
+  Subject     Subject[]
+  User        User?         @relation(fields: [createdBy], references: [id])
+  IndexNumber IndexNumber[]
 }
 
 model Subject {
@@ -506,8 +506,9 @@ model Employment {
   deleted          Int?     @default(0)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  userId           Int
 
-  userId Int
+  @@unique([userId, start], name: "userId_start")
 }
 
 model Essay {
@@ -674,8 +675,8 @@ model GradesObtained {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   IndexNumber    IndexNumber @relation(fields: [indexNumberId], references: [id])
-  userId Int
-  indexNumberId Int
+  userId         Int
+  indexNumberId  Int
 
   // examTypeId Int
   // subjectId  Int

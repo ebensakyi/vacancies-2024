@@ -18,7 +18,7 @@ const Certificate = ({ data }: any) => {
         }
     })
 
-    
+
     const currentYear = new Date().getFullYear();
     const years = [];
 
@@ -36,7 +36,7 @@ const Certificate = ({ data }: any) => {
 
     const router = useRouter();
 
-    for (let year = currentYear; year >=1990 ; year--) {
+    for (let year = currentYear; year >= 1990; year--) {
         years.push(year);
     }
 
@@ -54,9 +54,9 @@ const Certificate = ({ data }: any) => {
             )
                 return toast.error("Please fill the form");
 
-                if(startYear>endYear){
-                    return toast.error("Start year cannot be greater than end year");
-                }
+            if (startYear > endYear) {
+                return toast.error("Start year cannot be greater than end year");
+            }
             const data = {
                 institution: institution.trim(),
                 from: startYear + "-" + startMonth,
@@ -90,23 +90,41 @@ const Certificate = ({ data }: any) => {
     };
 
     const removeCertificate = async (id: any) => {
-        const filtered = certifications.filter((go: any) => go.id !== id);
-        const response = await axios.delete(`/api/applicant/certifications`, {
-            data: id,
-        });
-        setCertifications(filtered);
+        try {
+            const response = await axios.delete(`/api/applicant/certifications`, {
+                data: id,
+            });
+
+            let { status } = response;
+
+            if (status == 200) {
+                setEducationLevel("");
+                setInstitution("");
+                setStartMonth("");
+                setEndMonth("");
+                setStartYear("");
+                setEndYear("");
+                setCertificateObtained("");
+
+                router.refresh()
+                // setCertifications([...certifications, savedCert]);
+                return toast.success("Certificate added successfully");
+            }
+        } catch (error) {
+            return toast.error("An error occurred");
+
+        }
     };
 
     const next = async () => {
-        // let core = await genCode(100);
-
-        const response = await axios.post(
-            `/api/applicant/certifications?next=true`
+      if(data?.certificates?.response.length > 0) {
+        await router.push(
+            `/applicant/employment?next=true`
         );
+        return
 
-        let isValid = response.data.data;
+      }
 
-        // if (isValid) return Router.push("/applicant/employment");
 
         return toast.error("Enter at least one certificate before clicking next");
     };
@@ -383,9 +401,9 @@ const Certificate = ({ data }: any) => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {certifications.map((co: any) => (
+                                                                {data?.certificates?.response?.map((co: any) => (
                                                                     <tr key={co.id}>
-                                                                        <td>{co?.EducationLevel.name}</td>
+                                                                        <td>{co?.EducationLevel?.name}</td>
                                                                         <td>{co.institution}</td>
                                                                         <td>{co.from}</td>
                                                                         <td>{co.to}</td>
