@@ -204,25 +204,22 @@ const Education = ({ data }: any) => {
     };
 
 
-
     const next = async () => {
+        if(data?.schoolsAttended?.response.length > 0) {
+          await router.push(
+              `/applicant/certifications?next=true`
+          );
+          return
+  
+        }
+  
+  
+        return toast.error(
+            "Add schools attended and Add grades for English, Mathematics and any other 3 subjects for BECE and WASSCE(or equivalent). You should add at least 10 grades in all"
+        );
+      };
 
-        try {
-            const response = await axios.post(
-                `/api/applicant/school-attended?next=true`
-            );
-
-            let { isSchoolValid } = response.data.data;
-            let { isGradeValid } = response.data.data;
-
-            if (isSchoolValid && isGradeValid)
-                // return Router.push("/applicant/certifications?core=" + core);
-
-                return toast.error(
-                    "Add schools attended and Add grades for English, Mathematics and any other 3 subjects for BECE and WASSCE(or equivalent). You should add at least 10 grades in all"
-                );
-        } catch (error) { }
-    };
+  
 
     return (
         <div id="layout-wrapper">

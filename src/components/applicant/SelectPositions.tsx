@@ -5,9 +5,17 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import ApplicationMenu from "../ApplicationMenu";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { LOGIN_URL } from "@/constants";
 
 const SelectPositions = ({ data }: any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(LOGIN_URL);
+    }
+})
   const router = useRouter()
   const [jobs, setJobs] = useState([]);
 

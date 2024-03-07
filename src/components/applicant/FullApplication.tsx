@@ -5,7 +5,7 @@ import * as moment from "moment";
 
 import { useRef, useEffect } from "react";
 
-const FullApplication = ({ data, jobs }) => {
+const FullApplication = ({ data }:any) => {
   let rt = Cookies.get("rt");
 
   const contentRef = useRef();

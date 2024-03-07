@@ -1,7 +1,16 @@
+import { LOGIN_URL } from "@/constants";
 import moment from "moment";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const Applications = ({ data }: any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(LOGIN_URL);
+    }
+})
   return (
     <div id="layout-wrapper">
       <div className="main-content">

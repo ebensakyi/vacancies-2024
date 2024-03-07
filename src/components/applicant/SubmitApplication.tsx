@@ -8,9 +8,9 @@ import Link from "next/link";
 import ApplicationMenu from "../ApplicationMenu";
 
 export const SubmitApplication = ({ data }: any) => {
-  const [contactObjection, setContactObjection] = useState();
-  const [bonded, setBonded] = useState();
-  const [bondedDetails, setBondedDetails] = useState();
+  const [contactObjection, setContactObjection] = useState("");
+  const [bonded, setBonded] = useState("");
+  const [bondedDetails, setBondedDetails] = useState("");
   const [confirm, setConfirm] = useState(false);
 
   const submit = async () => {
@@ -56,7 +56,7 @@ export const SubmitApplication = ({ data }: any) => {
               </div>
             </div>
             <div className="row">
-              <ApplicationMenu whichLink="submit" />
+              <ApplicationMenu whichLink="submit-application" />
               <ToastContainer
                 position="top-right"
                 autoClose={15000}
@@ -161,7 +161,7 @@ export const SubmitApplication = ({ data }: any) => {
                                 </div>
                               </div>
                             </div>
-                            {bonded == null || bonded == true ? (
+                            {bonded != ""  ? (
                               <div className="col-sm-4" id="bondedDetailsDiv">
                                 <div className="form-group">
                                   <label htmlFor="exampleInputuname">
