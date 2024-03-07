@@ -1,9 +1,11 @@
+'use client'
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import { Editor } from "@tinymce/tinymce-react";
+import ApplicationMenu from "../ApplicationMenu";
 
 export const Essay = ({ data }: any) => {
   const [essay, setEssay] = useState("");
@@ -42,11 +44,13 @@ export const Essay = ({ data }: any) => {
             <div className="row">
               <div className="col-12">
                 <div className="page-title-box d-flex align-items-center justify-content-between">
-                  <h4 className="mb-0">EMPLOYMENT </h4>
+                  <h4 className="mb-0">MOTIVATION LETTER </h4>
                 </div>
               </div>
             </div>
             <div className="row">
+            <ApplicationMenu whichLink="essay" />
+
               <ToastContainer
                 position="top-right"
                 autoClose={15000}
@@ -115,15 +119,13 @@ export const Essay = ({ data }: any) => {
                 <div className="form-actions mt-10">
                   <div className="col-md-12" style={{ textAlign: "end" }}>
                     <div className="btn-group" role="group" aria-label="Basic example">
-                      <Link href="/applicant/employment">
-                        <a type="button" className="btn btn-success">
+                      <Link href="/applicant/employment"type="button" className="btn btn-success">
+                       
                           Previous
-                        </a>
+                      
                       </Link>
-                      <Link href="/applicant/publication">
-                        <a type="button" className="btn btn-success">
+                      <Link href="/applicant/publication" type="button" className="btn btn-success">
                           Next
-                        </a>
                       </Link>
                     </div>
                   </div>

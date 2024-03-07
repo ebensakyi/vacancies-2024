@@ -94,23 +94,17 @@ const ApplicationMenu = ({ whichLink}:any ) => {
           </Link>
         </li>
      
-      {/* {menu == "1" ? (
+    
         <li className="nav-item waves-effect waves-light">
-          <Link href="#">
-            <a
-              className={`nav-link  ${whichLink == "essay" ? activeLink : ""}`}
-              // data-bs-toggle="tab"
-              // href="#"
-              // role="tab"
-            >
+          <Link href="#"  className={`nav-link  ${whichLink == "essay" ? activeLink : ""}`}>
+           
               <span className="d-block d-sm-none">
                 <i className="fas fa-align-left" />
               </span>
               <span className="d-none d-sm-block">Motivation</span>
-            </a>
           </Link>
         </li>
-      ) : null} */}
+     
         <li className="nav-item waves-effect waves-light">
           <Link href="#"  className={`nav-link  ${
                 whichLink == "publications" ? activeLink : ""

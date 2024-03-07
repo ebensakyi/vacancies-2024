@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function POST(request: Request) {
- try {
+  try {
     const session: any = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const res = await request.json();
@@ -19,13 +19,11 @@ export async function POST(request: Request) {
       leavingReason: res.data.leavingReason,
     };
 
-console.log(data);
-
     const response = await prisma.employment.create({
       data,
     });
 
-    return NextResponse.json({response});
+    return NextResponse.json({ response });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({ message: error.message });
@@ -41,8 +39,25 @@ export async function GET(request: Request) {
       where: { userId },
     });
 
+    return NextResponse.json({ response });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: error });
+  }
+}
 
-    return NextResponse.json({response});
+export async function DELETE(request: Request) {
+  try {
+    const session: any = await getServerSession(authOptions);
+
+    let userId = session?.user?.id;
+    const res = await request.json();
+
+    const response = await prisma.employment.delete({
+      where: { id: res, userId },
+    });
+
+    return NextResponse.json({ response });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: error });

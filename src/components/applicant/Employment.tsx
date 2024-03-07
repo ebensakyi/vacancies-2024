@@ -8,10 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 import ApplicationMenu from "../ApplicationMenu";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { LOGIN_URL } from "@/constants";
 
 const Employment = ({ data }: any) => {
+   const router =  useRouter()
     const { data: session } = useSession({
         required: true,
         onUnauthenticated() {
@@ -88,6 +89,8 @@ const Employment = ({ data }: any) => {
                 // setTodate(false);
                 // setEmployments([...employments, response.data.data]);
 
+                router.refresh()
+
                 return toast.success("Employment added successfully");
             }
 
@@ -104,37 +107,28 @@ const Employment = ({ data }: any) => {
             const response = await axios.delete(`/api/applicant/employment`, {
                 data: id,
             });
-            setEmployments(filtered);
+            router.refresh()
+
         } catch (error) {
             return toast.error("A server error occurred");
         }
     };
 
-    const next = async (id: any) => {
-
-        try {
-            const response = await axios.post(
-                `/api/applicant/employment?next=true`
-            );
-
-            let isValid = response.data.data;
-            if (id == "toRef") {
-                // if (isValid) return Router.push("/applicant/references");
-
-                return toast.error(
-                    "Complete this section according to the instructions in green before clicking next"
-                );
-            } else if (id == "toEssay") {
-                // if (isValid) return Router.push("/applicant/essay");
-
-                return toast.error(
-                    "Complete this section according to the instructions in green before clicking next"
-                );
-            } else {
-                return;
-            }
-        } catch (error) { }
-    };
+    const next = async () => {
+        //check stafftype, show either essay or publications
+        if(data?.employments?.response.length > 0) {
+          await router.push(
+              `/applicant/essay?next=true`
+          );
+          return
+  
+        }
+  
+  
+          return toast.error("Enter at least one certificate before clicking next");
+      };
+    
+    
     return (
         <div id="layout-wrapper">
             <div className="main-content">
@@ -414,7 +408,7 @@ const Employment = ({ data }: any) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {employments.map((e: any) => (
+                                                        {data?.employments?.response?.map((e: any) => (
                                                             <tr key={e.id}>
                                                                 <td>{e.organizationName}</td>
                                                                 <td>
@@ -469,7 +463,7 @@ const Employment = ({ data }: any) => {
                                             type="button"
                                             className="btn btn-success"
                                             onClick={() => {
-                                                next("toRef");
+                                                next();
                                             }}
                                         >
                                             Next
