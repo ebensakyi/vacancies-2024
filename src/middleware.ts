@@ -1,3 +1,5 @@
+import { getToken } from "next-auth/jwt";
+
 export {default} from "next-auth/middleware"
 
 
@@ -5,18 +7,16 @@ export const config = {
    matcher: ["/admin/:path*", "/applicant/:path*"]
 }
 
-// import { withAuth } from "next-auth/middleware"
 
 
 
 
-// import { NextResponse } from "next/server";
-// import { getToken } from "next-auth/jwt";
 
-// export async function middleware(request: any) {
+
+export async function middleware(request: any) {
   
-//   const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
-//   console.log("MW TOKEN ",token);
+  const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
+  console.log("MW TOKEN ",token);
   
 
 
@@ -54,8 +54,8 @@ export const config = {
   //     break;
   //   default:
   //    // return NextResponse.redirect(new URL("/auth/login", request.url));
-  // }
-// }
+  //}
+}
 
 // export const config = {
 //   matcher: [
