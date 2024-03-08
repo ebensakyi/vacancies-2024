@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export async function GET(request: Request) {
   try {
     // const res = await request.json();
     // let update = res.data.update
@@ -43,16 +43,64 @@ export async function PUT(request: Request) {
 
     // const response = await prisma.job.update({ data: { published: Math.abs(pub-1)  }, where: { id: id } });
 
-    const tsa = await prisma.application.count({
-      where: { submitted: 1 },
+    const currentRecruitment = await prisma.currentRecruitment.findFirst({
+      where: { deleted: 0 },
     });
 
-    console.log("tsa===> " + tsa);
+    // const applicationSummary = await prisma.application.findMany({
+    //   where: { submitted: 1, currentRecruitmentId: currentRecruitment.id },
+    //   include: {
+    //     J,
+    //   },
+    // });
+
+    // const jobSummary = await prisma.application.groupBy({
+    //   by: 'jobId',
+    //   _count: {
+    //     jobId: true,
+    //   },
+    //   include: {
+    //     // Specify the related model you want to include
+    //     Job: true, // For example, if you want to include the Application model
+    //   },
+    // })
+
+
+    const jobSummary = await prisma.job.findMany({
+      include: {
+        _count: {
+          select: { Application: true },
+        },
+      },
+    })
+
+
     
-    const tsaSubmitted = await prisma.application.count({
+
+    // const jobSummary = await prisma.job.findMany({
+    //   select: {
+    //     id: true,
+    //     name: true,
+    //     Application: {
+    //       // Count the number of related applications
+    //       count: {
+    //         id: true
+    //       }
+    //     }
+    //   },
+    //   include: {
+    //     Application: true // Include the Application model to count the number of applications
+    //   }
+    // });
+
+    const totalApplications = await prisma.application.count({
+      //where: { submitted: 1 },
+    });
+
+    const totalApplicationsSubmitted = await prisma.application.count({
       where: { submitted: 1 },
     });
-    const tsaMale = await prisma.application.count({
+    const totalMaleApplicants = await prisma.application.count({
       where: {
         submitted: 1,
         User: {
@@ -62,7 +110,7 @@ export async function PUT(request: Request) {
         },
       },
     });
-    const tsaFemale = await prisma.application.count({
+    const totalFemaleApplicants = await prisma.application.count({
       where: {
         submitted: 1,
         User: {
@@ -73,7 +121,13 @@ export async function PUT(request: Request) {
       },
     });
     return NextResponse.json({
-      response: { tsaSubmitted, tsa, tsaMale, tsaFemale },
+      response: {
+        jobSummary,
+        totalApplicationsSubmitted,
+        totalApplications,
+        totalMaleApplicants,
+        totalFemaleApplicants,
+      },
     });
   } catch (error: any) {
     console.log(error);
@@ -81,37 +135,9 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
-  try {
-    let { searchParams } = new URL(request.url);
-
-    let pub: any = searchParams.get("pub")?.toString();
-
-    if (pub) {
-      const response = await prisma.job.findMany({
-        where: { published: 1 },
-        include: { Policy: true },
-      });
-      return NextResponse.json({ response }, { status: 200 });
-    }
-
-    const response = await prisma.job.findMany({
-      where: { deleted: 0 },
-      include: { Policy: true },
-    });
-    //const response = await prisma.job.findMany({ select: { id: true, name: true } });
-
-    return NextResponse.json({ response }, { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: error });
-  }
-}
-
 export async function DELETE(request: Request) {
   try {
     const res = await request.json();
-    console.log("RERERES ", res);
 
     const response = await prisma.job.update({
       where: { id: Number(res.id) },

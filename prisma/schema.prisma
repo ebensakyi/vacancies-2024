@@ -120,23 +120,6 @@ model Policy {
   recruitmentId Int
 }
 
-model Job {
-  id            Int             @id @default(autoincrement())
-  Policy        Policy          @relation(fields: [policyId], references: [id])
-  name          String?         @unique(map: "name") @db.VarChar(255)
-  published     Int?            @default(0)
-  createdBy     Int?            @default(1)
-  deleted       Int?            @default(0)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  policyId      Int
-  AccessibleJob AccessibleJob[]
-  Application   Application[]
-  User          User?           @relation(fields: [createdBy], references: [id])
-
-  @@unique([policyId, name, deleted], name: "name_policy")
-}
-
 model Advert {
   id        Int      @id @default(autoincrement())
   Policy    Policy   @relation(fields: [policyId], references: [id])
@@ -224,14 +207,15 @@ model Recruitment {
 }
 
 model CurrentRecruitment {
-  id            Int         @id @default(autoincrement())
-  createdBy     Int?        @default(1)
-  deleted       Int?        @default(0)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  Recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
+  id            Int           @id @default(autoincrement())
+  createdBy     Int?          @default(1)
+  deleted       Int?          @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  Recruitment   Recruitment   @relation(fields: [recruitmentId], references: [id])
   recruitmentId Int
-  User          User?       @relation(fields: [createdBy], references: [id])
+  User          User?         @relation(fields: [createdBy], references: [id])
+  Application   Application[]
 }
 
 model CurrentShortlisting {
@@ -429,7 +413,7 @@ model Personal {
 model Publication {
   id          Int      @id @default(autoincrement())
   User        User     @relation(fields: [userId], references: [id])
-  title       String?  @unique(map: "title") @db.VarChar(255)
+  title       String?
   date        String?  @db.VarChar(255)
   authors     String?  @db.VarChar(255)
   url         String?  @db.VarChar(255)
@@ -521,6 +505,23 @@ model Essay {
   userId    Int      @unique(map: "userId")
 }
 
+model Job {
+  id            Int             @id @default(autoincrement())
+  Policy        Policy          @relation(fields: [policyId], references: [id])
+  name          String?         @unique(map: "name") @db.VarChar(255)
+  published     Int?            @default(0)
+  createdBy     Int?            @default(1)
+  deleted       Int?            @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  policyId      Int
+  AccessibleJob AccessibleJob[]
+  Application   Application[]
+  User          User?           @relation(fields: [createdBy], references: [id])
+
+  @@unique([policyId, name, deleted], name: "name_policy")
+}
+
 model Application {
   id              Int      @id @default(autoincrement())
   jobId           Int
@@ -535,12 +536,12 @@ model Application {
 
   User User @relation(fields: [userId], references: [id])
 
-  Job               Job                 @relation(fields: [jobId], references: [id])
-  RejectReason      RejectReason[]
+  Job                  Job                 @relation(fields: [jobId], references: [id])
+  RejectReason         RejectReason[]
   // @@unique([userId, jobId], name: "userId_jobId")
-  FilteredOutReason FilteredOutReason[]
-  //   currentRecruitmentId Int
-  //   CurrentRecruitment   CurrentRecruitment  @relation(fields: [currentRecruitmentId], references: [id])
+  FilteredOutReason    FilteredOutReason[]
+  currentRecruitmentId Int
+  CurrentRecruitment   CurrentRecruitment  @relation(fields: [currentRecruitmentId], references: [id])
 }
 
 // model ApplicationMenu {
@@ -648,7 +649,7 @@ model IndexNumber {
   examYear        String  @db.VarChar(40)
   candidateName   String? @db.VarChar(100)
   candidateDob    String? @db.VarChar(40)
-  candidateGender String? @db.VarChar(40)
+  candidateGender String? @db.VarChar(10)
   userId          Int
   examTypeId      Int
 
@@ -659,6 +660,8 @@ model IndexNumber {
   User           User             @relation(fields: [userId], references: [id])
   ExamType       ExamType         @relation(fields: [examTypeId], references: [id])
   GradesObtained GradesObtained[]
+
+  @@unique([candidateNumber, examYear], name: "candidateNumberExamYear")
 }
 
 model GradesObtained {

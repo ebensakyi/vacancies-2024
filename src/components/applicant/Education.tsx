@@ -13,6 +13,9 @@ import { useSession } from "next-auth/react";
 import { LOGIN_URL } from "@/constants";
 
 const Education = ({ data }: any) => { 
+
+    console.log(data);
+    
       const { data: session } = useSession({
         required: true,
         onUnauthenticated() {
@@ -104,7 +107,10 @@ const Education = ({ data }: any) => {
                 data,
             });
 
-            let { status } = response.data;
+            console.log(response);
+            
+
+            let { status } = response;
 
             if (status == 200) {
                 setIndexNumber("");
@@ -115,7 +121,8 @@ const Education = ({ data }: any) => {
                 return toast.success("Index number added successfully");
             }
 
-            if (status != 200) return toast.error("Index number not added");
+
+            if (status == 201) return toast.error("We could not verify your index number. \n Kindly check the Exam Type, Exam Year and Index Number");
         } catch (error) {
             console.log(error);
         }
@@ -518,20 +525,22 @@ const Education = ({ data }: any) => {
                                                 <table className="table mb-0">
                                                     <thead className="table-light">
                                                         <tr>
-                                                            <th>Examination</th>
-                                                            <th>Month/Year</th>
-                                                            <th>Index Number</th>
+                                                        <th>Candidate Name</th>
+                                                        <th>Verified Index</th>
+                                                            <th>Exam Type</th>
+                                                            <th>Exam Year</th>
                                                             <th>Remove</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {data?.indexNumbers?.response?.map((ind: any) => (
-                                                            <tr key={ind.id}>
-                                                                <td>{ind.ExamTypeNew.name}</td>
+                                                        {data?.verifiedIndexNumbers?.response?.map((ind: any) => (
+                                                            <tr key={ind.id}
+                                                            > <td>{ind.candidateName}</td>
+                                                            <td>{ind.candidateNumber}</td>
+                                                                <td>{ind.ExamType.name}</td>
                                                                 <td>
-                                                                    {moment(ind.year, "YYYY-MM").format("MM-YYYY")}
+                                                                    {ind.examYear}
                                                                 </td>
-                                                                <td>{ind.indexNumber}</td>
                                                                 <td>
                                                                     {" "}
                                                                     <button

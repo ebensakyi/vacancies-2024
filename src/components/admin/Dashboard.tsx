@@ -78,9 +78,7 @@ console.log(data);
       </div> */}
       <div className="row">
         <div className="col-xl-3 col-md-6">
-          {/* card */}
           <div className="card card-h-100">
-            {/* card body */}
             <div className="card-body">
               <div className="row align-items-center">
                 <div className="col-6">
@@ -103,19 +101,51 @@ console.log(data);
               </div>
               <div className="text-nowrap">
                 <span className="badge bg-soft-warning text-warning">
-                  {data?.stats?.totalApplicationsSubmitted}
+                  {data?.stats?.response?.totalApplicationsSubmitted}
                 </span>
                 <span className="ms-1 text-muted font-size-13">
                   Applications submitted
                 </span>
               </div>
             </div>
-            {/* end card body */}
           </div>
-          {/* end card */}
         </div>
-        {/* end col */}
+
         <div className="col-xl-3 col-md-6">
+          <div className="card card-h-100">
+            <div className="card-body">
+              <div className="row align-items-center">
+                <div className="col-6">
+                  <span className="text-muted mb-3 lh-1 d-block text-truncate">
+                  Applicants shortlisted
+                  </span>
+                  <h4 className="mb-3">
+                    <span className="counter-value" data-target="865.2">
+                      {data?.stats?.response?.totalApplications}
+                    </span>
+                  </h4>
+                </div>
+                <div className="col-6">
+                  <div
+                    id="mini-chart1"
+                    data-colors='["#5156be"]'
+                    className="apex-charts mb-2"
+                  />
+                </div>
+              </div>
+              <div className="text-nowrap">
+                <span className="badge bg-soft-warning text-warning">
+                  {data?.stats?.response?.totalApplicationsSubmitted}
+                </span>
+                <span className="ms-1 text-muted font-size-13">
+                  Applications submitted
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* <div className="col-xl-3 col-md-6">
           <div className="card card-h-100">
             <div className="card-body">
               <div className="row align-items-center">
@@ -125,7 +155,7 @@ console.log(data);
                   </span>
                   <h4 className="mb-3">
                     <span className="counter-value" data-target={6258}>
-                      {stats?.totalApplicantsShortlisted}
+                      {data?.stats?.response?.totalApplicantsShortlisted}
                     </span>
                   </h4>
                 </div>
@@ -139,15 +169,15 @@ console.log(data);
               </div>
               <div className="text-nowrap">
                 <span className="badge bg-soft-primary text-primary">
-                  {stats?.totalApplicantsShortlisted}
+                  {data?.stats?.response?.totalApplicantsShortlisted}
                 </span>
                 <span className="ms-1 text-muted font-size-13">
-                  applicants out of  <span className="badge bg-soft-success text-primary">{stats?.totalApplications}</span>  applications shortlisted
+                  applicants out of  <span className="badge bg-soft-success text-primary">{data?.stats?.response?.totalApplications}</span>  applications shortlisted
                 </span>
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* end col*/}
         <div className="col-xl-3 col-md-6">
           {/* card */}
@@ -161,7 +191,7 @@ console.log(data);
                   </span>
                   <h4 className="mb-3">
                     <span className="counter-value" data-target="4.32">
-                      {stats?.totalMaleApplicants}
+                      {data?.stats?.response?.totalMaleApplicants}
                     </span>
                   </h4>
                 </div>
@@ -176,9 +206,9 @@ console.log(data);
               <div className="text-nowrap">
                 <span className="badge bg-soft-success text-success">
                   {(
-                    (stats?.totalMaleApplicants / stats?.totalApplications) *
+                    (data?.stats?.response?.totalMaleApplicants / data?.stats?.response?.totalApplications) *
                     100
-                  ).toFixed(2) || 0}
+                  ).toFixed(2) ?? 0}
                   %
                 </span>
                 <span className="ms-1 text-muted font-size-13">
@@ -203,7 +233,7 @@ console.log(data);
                   </span>
                   <h4 className="mb-3">
                     <span className="counter-value" data-target="12.57">
-                      {stats?.totalFemaleApplicants}
+                      {data?.stats?.response?.totalFemaleApplicants}
                     </span>
                   </h4>
                 </div>
@@ -218,7 +248,7 @@ console.log(data);
               <div className="text-nowrap">
                 <span className="badge bg-soft-success text-success">
                   {(
-                    (stats?.totalFemaleApplicants / stats?.totalApplications) *
+                    (data?.stats?.response?.totalFemaleApplicants / data?.stats?.response?.totalApplications) *
                     100
                   ).toFixed(2) || 0}
                   %
@@ -260,7 +290,7 @@ console.log(data);
                 </tr>
               </thead>
               <tbody>
-                {jobSummary?.map((job:any) => {
+                {data?.stats?.response?.applicationSummary?.map((job:any) => {
                   return (
                     <tr>
                      

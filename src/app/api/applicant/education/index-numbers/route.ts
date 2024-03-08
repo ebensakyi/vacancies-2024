@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 import axios from "axios";
 import { nanoid } from "nanoid";
+import ExamType from '@/src/components/admin/primary-data/ExamType';
 
 export async function POST(request: Request) {
   try {
@@ -32,41 +33,49 @@ export async function POST(request: Request) {
       firstName
     );
 
-    let isRightUser = results[0];
-    let candidateDetails = results[1];
+    let candidateDetails = results[0];
+    let isRightUser = results[1];
 
-    console.log("isRightUser ", isRightUser);
-    console.log("candidateDetails ", candidateDetails);
+    // console.log("isRightUser ", isRightUser);
+    // console.log("candidateDetails ", candidateDetails);
     if (isRightUser) {
-      const savedIndexNumber = await prisma.indexNumber.create({
+      const response = await prisma.indexNumber.create({
         data: {
           candidateNumber: indexNumber,
           examYear: examYear,
           candidateName: candidateDetails.candidate.cname,
           candidateDob: candidateDetails.candidate.dob,
+          candidateGender: candidateDetails.candidate.gender + "",
           userId: userId,
-          examTypeId: examType,
+          examTypeId: Number(examType),
         },
+        include:{
+          ExamType:true
+        }
       });
 
+      let results = candidateDetails.resultdetails;
+      console.log(results);
+
       //save results in db
-      for (let i = 0; i < candidateDetails.length; i++) {
-        const response = await prisma.gradesObtained.create({
+      for (let i = 0; i < results.length; i++) {
+       await prisma.gradesObtained.create({
           data: {
-            subjectCode: "",
-            subject: "",
-            grade: "",
-            interpretation: "",
+            subjectCode: results[i].subjectcode,
+            subject: results[i].subject,
+            grade: results[i].grade,
+            interpretation: results[i].interpretation,
             userId: userId,
-            indexNumberId: savedIndexNumber.id,
+            indexNumberId: response.id,
           },
+         
         });
       }
 
-      return NextResponse.json({});
+      return NextResponse.json({response});
     }
 
-    return NextResponse.json({});
+    return NextResponse.json({},{status: 201});
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({ message: error.message });
@@ -81,7 +90,13 @@ export async function GET(request: Request) {
 
     const response = await prisma.indexNumber.findMany({
       where: { userId: userId },
+      include:{
+        ExamType:true
+      }
     });
+
+    console.log(response);
+    
 
     return NextResponse.json({ response });
   } catch (error) {
@@ -135,8 +150,12 @@ const compareUserWithResults = async (
   surname: string,
   firstName: string
 ) => {
-  let containsFirstName = resultsCandidateName.includes(firstName);
-  let containsSurname = resultsCandidateName.includes(surname);
+  let containsFirstName = resultsCandidateName
+    .toUpperCase()
+    .includes(firstName.toUpperCase());
+  let containsSurname = resultsCandidateName
+    .toUpperCase()
+    .includes(surname.toUpperCase());
 
   if (!containsFirstName && !containsSurname) {
     return false;
