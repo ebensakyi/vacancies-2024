@@ -1,24 +1,32 @@
 "use client"
 import { ADMIN_LOGIN_URL } from "@/constants";
+import { accessController } from "@/lib/access-controller";
 import moment from "moment";
 import { useSession } from "next-auth/react";
 import { usePathname, redirect } from "next/navigation";
 
-const Dashboard = ({ stats, recruitment, jobSummary }:any) => {
+const Dashboard = ({ data }:any) => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
         redirect(ADMIN_LOGIN_URL);
     }
 })
-  const pathname = usePathname()
+console.log(data);
 
 
-  const getDashboard = async (id:any) => {
-    redirect(
-      `${pathname}? /admin/dashboard?searchId=${id}`,
-    );
-  }
+// console.log(session?.user?.accesiblePages);
+
+//   const pathname = usePathname()
+
+//   accessController(session?.user?.accesiblePages,pathname)
+
+
+//   const getDashboard = async (id:any) => {
+//     redirect(
+//       `${pathname}? /admin/dashboard?searchId=${id}`,
+//     );
+//   }
 
   return (
     <div id="layout-wrapper">
@@ -81,7 +89,7 @@ const Dashboard = ({ stats, recruitment, jobSummary }:any) => {
                   </span>
                   <h4 className="mb-3">
                     <span className="counter-value" data-target="865.2">
-                      {stats?.totalApplications}
+                      {data?.stats?.response?.totalApplications}
                     </span>
                   </h4>
                 </div>
@@ -95,7 +103,7 @@ const Dashboard = ({ stats, recruitment, jobSummary }:any) => {
               </div>
               <div className="text-nowrap">
                 <span className="badge bg-soft-warning text-warning">
-                  {stats?.totalApplicationsSubmitted}
+                  {data?.stats?.totalApplicationsSubmitted}
                 </span>
                 <span className="ms-1 text-muted font-size-13">
                   Applications submitted

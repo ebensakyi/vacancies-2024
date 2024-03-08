@@ -4,9 +4,9 @@ import { getToken } from "next-auth/jwt";
 // export {default} from "next-auth/middleware"
 
 
-export const config = {   
-   matcher: ["/admin/:path*", "/applicant/:path*"]
-}
+// export const config = {   
+//    matcher: ["/admin/:path*", "/applicant/:path*"]
+// }
 
 
 
@@ -14,13 +14,11 @@ export const config = {
 
 
 
-// export async function middleware(request: any) {
+export async function middleware(request: any) {
 
-//    console.log(request);
    
   
-//   const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
-//   console.log("MW TOKEN ",token);
+  const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
   
 
 
@@ -66,4 +64,4 @@ export const config = {
 //     // Match all routes except the ones that start with /login and api and the static folder
 //     "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
 //   ],
-// }
+}

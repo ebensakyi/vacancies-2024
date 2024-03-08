@@ -54,15 +54,20 @@ export async function POST(request: Request) {
           userRoleId: user?.userRoleId,
           deleted: 0,
         },
+        include:{
+          Page:true
+        }
       });
 
-      let privileges = await pageAccess?.map((d: any) => {
-        return d.pageId;
+      let accesiblePages = await pageAccess?.map((d: any) => {
+        return d.Page.path;
       });
+
+      
 
       const token = jwt.sign(user, process.env.TOKEN_SECRET || "");
 
-      let response = { ...user, token, privileges, name: user.firstName + " " + user.surname + " " + user.otherNames, role: user.userRoleId };
+      let response = { ...user, token, accesiblePages, name: user.firstName + " " + user.surname + " " + user.otherNames, role: user.userRoleId };
 
       return NextResponse.json(response);
     }
