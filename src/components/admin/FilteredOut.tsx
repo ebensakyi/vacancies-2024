@@ -3,11 +3,20 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
-import { calculateAge } from "../../lib/calculate-age";
+import { calculateAge } from "@/lib/calculate-age";
 import _ from "lodash";
+import { ADMIN_LOGIN_URL } from "@/constants";
+import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 
 export const FilteredOut = ({ broadsheet }:any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
   const router = useRouter();
 
 

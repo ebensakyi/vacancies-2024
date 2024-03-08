@@ -363,7 +363,7 @@ model UserLogs {
 model Page {
   id         Int          @id @default(autoincrement())
   name       String       @unique(map: "name") @db.VarChar(255)
-  icon       String?      @db.VarChar(255)
+  path       String?      @db.VarChar(255)
   hasSubMenu Int?         @default(0)
   createdBy  Int?         @default(1)
   deleted    Int?         @default(0)

@@ -38,7 +38,7 @@ const Page = () => {
       let result = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/applicant/applications"
+        callbackUrl: "/admin/dashboard"
 
       })
 

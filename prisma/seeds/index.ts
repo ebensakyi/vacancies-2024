@@ -17,6 +17,7 @@ import { yes_no } from "./yes-no";
 import { superAdmin } from "./user";
 import { reasons } from "./reason";
 import { titles } from "./title";
+import { pagesAccess } from "./page-access";
 
 async function main() { 
   
@@ -78,6 +79,10 @@ async function main() {
 
   await prisma.title.createMany({
     data: titles,
+  });
+
+  await prisma.pageAccess.createMany({
+    data: pagesAccess,
   });
 }
 

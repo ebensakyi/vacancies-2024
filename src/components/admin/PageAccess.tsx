@@ -2,8 +2,17 @@
 import { useState } from "react";
 import axios from "axios";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
+import { redirect } from "next/navigation";
 
 const PageAccess = ({ results }:any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
   const [accessName, setAccessName] = useState("");
   const [pages, setPages] = useState([]);
   const saveAccess = async () => {

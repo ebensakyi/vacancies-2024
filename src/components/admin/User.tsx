@@ -4,8 +4,20 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Multiselect from "multiselect-react-dropdown";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
 const User = ({ data }: any) => {
+
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
+console.log(session);
+
+
   const router = useRouter()
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");

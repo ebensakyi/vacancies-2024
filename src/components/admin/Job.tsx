@@ -3,10 +3,18 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import moment from "moment";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
 
 const Job = ({ data }: any) => {
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect(ADMIN_LOGIN_URL);
+        }
+    })
     let router = useRouter()
     const [id, setId] = useState("")
     const [name, setName] = useState("");

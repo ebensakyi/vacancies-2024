@@ -319,7 +319,7 @@ CREATE TABLE `UserLogs` (
 CREATE TABLE `Page` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `icon` VARCHAR(255) NULL,
+    `path` VARCHAR(255) NULL,
     `hasSubMenu` INTEGER NULL DEFAULT 0,
     `createdBy` INTEGER NULL DEFAULT 1,
     `deleted` INTEGER NULL DEFAULT 0,
@@ -443,6 +443,7 @@ CREATE TABLE `Employment` (
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` INTEGER NOT NULL,
 
+    UNIQUE INDEX `Employment_userId_start_key`(`userId`, `start`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

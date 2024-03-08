@@ -3,6 +3,9 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
+import { redirect } from "next/navigation";
 
 const Filter = ({
   stats,
@@ -11,6 +14,13 @@ const Filter = ({
   jobList,
   filtered,
 }:any) => {
+
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
   const [educationLevel, setEducationLevel] = useState("");
   // const [age, setAge] = useState("");
   const [requiredYears, setRequiredYears] = useState("");

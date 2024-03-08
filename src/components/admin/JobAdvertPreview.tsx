@@ -1,10 +1,18 @@
 
 "use client"
+import { ADMIN_LOGIN_URL } from "@/constants";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import ReactHtmlParser from "react-html-parser";
 
 
 const JobAdvertPreview = ({ data }: any) => {
-
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
 
  let details =   ReactHtmlParser(data.job.response.details)
   return (

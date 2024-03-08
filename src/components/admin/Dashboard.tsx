@@ -1,8 +1,16 @@
 "use client"
+import { ADMIN_LOGIN_URL } from "@/constants";
 import moment from "moment";
+import { useSession } from "next-auth/react";
 import { usePathname, redirect } from "next/navigation";
 
 const Dashboard = ({ stats, recruitment, jobSummary }:any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
   const pathname = usePathname()
 
 

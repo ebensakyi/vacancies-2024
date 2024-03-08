@@ -4,9 +4,16 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Router from "next/router";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
+import { redirect } from "next/navigation";
 const SetupPortal = ({ data }: any) => {
-  //let cr = currentRecruitment.StaffType.name;
-
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
   const [cr, setCr] = useState("");
   const [cs, setCs] = useState("");
 

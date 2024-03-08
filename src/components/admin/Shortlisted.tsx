@@ -6,8 +6,17 @@ import { useState, useEffect } from "react";
 
 import _ from "lodash";
 import { calculateAge } from "@/lib/calculate-age";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
+import { redirect } from "next/navigation";
 
 const Shortlisted = ({ broadsheet }:any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
   const [searchText, setSearchText] = useState();
   const router = useRouter();
 

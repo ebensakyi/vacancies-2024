@@ -1,6 +1,7 @@
+
 import { getToken } from "next-auth/jwt";
 
-export {default} from "next-auth/middleware"
+// export {default} from "next-auth/middleware"
 
 
 export const config = {   
@@ -13,10 +14,13 @@ export const config = {
 
 
 
-export async function middleware(request: any) {
+// export async function middleware(request: any) {
+
+//    console.log(request);
+   
   
-  const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
-  console.log("MW TOKEN ",token);
+//   const token = await getToken({ req: request, secret: process.env.TOKEN_SECRET });
+//   console.log("MW TOKEN ",token);
   
 
 
@@ -55,7 +59,7 @@ export async function middleware(request: any) {
   //   default:
   //    // return NextResponse.redirect(new URL("/auth/login", request.url));
   //}
-}
+//}
 
 // export const config = {
 //   matcher: [

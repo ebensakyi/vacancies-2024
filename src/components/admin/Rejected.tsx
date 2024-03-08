@@ -4,10 +4,19 @@ import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
-import { calculateAge } from "../../lib/calculate-age";
 import _ from "lodash";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
+import { redirect } from "next/navigation";
+import { calculateAge } from "@/lib/calculate-age";
 
 const Rejected = ({ broadsheet }:any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
   const [searchText, setSearchText] = useState();
   const router = useRouter();
 

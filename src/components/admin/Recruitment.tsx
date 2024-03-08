@@ -5,8 +5,16 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 import { useRouter, redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
 
 const Recruitment = ({ data }: any) => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect(ADMIN_LOGIN_URL);
+    }
+})
 const router = useRouter()
   
   const [name, setName] = useState("");
