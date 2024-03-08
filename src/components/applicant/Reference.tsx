@@ -83,20 +83,23 @@ const Reference = ({ data }: any) => {
         if (status != 200) return toast.error("Reference not remove");
     };
 
+
+
     const next = async () => {
-       // let core = await genCode(100);
+        if (data?.references?.response?.length != 3) {
+            return toast.error(
+                "Please enter exactly 3 references before clicking next"
+            );
 
-        const response = await axios.post(`/api/applicant/references?next=true`);
+        }
+       
 
-        let isValid = response.data.data;
-
-        if (isValid)
-           // return Router.push("/applicant/select-positions?core=" + core);
-
-        return toast.error(
-            "Please enter exactly 3 references before clicking next"
+        await router.push(
+            `/applicant/submit-application?next=true`
         );
+        return
     };
+
 
     return (
         <div id="layout-wrapper">
@@ -296,9 +299,16 @@ const Reference = ({ data }: any) => {
                                             <Link href="/applicant/publication" type="button" className="btn btn-success">
                                                     Previous
                                             </Link>
-                                            <Link href="/applicant/submit-application" type="button" className="btn btn-success">
-                                                    Next
-                                            </Link>
+                                          
+                                            <button
+                                        type="button"
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                            next();
+                                        }}
+                                    >
+                                        Next
+                                    </button>
                                         {/* )} */}
                                        
                                     </div>

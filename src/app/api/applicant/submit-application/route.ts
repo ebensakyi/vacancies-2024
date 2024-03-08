@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       details: res.data.bondedDetails,
     };
 
-    const bonded = await prisma.bonded.create({
+  await prisma.bonded.create({
       data: bondedData,
     });
 

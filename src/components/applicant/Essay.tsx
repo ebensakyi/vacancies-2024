@@ -21,7 +21,6 @@ export const Essay = ({ data }: any) => {
   const [essay, setEssay] = useState("");
 
 
-console.log("data?.essay?.response?.id ",data?.essay?.response);
 
   //let savedLetter = savedEssay.essay;
 

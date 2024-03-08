@@ -3,11 +3,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Router from "next/router";
 import Link from "next/link";
 import ApplicationMenu from "../ApplicationMenu";
+import { useRouter } from "next/navigation";
 
 export const SubmitApplication = ({ data }: any) => {
+  const router = useRouter()
   const [contactObjection, setContactObjection] = useState("");
   const [bonded, setBonded] = useState("");
   const [bondedDetails, setBondedDetails] = useState("");
@@ -20,7 +21,7 @@ export const SubmitApplication = ({ data }: any) => {
         bonded,
         bondedDetails,
       };
-      if (!confirm || contactObjection == null || bonded == null)
+      if (!confirm || contactObjection == "" || bonded == "")
         return toast.error(
           "Kindly fill the form and check the confirmation checkbox"
         );
@@ -29,14 +30,13 @@ export const SubmitApplication = ({ data }: any) => {
       });
 
 
-      let { statusCode } = response.data;
-      let { message } = response.data;
+      let { status } = response;
 
-      if (statusCode == 1) {
-        Router.push("/applicant/list");
-        return toast.success(message);
+      if (status == 200) {
+        router.push("/applicant/applications");
+        return toast.success("Application submitted successfully");
       }
-      if (statusCode == 0)
+      if (status != 200)
         return toast.error("Application couldn't be submitted");
     } catch (error) {
 
@@ -216,7 +216,7 @@ export const SubmitApplication = ({ data }: any) => {
                 <div className="form-actions mt-10">
                   <div className="col-md-12" style={{ textAlign: "end" }}>
                     <div className="btn-group" role="group" aria-label="Basic example">
-                      <Link href="/applicant/select-positions"type="button" className="btn btn-success">
+                      <Link href="/applicant/references"type="button" className="btn btn-success">
                           Previous
                       </Link>
                       <Link href="/applicant/full-application"target="_blank" type="button" className="btn btn-warning">
