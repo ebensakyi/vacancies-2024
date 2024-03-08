@@ -197,7 +197,7 @@ const Page = () => {
                       </div>
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
-                          Don`t have an account ?
+                          Don`t have an account?
                           <Link href="/auth/register" className="fw-medium text-primary">
 
                             Register now

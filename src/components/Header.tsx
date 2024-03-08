@@ -594,9 +594,9 @@ const Header = () => {
 
 
                     <ul className="navbar-nav">
-                      <li
+                      {/* <li
                         className={
-                          pathname == "/applicant/personal-info"
+                          pathname == "/applicant/select-position"
                             ? "nav-item active"
                             : "nav-item"
                         }
@@ -608,7 +608,7 @@ me-2"
                           />
                           Home
                         </Link>
-                      </li>
+                      </li> */}
                       <li className="nav-item">
                         <Link href="/applicant/applications" className="nav-link" >
                           <i

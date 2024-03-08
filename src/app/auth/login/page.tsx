@@ -197,7 +197,7 @@ const Page = () => {
                       </div>
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
-                          Don`t have an account ?
+                          Don`t have an account?
                           <Link href="/auth/register" className="fw-medium text-primary">
 
                             Register now
@@ -207,13 +207,13 @@ const Page = () => {
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
                           <Link href="/auth/forget-password" className="fw-medium text-primary">
-                            Forget password ?
+                            Forget password?
                           </Link>
                         </p>
                       </div>
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
-                          Back to open positions ?
+                          Back to open positions?
                           <Link href="/" className="fw-medium text-primary">
                             {" "}
                             Home

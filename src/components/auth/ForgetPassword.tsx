@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
+'use client'
 import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -8,7 +8,7 @@ import MyHead from "../Head";
 import Footer from "../Footer";
 
 const ForgetPassword = () => {
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
 
  
 
@@ -23,13 +23,13 @@ const ForgetPassword = () => {
       });
 
       setEmail("");
-      if (response.status == 1) {
+      if (response.status == 200) {
         // Router.push("/auth/reset-password");
         return toast.success("Check your email for a password reset link");
       }
 
-      if (response.status == 0)
-        return toast.error(response.data.message);
+      if (response.status != 200)
+        return toast.error("Email account does not exist");
     } catch (error) {
 
     }
@@ -55,8 +55,7 @@ const ForgetPassword = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="text-center">
-                <Link href="/">
-                  <a href="#" className="mb-5 d-block auth-logo">
+                <Link href="/" className="mb-5 d-block auth-logo">
                     <img
                       src="/logo.png"
                       alt=""
@@ -71,7 +70,6 @@ const ForgetPassword = () => {
                     width="100"
                     className="logo logo-light"
                   /> */}
-                  </a>
                 </Link>
               </div>
             </div>
