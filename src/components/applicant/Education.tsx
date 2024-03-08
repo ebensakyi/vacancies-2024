@@ -12,11 +12,12 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { LOGIN_URL } from "@/constants";
 
-const Education = ({ data }: any) => { 
+const Education = ({ data }: any) => {
 
     console.log(data);
-    
-      const { data: session } = useSession({
+
+
+    const { data: session } = useSession({
         required: true,
         onUnauthenticated() {
             redirect(LOGIN_URL);
@@ -25,14 +26,13 @@ const Education = ({ data }: any) => {
 
     const currentYear = new Date().getFullYear();
 
- 
+
     const years = [];
 
-    for (let year = currentYear; year >=1990 ; year--) {
+    for (let year = currentYear; year >= 1990; year--) {
         years.push(year);
     }
     const router = useRouter();
-    const [schoolsAttended, setSchoolsAttended] = useState([]);
 
 
 
@@ -107,8 +107,7 @@ const Education = ({ data }: any) => {
                 data,
             });
 
-            console.log(response);
-            
+
 
             let { status } = response;
 
@@ -117,7 +116,8 @@ const Education = ({ data }: any) => {
                 setExamType("");
                 setExamYear("");
 
-    
+                router.refresh()
+
                 return toast.success("Index number added successfully");
             }
 
@@ -128,46 +128,6 @@ const Education = ({ data }: any) => {
         }
     };
 
-    const addGrade = async () => {
-        try {
-            const data = {
-                examType,
-                examYear,
-                subject,
-                grade,
-            };
-
-            if (
-                examType == null ||
-                examYear == null ||
-                subject == null ||
-                grade == null
-            )
-                return toast.error("Please fill the form");
-
-            const response = await axios.post("/api/applicant/grades-obtained", {
-                data,
-            });
-
-            let { statusCode } = response.data;
-            let savedGrade = response.data.data;
-            let { message } = response.data;
-
-            if (statusCode == 1) {
-
-                setSubject("");
-                setGrade("");
-
-                // setGradeObtained([...gradeObtained, savedGrade]);
-
-                return toast.success("Grade added successfully");
-            }
-
-            if (statusCode == 0) return toast.error(message);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const removeSchool = async (id: any) => {
         try {
@@ -197,13 +157,12 @@ const Education = ({ data }: any) => {
         try {
 
 
-            // const filteredIndexNumbers = indexNumberList?.filter((ind: { id: any; }) => ind.id !== id);
-
-            const response = await axios.delete(`/api/applicant/index-number`, {
+            const response = await axios.delete("/api/applicant/education/index-numbers", {
                 data: id,
             });
             // setIndexNumber(filteredIndexNumbers);
             //router.replace(router.asPath);
+            router.refresh()
 
         } catch (error) {
             console.log(error);
@@ -212,21 +171,26 @@ const Education = ({ data }: any) => {
 
 
     const next = async () => {
-        if(data?.schoolsAttended?.response.length > 0) {
-          await router.push(
-              `/applicant/certifications?next=true`
-          );
-          return
-  
-        }
-  
-  
-        return toast.error(
-            "Add schools attended and Add grades for English, Mathematics and any other 3 subjects for BECE and WASSCE(or equivalent). You should add at least 10 grades in all"
-        );
-      };
+        if (data?.schoolsAttended?.response?.length == 0) {
+            return toast.error(
+                "Add schools attended. At least one school should be added"
+            );
 
-  
+        }
+        if (data?.verifiedIndexNumbers?.response?.length < 2) {
+            return toast.error(
+                "Add at lease 2 index numbers before proceeding to next page"
+            );
+
+        }
+
+        await router.push(
+            `/applicant/certifications?next=true`
+        );
+        return
+    };
+
+
 
     return (
         <div id="layout-wrapper">
@@ -245,7 +209,7 @@ const Education = ({ data }: any) => {
 
                             <ToastContainer
                                 position="top-right"
-                                autoClose={5000}
+                                autoClose={15000}
                                 hideProgressBar={false}
                                 newestOnTop={false}
                                 closeOnClick
@@ -417,13 +381,26 @@ const Education = ({ data }: any) => {
                                 <h4 className="card-title">INDEX NUMBERS</h4>
                             </div>
                             <div className="card-body">
-                                <span className="badge bg-success " style={{ padding: 10 }}>
-                                    Fill all fields with (<span style={danger}>*</span>). Provide your
-                                    index numbers for BECE, WASSCE and Private WASSCE(If you plan to
-                                    list in grades obtained).
-                                </span>
+
+                                <div className="col-lg-8 mb-4">
+                                    <h4 className="card-title">Read Instructions</h4>
+
+                                    <div className="card card-body">
+                                        <p className=" bg-danger " style={{ padding: 10, color: 'white' }}>
+                                            Please select your exam type, enter your index number and enter the year for the exams. Click on the + button to add.
+
+                                            Do this for BECE, WASSCE, SSCE, ABCE or GBCE for both Private and School where it applies
+                                            Note that your index number will be automatically validated before. Wrong index number, exam type and year will not be accepted.
+                                            <br />
+                                            Enter at least 2 index numbers for JSS and SHS or Equivalent
+                                        </p>
+                                        <hr />
+                                    </div>
+                                </div>
+
 
                                 <div className="row" style={{ marginTop: "20px" }}>
+
                                     <div className="col-lg-12">
                                         {" "}
                                         {/* <p className="card-title-desc">
@@ -461,26 +438,26 @@ const Education = ({ data }: any) => {
                                                         <div className="form-group">
                                                             <div className="mb-3 position-relative">
                                                                 <label className="form-label" htmlFor="age">
-                                                                Year of exams : <span className="danger">*</span>{" "}
+                                                                    Year of exams : <span className="danger">*</span>{" "}
                                                                 </label>
                                                                 <select
-                                                                        className="form-control"
-                                                                        value={examYear}
-                                                                        onChange={(e) => {
-                                                                            setExamYear(e.target.value);
-                                                                        }}
-                                                                    >
-                                                                        <option value="">Year</option>
-                                                                        {years.map((year) => (
-                                                                            <option key={year} value={year}>
-                                                                                {year}
-                                                                            </option>
-                                                                        ))}
-                                                                    </select>
+                                                                    className="form-control"
+                                                                    value={examYear}
+                                                                    onChange={(e) => {
+                                                                        setExamYear(e.target.value);
+                                                                    }}
+                                                                >
+                                                                    <option value="">Year</option>
+                                                                    {years.map((year) => (
+                                                                        <option key={year} value={year}>
+                                                                            {year}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div className="col-md-2">
                                                         <div className="form-group">
                                                             <label className="control-label">
@@ -525,8 +502,8 @@ const Education = ({ data }: any) => {
                                                 <table className="table mb-0">
                                                     <thead className="table-light">
                                                         <tr>
-                                                        <th>Candidate Name</th>
-                                                        <th>Verified Index</th>
+                                                            <th>Candidate Name</th>
+                                                            <th>Verified Index</th>
                                                             <th>Exam Type</th>
                                                             <th>Exam Year</th>
                                                             <th>Remove</th>
@@ -536,7 +513,7 @@ const Education = ({ data }: any) => {
                                                         {data?.verifiedIndexNumbers?.response?.map((ind: any) => (
                                                             <tr key={ind.id}
                                                             > <td>{ind.candidateName}</td>
-                                                            <td>{ind.candidateNumber}</td>
+                                                                <td>{ind.candidateNumber}</td>
                                                                 <td>{ind.ExamType.name}</td>
                                                                 <td>
                                                                     {ind.examYear}

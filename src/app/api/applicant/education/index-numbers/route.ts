@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 import axios from "axios";
 import { nanoid } from "nanoid";
-import ExamType from '@/src/components/admin/primary-data/ExamType';
 
 export async function POST(request: Request) {
   try {
@@ -49,9 +48,9 @@ export async function POST(request: Request) {
           userId: userId,
           examTypeId: Number(examType),
         },
-        include:{
-          ExamType:true
-        }
+        include: {
+          ExamType: true,
+        },
       });
 
       let results = candidateDetails.resultdetails;
@@ -59,7 +58,7 @@ export async function POST(request: Request) {
 
       //save results in db
       for (let i = 0; i < results.length; i++) {
-       await prisma.gradesObtained.create({
+        await prisma.gradesObtained.create({
           data: {
             subjectCode: results[i].subjectcode,
             subject: results[i].subject,
@@ -68,14 +67,13 @@ export async function POST(request: Request) {
             userId: userId,
             indexNumberId: response.id,
           },
-         
         });
       }
 
-      return NextResponse.json({response});
+      return NextResponse.json({ response });
     }
 
-    return NextResponse.json({},{status: 201});
+    return NextResponse.json({}, { status: 201 });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({ message: error.message });
@@ -90,13 +88,49 @@ export async function GET(request: Request) {
 
     const response = await prisma.indexNumber.findMany({
       where: { userId: userId },
-      include:{
-        ExamType:true
-      }
+      include: {
+        ExamType: true,
+      },
     });
 
-    console.log(response);
-    
+    return NextResponse.json({ response });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: error });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const session: any = await getServerSession(authOptions);
+
+    let userId = session?.user?.id;
+    const res = await request.json();
+
+    let indexNumberId = res;
+
+    const gradesObtainedIds = await prisma.gradesObtained.findMany({
+      where: { userId: userId, indexNumberId },
+      select: {
+        id: true,
+      },
+    });
+
+    console.log(indexNumberId);
+
+    console.log(gradesObtainedIds);
+
+    for (let i = 0; i < gradesObtainedIds.length; i++) {
+      console.log(gradesObtainedIds[i].id);
+
+      await prisma.gradesObtained.delete({
+        where: { userId: userId, id: gradesObtainedIds[i].id },
+      });
+    }
+
+    const response = await prisma.indexNumber.delete({
+      where: { userId: userId, id: res },
+    });
 
     return NextResponse.json({ response });
   } catch (error) {
@@ -112,6 +146,12 @@ const getCandidateResults = async (
   surname: string,
   firstName: string
 ): Promise<any> => {
+  console.log(indexNumber);
+  console.log(examType);
+  console.log(examYear);
+  console.log(surname);
+  console.log(firstName);
+
   try {
     const options = {
       method: "POST",
@@ -132,6 +172,10 @@ const getCandidateResults = async (
     const response = await axios.request(options);
 
     let candidateName = response.data.candidate.cname;
+    let canditateResult = response.data.resultdetails;
+    if (canditateResult.length == 0) {
+      return [null, false];
+    }
 
     let compareUser = await compareUserWithResults(
       candidateName,

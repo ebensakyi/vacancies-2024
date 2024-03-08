@@ -9,7 +9,7 @@ import ApplicationMenu from "../ApplicationMenu";
 import moment from "moment";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { LOGIN_URL } from "@/constants";
 
 const Publication = ({ data }: any) => {
@@ -19,6 +19,8 @@ const Publication = ({ data }: any) => {
             redirect(LOGIN_URL);
         }
     })
+
+    const router = useRouter()
     const [publications, setPublications] = useState([]);
 
     const [description, setDescription] = useState("");
@@ -48,20 +50,19 @@ const Publication = ({ data }: any) => {
                 data,
             });
 
-            if (response.status == 1) {
+            if (response.status == 200) {
                 setTitle("");
                 setUrl("");
                 setAuthors("");
                 setDescription("");
                 setDate("")
 
-                // setPublications([...publications, response.data.data]);
-                // Router.reload(window.location.pathname)
+                router.refresh()
 
                 return toast.success("Data saved successfully");
             }
 
-            if (response.status == 0) return toast.error("Data not saved");
+            if (response.status != 200) return toast.error("Data not saved");
         } catch (error) {
 
         }
@@ -71,11 +72,12 @@ const Publication = ({ data }: any) => {
 
     const deletePublication = async (id: any) => {
         try {
-            const filtered = publications.filter((p:any) => p.id !== id);
             const response = await axios.delete(
                 `/api/applicant/publication`, { data: id }
             );
-            setPublications(filtered);
+            router.refresh()
+
+            return toast.success("Data deleted successfully");            
         } catch (error) {
 
         }

@@ -21,11 +21,15 @@ export const Essay = ({ data }: any) => {
   const [essay, setEssay] = useState("");
 
 
+console.log("data?.essay?.response?.id ",data?.essay?.response);
 
   //let savedLetter = savedEssay.essay;
 
   useEffect(() => {
-    setEssayId(data?.essay?.response?.id);
+    if(data?.essay?.response!=null){
+          setEssayId(data?.essay?.response?.id);
+
+    }
   }, []);
   const save = async () => {
     try {
@@ -141,7 +145,7 @@ export const Essay = ({ data }: any) => {
                         </div>
                       </div>
                       <div className="form-actions mt-10" style={{ textAlign: "end" }}>
-                        {essayId == "" ?
+                        {essayId == "" || essayId != undefined?
                           <button
                             className="btn btn-success add"
                             type="button"
