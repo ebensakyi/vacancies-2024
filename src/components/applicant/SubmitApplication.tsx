@@ -8,6 +8,8 @@ import ApplicationMenu from "../ApplicationMenu";
 import { useRouter } from "next/navigation";
 
 export const SubmitApplication = ({ data }: any) => {
+  console.log(data);
+
   const router = useRouter()
   const [contactObjection, setContactObjection] = useState("");
   const [bonded, setBonded] = useState("");
@@ -51,7 +53,7 @@ export const SubmitApplication = ({ data }: any) => {
             <div className="row">
               <div className="col-12">
                 <div className="page-title-box d-flex align-items-center justify-content-between">
-                  <h4 className="mb-0">SELECT POSITION </h4>
+                  <h4 className="mb-0">SELECTED POSITION </h4>
                 </div>
               </div>
             </div>
@@ -86,12 +88,9 @@ export const SubmitApplication = ({ data }: any) => {
                               </tr>
                             </thead>
                             <tbody>
-                              {data?.selectedJobs?.response?.map((co:any) => (
+                              {data?.selectedPositions?.response?.map((co: any) => (
                                 <tr key={co.id}>
-                                  <td>{co.Job.name}</td>
-
-
-
+                                  <td>{co.name}</td>
 
                                 </tr>
                               ))}
@@ -161,7 +160,7 @@ export const SubmitApplication = ({ data }: any) => {
                                 </div>
                               </div>
                             </div>
-                            {bonded != ""  ? (
+                            {bonded == "1" ? (
                               <div className="col-sm-4" id="bondedDetailsDiv">
                                 <div className="form-group">
                                   <label htmlFor="exampleInputuname">
@@ -184,8 +183,8 @@ export const SubmitApplication = ({ data }: any) => {
                                 </div>
                               </div>
                             ) : null}
+                            <div className="col-sm-12"><br /><br /><br />
 
-                            <div className="col-sm-12">
                               <div className="form-check form-check-right">
                                 <input
                                   className="form-check-input"
@@ -216,11 +215,11 @@ export const SubmitApplication = ({ data }: any) => {
                 <div className="form-actions mt-10">
                   <div className="col-md-12" style={{ textAlign: "end" }}>
                     <div className="btn-group" role="group" aria-label="Basic example">
-                      <Link href="/applicant/references"type="button" className="btn btn-success">
-                          Previous
+                      <Link href="/applicant/references" type="button" className="btn btn-success">
+                        Previous
                       </Link>
-                      <Link href="/applicant/full-application"target="_blank" type="button" className="btn btn-warning">
-                          Preview
+                      <Link href="/applicant/full-application" target="_blank" type="button" className="btn btn-warning">
+                        Preview
                       </Link>
                       <button
                         type="button"

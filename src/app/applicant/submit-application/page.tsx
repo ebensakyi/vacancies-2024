@@ -21,11 +21,11 @@ async function getSelectedPositions(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
 
-    const jobs = await getSelectedPositions(searchParams)
+    const selectedPositions = await getSelectedPositions(searchParams)
 
 
     let data: any = {
-     jobs
+     selectedPositions
     }
 
     return <SubmitApplication data={data} />

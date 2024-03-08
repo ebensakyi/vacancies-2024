@@ -14,8 +14,10 @@ export async function POST(request: Request) {
       userId: userId,
       contactObjection: Number(res.data.contactObjection),
     };
-    const confirm = await prisma.confirmation.create({
-      data: confirmation,
+    const confirm = await prisma.confirmation.upsert({
+      where: { userId: userId},
+      update: confirmation,
+      create:confirmation,
     });
 
     let bondedData = {
@@ -24,10 +26,12 @@ export async function POST(request: Request) {
       details: res.data.bondedDetails,
     };
 
-  await prisma.bonded.create({
-      data: bondedData,
-    });
 
+    await prisma.bonded.upsert({
+      where: { userId: userId},
+      update: bondedData,
+      create:bondedData,
+    });
     const userApplications = await prisma.application.findMany({
       where: {
         userId: userId,

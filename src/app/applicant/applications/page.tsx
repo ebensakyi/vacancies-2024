@@ -8,7 +8,7 @@ import { headers } from "next/headers";
 
 async function getApplications(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/applications`,{cache:'force-cache'});
+    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/applications`,{cache:'no-store'});
 
 
     if (!response.ok) {

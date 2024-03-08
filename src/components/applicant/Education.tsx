@@ -714,7 +714,7 @@ const Education = ({ data }: any) => {
                         <div className="form-actions mt-10">
                             <div className="col-md-12" style={{ textAlign: "end" }}>
                                 <div className="btn-group" role="group" aria-label="Basic example">
-                                    <Link href="/applicant/personal" className="btn btn-success">
+                                    <Link href="/applicant/personal-info" className="btn btn-success">
                                         Previous
                                     </Link>
                                     {/* <Link href="/applicant/certifications"> */}
