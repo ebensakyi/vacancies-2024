@@ -112,7 +112,7 @@ const Header = () => {
                 >
                   <img
                     className="rounded-circle header-profile-user"
-                    src="/assets/images/users/avatar-4.jpg"
+                    src="/assets/images/user.png"
                     alt="Header Avatar"
                   />
                   <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
@@ -542,7 +542,7 @@ const Header = () => {
                   >
                     <img
                       className="rounded-circle header-profile-user"
-                      src="/assets/images/users/avatar-4.jpg"
+                      src="/assets/images/user.png"
                       alt="Header Avatar"
                     />
                     <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
