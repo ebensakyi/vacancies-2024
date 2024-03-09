@@ -667,7 +667,7 @@ console.log(">>>>>>>>>>>",data?.personalInfo?.response);
 
                                         <div className="form-actions mt-10" style={{ textAlign: "end" }}>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <Link href="/applicant/essay" type="button" className="btn btn-success">
+                                                <Link href="/applicant/select-position" type="button" className="btn btn-success">
                                                     Previous
                                                 </Link>
                                                 <button

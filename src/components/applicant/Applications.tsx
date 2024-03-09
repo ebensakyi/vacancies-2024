@@ -101,28 +101,26 @@ const Applications = ({ data }: any) => {
                     </div>
                   </div>
                 </div> :
-                <div className="row align-items-center justify-content-center">
-                  <div className="col-md-10 col-lg-8 col-xl-7">
-                    <div className="card">
-                      <div className="card-body p-4">
-                        <div className="text-center mt-2">
-                          <h5 className="text-primary">Register Account</h5>
-                          <p className="text-muted">Click on the button below to start your application.</p>
-                        </div>
-                        <div className="p-2 mt-4">
-                          <div className="card">
-                              <Link href="/applicant/select-position"
-                                type="button"
-                                className="btn btn-warning">
-
-                                Start new application
-                              </Link>
-                          </div>
-                        </div>
-                      </div>{" "}
-                    </div>
-                  </div>
-                </div>
+               <div className="row align-items-center justify-content-center">
+               <div className="col-md-8 col-lg-6 col-xl-7">
+                   <div className="card">
+                       <div className="card-body p-4">
+                           <div className="text-center mt-2">
+                               <h5 className="text-primary">New Application</h5>
+                               <p className="text-muted">Click on the button below to start your application.</p>
+                           </div>
+                           <div className="p-2 mt-4 text-center">
+                               <Link href="/applicant/select-position"
+                                   type="button"
+                                   className="btn btn-warning">
+                                   Start new application
+                               </Link>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           
 
 
               }

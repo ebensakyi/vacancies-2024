@@ -9,25 +9,23 @@ export async function POST(request: Request) {
     const session: any = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
-    console.log(res);
-    
 
+    let currentRecruitment = await prisma.currentRecruitment.findFirst({});
 
-      let data = {
-        userId: Number(userId),
-        jobId: Number(res?.data?.jobId),
-      };
-   let response =   await prisma.application.create({
-        data,
-        include:{
-          Job:true
-        }
-      });
+    let data = {
+      userId: Number(userId),
+      jobId: Number(res?.data?.jobId),
+      currentRecruitmentId: Number(currentRecruitment?.id),
+    };
 
- 
+    let response = await prisma.application.create({
+      data,
+      include: {
+        Job: true,
+      },
+    });
 
- 
-    return NextResponse.json({response});
+    return NextResponse.json({ response });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({ message: error.message });
@@ -45,13 +43,12 @@ export async function GET(request: Request) {
         userId: userId,
         deleted: 0,
       },
-      select:{
-        jobId:true
-      }
+      select: {
+        jobId: true,
+      },
     });
 
     let response = application.map((m) => m.jobId);
-
 
     return NextResponse.json({ response });
   } catch (error) {
@@ -59,17 +56,13 @@ export async function GET(request: Request) {
   }
 }
 
-
-
 export async function DELETE(request: Request) {
-  try {  
-      const res = await request.json();
+  try {
+    const res = await request.json();
 
     const session: any = await getServerSession(authOptions);
 
     let userId = session?.user?.id;
-
-    
 
     let application = await prisma.application.findFirst({
       where: {
@@ -78,19 +71,17 @@ export async function DELETE(request: Request) {
       },
     });
 
-    
-
-   let response = await prisma.application.delete({
+    let response = await prisma.application.delete({
       where: {
         id: application?.id,
         jobId: Number(res?.jobId),
       },
-      include:{
-        Job:true
-      }
+      include: {
+        Job: true,
+      },
     });
 
-   return NextResponse.json({response  });
+    return NextResponse.json({ response });
   } catch (error) {
     console.log("DELETE=====errrr ", error);
   }
