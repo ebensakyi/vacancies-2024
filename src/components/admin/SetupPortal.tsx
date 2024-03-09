@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
 import { redirect } from "next/navigation";
 const SetupPortal = ({ data }: any) => {
+  console.log(data);
+  
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -44,7 +46,7 @@ const SetupPortal = ({ data }: any) => {
             <div className="row">
               <div className="col-12">
                 <div className="page-title-box d-flex align-items-center justify-content-between">
-                  <h4 className="mb-0">SET-UP RECRUITMENT</h4>
+                  <h4 className="mb-0">SET-UP RECRUITMENT PORTAL</h4>
                 </div>
               </div>
             </div>
@@ -167,31 +169,30 @@ const SetupPortal = ({ data }: any) => {
                         <div className="row">
                           <span>
                             Recruitment:
-                            {/* <h5>{current.cr.Recruitment != null ? current.cr.Recruitment.name : ""}</h5> */}
+                            <h5>{data?.currentSetup?.response?.currentRecruitment
+?.Recruitment?.name}</h5>
                           </span>
-                          <span>
+                          {/* <span>
                             Staff type:
-                            {/* <h5>{current.cr.Recruitment != null ? current.cr.Recruitment.StaffType.name : ""}</h5> */}
-                          </span>
-                          <span>
+                            <h5>{data?.currentSetup?.response?. }</h5>
+                          </span> */}
+                          {/* <span>
                             Year:
-                            {/* <h5>({current.cr.Recruitment != null ? current.cr.Recruitment.code : ""})</h5> */}
-                          </span>
+                          </span> */}
                         </div>
                         <hr />
                         <div className="row">
                           <span>
                             Shortlisting:
-                            {/* <h5>{current.cr.Recruitment != null ? current.cs.Recruitment.name : ""}</h5> */}
+                            <h5>{data?.currentSetup?.response?.currentShortlisting
+?.Recruitment?.name}</h5>
                           </span>
-                          <span>
+                          {/* <span>
                             Staff type:
-                            {/* <h5>{current.cr.Recruitment != null ? current.cs.Recruitment.StaffType.name : ""}</h5> */}
                           </span>
                           <span>
                             Year:
-                            {/* <h5>({current.cr.Recruitment != null ? current.cs.Recruitment.code : ""})</h5> */}
-                          </span>
+                          </span> */}
                         </div>
                       </div>
                     </form>

@@ -5,9 +5,9 @@ export const dynamic = "force-dynamic";
 
 
 
-async function getUserRoles(searchParams: any) {
+async function getSetupPortal(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/user-role?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/setup-portal?qry=${qry}`, { cache: 'no-store' });
 
 
     if (!response.ok) {
@@ -35,12 +35,12 @@ async function getRecruitments(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
 
-    const userRoles = await getUserRoles(searchParams)
+    const currentSetup = await getSetupPortal(searchParams)
     const recruitments = await getRecruitments(searchParams)
 
 
     let data: any = {
-        userRoles,recruitments
+        recruitments,currentSetup
     }
 
     return <SetupPortal data={data} />

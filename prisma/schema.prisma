@@ -200,8 +200,8 @@ model Recruitment {
 
   StaffType           StaffType             @relation(fields: [staffTypeId], references: [id])
   staffTypeId         Int
-  CurrentRecruitment  CurrentRecruitment[]
-  CurrentShortlisting CurrentShortlisting[]
+  CurrentRecruitment  CurrentRecruitment?
+  CurrentShortlisting CurrentShortlisting?
   User                User?                 @relation(fields: [createdBy], references: [id])
   Policy              Policy[]
 }
@@ -213,7 +213,7 @@ model CurrentRecruitment {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   Recruitment   Recruitment   @relation(fields: [recruitmentId], references: [id])
-  recruitmentId Int
+  recruitmentId Int @unique
   User          User?         @relation(fields: [createdBy], references: [id])
   Application   Application[]
 }
@@ -225,7 +225,7 @@ model CurrentShortlisting {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   Recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
-  recruitmentId Int
+  recruitmentId Int @unique
   User          User?       @relation(fields: [createdBy], references: [id])
 }
 

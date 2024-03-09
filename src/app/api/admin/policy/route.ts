@@ -15,6 +15,11 @@ export async function POST(request: Request) {
       recruitmentId: Number(res.data.recruitment),
     };
 
+    await prisma.currentRecruitment.deleteMany({});
+    await prisma.currentRecruitment.create({
+      data: { recruitmentId: Number(res.data.recruitment) },
+    });
+
     const response = await prisma.policy.create({ data });
 
     return NextResponse.json(response);
