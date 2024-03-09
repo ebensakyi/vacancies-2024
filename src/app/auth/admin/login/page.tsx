@@ -42,7 +42,6 @@ const Page = () => {
 
       })
 
-      console.log(result);
 
       setEmail("");
       setPassword("");
