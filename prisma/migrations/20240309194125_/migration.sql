@@ -119,22 +119,6 @@ CREATE TABLE `Policy` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Job` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NULL,
-    `published` INTEGER NULL DEFAULT 0,
-    `createdBy` INTEGER NULL DEFAULT 1,
-    `deleted` INTEGER NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-    `policyId` INTEGER NOT NULL,
-
-    UNIQUE INDEX `name`(`name`),
-    UNIQUE INDEX `Job_policyId_name_deleted_key`(`policyId`, `name`, `deleted`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Advert` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NULL,
@@ -371,7 +355,7 @@ CREATE TABLE `Personal` (
 -- CreateTable
 CREATE TABLE `Publication` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(255) NULL,
+    `title` VARCHAR(191) NULL,
     `date` VARCHAR(255) NULL,
     `authors` VARCHAR(255) NULL,
     `url` VARCHAR(255) NULL,
@@ -381,7 +365,6 @@ CREATE TABLE `Publication` (
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `title`(`title`),
     UNIQUE INDEX `Publication_userId_title_key`(`userId`, `title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -461,6 +444,22 @@ CREATE TABLE `Essay` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Job` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NULL,
+    `published` INTEGER NULL DEFAULT 0,
+    `createdBy` INTEGER NULL DEFAULT 1,
+    `deleted` INTEGER NULL DEFAULT 0,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `policyId` INTEGER NOT NULL,
+
+    UNIQUE INDEX `name`(`name`),
+    UNIQUE INDEX `Job_policyId_name_deleted_key`(`policyId`, `name`, `deleted`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Application` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `jobId` INTEGER NOT NULL,
@@ -472,6 +471,7 @@ CREATE TABLE `Application` (
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` INTEGER NOT NULL,
     `shortlistedById` INTEGER NULL,
+    `currentRecruitmentId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -502,18 +502,6 @@ CREATE TABLE `Reason` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `ApplicationStatus` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `status` VARCHAR(255) NULL,
-    `createdBy` INTEGER NULL DEFAULT 1,
-    `deleted` INTEGER NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `FilteredOutReason` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `applicationId` INTEGER NOT NULL,
@@ -533,7 +521,7 @@ CREATE TABLE `IndexNumber` (
     `examYear` VARCHAR(40) NOT NULL,
     `candidateName` VARCHAR(100) NULL,
     `candidateDob` VARCHAR(40) NULL,
-    `candidateGender` VARCHAR(40) NULL,
+    `candidateGender` VARCHAR(10) NULL,
     `userId` INTEGER NOT NULL,
     `examTypeId` INTEGER NOT NULL,
     `createdBy` INTEGER NULL DEFAULT 1,
@@ -541,6 +529,7 @@ CREATE TABLE `IndexNumber` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `IndexNumber_candidateNumber_examYear_key`(`candidateNumber`, `examYear`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -608,12 +597,6 @@ ALTER TABLE `Policy` ADD CONSTRAINT `Policy_createdBy_fkey` FOREIGN KEY (`create
 
 -- AddForeignKey
 ALTER TABLE `Policy` ADD CONSTRAINT `Policy_recruitmentId_fkey` FOREIGN KEY (`recruitmentId`) REFERENCES `Recruitment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Job` ADD CONSTRAINT `Job_policyId_fkey` FOREIGN KEY (`policyId`) REFERENCES `Policy`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Job` ADD CONSTRAINT `Job_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Advert` ADD CONSTRAINT `Advert_policyId_fkey` FOREIGN KEY (`policyId`) REFERENCES `Policy`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -730,10 +713,19 @@ ALTER TABLE `Employment` ADD CONSTRAINT `Employment_userId_fkey` FOREIGN KEY (`u
 ALTER TABLE `Essay` ADD CONSTRAINT `Essay_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Job` ADD CONSTRAINT `Job_policyId_fkey` FOREIGN KEY (`policyId`) REFERENCES `Policy`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Job` ADD CONSTRAINT `Job_createdBy_fkey` FOREIGN KEY (`createdBy`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Application` ADD CONSTRAINT `Application_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Application` ADD CONSTRAINT `Application_jobId_fkey` FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Application` ADD CONSTRAINT `Application_currentRecruitmentId_fkey` FOREIGN KEY (`currentRecruitmentId`) REFERENCES `CurrentRecruitment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `RejectReason` ADD CONSTRAINT `RejectReason_applicationId_fkey` FOREIGN KEY (`applicationId`) REFERENCES `Application`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
