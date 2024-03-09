@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
 import { redirect } from "next/navigation";
 const SetupPortal = ({ data }: any) => {
-  console.log(data);
   
   const { data: session } = useSession({
     required: true,

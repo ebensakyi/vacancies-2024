@@ -6,12 +6,16 @@ import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { usePathname, redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { ADMIN_LOGIN_URL } from "@/constants";
 
 const BroadsheetPositionSummary = ({ jobSummary }: any) => {
-  const [path, setPath] = useState("");
-  const [isGenerating, setIsGenerating] = useState(null);
-  const [currentId, setCurrentId] = useState(null);
-  const [action, setAction] = useState(null);
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect(ADMIN_LOGIN_URL);
+    }
+  })
   const pathname = usePathname()
 
   useEffect(() => {
