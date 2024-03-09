@@ -33,7 +33,7 @@ const ApplicationMenu = ({ whichLink}:any ) => {
       role="tablist"
     >
         <li className="nav-item waves-effect waves-light">
-            <Link href="#" className={`nav-link  ${
+            <Link href="#" style={{pointerEvents: 'none'}} className={`nav-link  ${
                   whichLink == "select-positions" ? activeLink : ""
                 }`}>
               

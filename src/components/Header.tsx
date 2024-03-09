@@ -140,7 +140,7 @@ const Header = () => {
                 <i className="uil uil-lock-alt font-size-18 align-middle me-1 text-muted" />{" "}
                 <span className="align-middle">Lock screen</span>
               </a> */}
-                  <button className="dropdown-item" onClick={()=>{signOut()}}>
+                  <button className="dropdown-item" onClick={() => { signOut() }}>
                     <i className="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted" />{" "}
                     <span className="align-middle">Sign out</span>
                   </button>
@@ -283,12 +283,17 @@ const Header = () => {
                       >
                         <Link href="/admin/configure/recruitment" className="dropdown-item">
 
-                          Recruitment
+                        <span className="badge bg-danger">1</span>  Create  Recruitment
+
+                        </Link>
+                        <Link href="/admin/configure/setup-portal" className="dropdown-item">
+
+                        <span className="badge bg-warning">2</span>  Set up portal
 
                         </Link>
                         <Link href="/admin/configure/policy" className="dropdown-item">
 
-                          Policy
+                        <span className="badge bg-success">3</span>    Policy
 
                         </Link>
                         <Link href="/admin/job-advert" className="dropdown-item">
@@ -302,11 +307,7 @@ const Header = () => {
 
 
                         <hr />
-                        <Link href="/admin/configure/setup-portal" className="dropdown-item">
 
-                          Set up portal
-
-                        </Link>
 
                         {/* <Link href="/admin/configure/menu-access" className="dropdown-item">
 

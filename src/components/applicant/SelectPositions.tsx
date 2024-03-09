@@ -71,6 +71,21 @@ const SelectPositions = ({ data }: any) => {
       console.log(error);
     }
   };
+
+  const next = async () => {
+    //check stafftype, show either essay or publications
+    if( data?.selectedPositions?.response?.length > 0) {
+      await router.push(
+          `/applicant/personal-info`
+      );
+      return
+
+    }
+
+
+      return toast.error("Select at least one role to continue");
+  };
+
   return (
     <div id="layout-wrapper">
       <div className="main-content">
@@ -188,9 +203,17 @@ const SelectPositions = ({ data }: any) => {
                                                 Save and Proceed
                                             </button> */}
 
-                        <Link href="/applicant/personal-info" type="button" className="btn btn-success">
-                          Save and Proceed
-                        </Link>
+<button
+                                            type="button"
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                next();
+                                            }}
+                                        >
+                                              Save and Proceed
+                                        </button>
+
+                       
                       </div>
                     </div>
                   </div>
