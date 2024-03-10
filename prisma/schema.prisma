@@ -198,11 +198,11 @@ model Recruitment {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  StaffType           StaffType             @relation(fields: [staffTypeId], references: [id])
+  StaffType           StaffType            @relation(fields: [staffTypeId], references: [id])
   staffTypeId         Int
   CurrentRecruitment  CurrentRecruitment?
   CurrentShortlisting CurrentShortlisting?
-  User                User?                 @relation(fields: [createdBy], references: [id])
+  User                User?                @relation(fields: [createdBy], references: [id])
   Policy              Policy[]
 }
 
@@ -213,7 +213,7 @@ model CurrentRecruitment {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   Recruitment   Recruitment   @relation(fields: [recruitmentId], references: [id])
-  recruitmentId Int @unique
+  recruitmentId Int           @unique
   User          User?         @relation(fields: [createdBy], references: [id])
   Application   Application[]
 }
@@ -225,7 +225,7 @@ model CurrentShortlisting {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   Recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
-  recruitmentId Int @unique
+  recruitmentId Int         @unique
   User          User?       @relation(fields: [createdBy], references: [id])
 }
 
@@ -447,6 +447,8 @@ model Confirmation {
   userId           Int      @unique
   User             User     @relation(fields: [userId], references: [id])
   contactObjection Int
+  workWaec         Int?
+  staffId          String?   @db.VarChar(10)
   deleted          Int?     @default(0)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

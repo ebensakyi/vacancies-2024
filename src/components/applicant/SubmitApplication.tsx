@@ -8,13 +8,14 @@ import ApplicationMenu from "../ApplicationMenu";
 import { useRouter } from "next/navigation";
 
 export const SubmitApplication = ({ data }: any) => {
-  console.log(data);
 
   const router = useRouter()
   const [contactObjection, setContactObjection] = useState("");
   const [bonded, setBonded] = useState("");
   const [bondedDetails, setBondedDetails] = useState("");
   const [confirm, setConfirm] = useState(false);
+  const [workWaec, setWorkWaec] = useState(0);
+  const [staffId, setStaffId] = useState("");
 
   const submit = async () => {
     try {
@@ -22,6 +23,8 @@ export const SubmitApplication = ({ data }: any) => {
         contactObjection,
         bonded,
         bondedDetails,
+        staffId,
+        workWaec,
       };
       if (!confirm || contactObjection == "" || bonded == "")
         return toast.error(
@@ -109,6 +112,50 @@ export const SubmitApplication = ({ data }: any) => {
                       >
                         <div className="col-lg-12">
                           <div className="row">
+                          <div className="col-sm-4">
+                              <div className="form-group">
+                                <label htmlFor="contactObjection">
+                                  Do you currently work with WAEC? : <span style={danger}>*</span>
+                                </label>
+                                <select
+                                  className="custom-select form-control"
+                                  id="validationTooltip02"
+                                  name="contactObjection"
+                                  required
+                                  value={workWaec}
+                                  onChange={(e: any) => {
+                                    setWorkWaec(e.target.value);
+                                  }}
+                                >
+                                  <option >Select yes/no</option>
+                                  <option value={1}>Yes</option>
+                                  <option value={2}>No</option>
+                                </select>
+                                <div className="invalid-tooltip">
+                                  This field is required
+                                </div>
+                              </div>
+                            </div>
+                            {workWaec==1?
+                            <div className="col-sm-4" id="bondedDetailsDiv">
+                                <div className="form-group">
+                                  <label htmlFor="exampleInputuname">
+                                   Enter your staff ID
+                                  </label>
+                                  <div className="input-group mb-3">
+                                    <input
+                                      type="text"
+                                      className="form-control"
+                                      aria-label="Username"
+                                      aria-describedby="basic-addon1"
+                                      value={staffId}
+                                      onChange={(e: any) => {
+                                        setStaffId(e.target.value);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>:<></>}
                             <div className="col-sm-4">
                               <div className="form-group">
                                 <label htmlFor="contactObjection">

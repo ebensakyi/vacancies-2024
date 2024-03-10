@@ -12,7 +12,7 @@ import { redirect, useRouter } from "next/navigation";
 import { LOGIN_URL } from "@/constants";
 
 const Employment = ({ data }: any) => {
-   const router =  useRouter()
+    const router = useRouter()
     const { data: session } = useSession({
         required: true,
         onUnauthenticated() {
@@ -28,6 +28,7 @@ const Employment = ({ data }: any) => {
     const [endYear, setEndYear] = useState("");
     const [startMonth, setStartMonth] = useState("");
     const [endMonth, setEndMonth] = useState("");
+    const [disableEndYear,setDisableEndYear] = useState(false);
 
     // const [start, setStart] = useState("");
     // const [end, setEnd] = useState("");
@@ -44,7 +45,10 @@ const Employment = ({ data }: any) => {
         try {
             let end = endYear + "-" + endMonth;
             let start = startYear + "-" + startMonth;
-           
+
+            if (end == "9999-99") {
+                end = "To date"
+            }
             const data = {
                 organizationName,
                 start: start,
@@ -116,19 +120,19 @@ const Employment = ({ data }: any) => {
 
     const next = async () => {
         //check stafftype, show either essay or publications
-        if(data?.employments?.response.length > 0) {
-          await router.push(
-              `/applicant/essay?next=true`
-          );
-          return
-  
+        if (data?.employments?.response.length > 0) {
+            await router.push(
+                `/applicant/essay?next=true`
+            );
+            return
+
         }
-  
-  
-          return toast.error("Enter at least one certificate before clicking next");
-      };
-    
-    
+
+
+        return toast.error("Enter at least one Employment before clicking next");
+    };
+
+
     return (
         <div id="layout-wrapper">
             <div className="main-content">
@@ -259,8 +263,11 @@ const Employment = ({ data }: any) => {
                                                             className="form-control"
                                                             onChange={(e: any) => {
                                                                 setEndMonth(e.target.value);
-                                                                if(e.target.value=="99"){                                                                    
+                                                                if (e.target.value == "99") {
                                                                     setEndYear("9999")
+                                                                    setDisableEndYear(true);
+                                                                }else{
+                                                                    setDisableEndYear(false);  
                                                                 }
                                                             }}
                                                         >
@@ -281,6 +288,7 @@ const Employment = ({ data }: any) => {
                                                         </select>
                                                         <select
                                                             className="form-control"
+                                                            disabled={disableEndYear}
                                                             value={endYear}
                                                             onChange={(e) => {
                                                                 setEndYear(e.target.value);

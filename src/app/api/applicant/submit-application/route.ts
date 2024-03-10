@@ -13,6 +13,8 @@ export async function POST(request: Request) {
     let confirmation = {
       userId: userId,
       contactObjection: Number(res.data.contactObjection),
+      workWaec : Number(res.data.workWaec),
+      staffId: res.data.staffId
     };
     const confirm = await prisma.confirmation.upsert({
       where: { userId: userId},

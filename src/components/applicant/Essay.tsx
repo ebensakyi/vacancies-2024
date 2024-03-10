@@ -14,19 +14,36 @@ export const Essay = ({ data }: any) => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-        redirect(LOGIN_URL);
+      redirect(LOGIN_URL);
     }
-})
+  })
   const [essayId, setEssayId] = useState("");
   const [essay, setEssay] = useState("");
+  const [wordCount, setWordCount] = useState(0);
 
-
+  const handleEditorChange = (content: string, editor: any) => {
+    // Split the content into words using whitespace as delimiter
+    const words = content.trim().split(/\s+/);
+    // Filter out empty strings (e.g., consecutive whitespaces)
+    const filteredWords = words.filter((word: string) => word !== '');
+    // Update the word count
+    setWordCount(filteredWords.length);
+  };
 
   //let savedLetter = savedEssay.essay;
 
   useEffect(() => {
-    if(data?.essay?.response!=null){
-          setEssayId(data?.essay?.response?.id);
+
+   // setEssay(data?.essay?.response?.essay)
+    // if (data?.essay?.response?.id) {
+    //   setInterval(update, 60000);
+    // } else {
+    //   setInterval(save, 60000);
+
+    // }
+
+    if (data?.essay?.response != null) {      
+      setEssayId(data?.essay?.response?.id);
 
     }
   }, []);
@@ -135,16 +152,21 @@ export const Essay = ({ data }: any) => {
                                   "undo redo | formatselect | bold italic | \
             alignleft aligncenter alignright | \
             bullist numlist outdent indent | help",
+            wordcount: true
+
                               }}
                               onChange={(e: any) => {
                                 setEssay(e.target.getContent());
                               }}
+                              onEditorChange={ handleEditorChange}
+
                             />
                           </div>
                         </div>
+                        <small style={{ color: "red" }}>{wordCount}/200</small>
                       </div>
                       <div className="form-actions mt-10" style={{ textAlign: "end" }}>
-                        {essayId == "" || essayId != undefined?
+                        {essayId == "" || essayId == undefined ?
                           <button
                             className="btn btn-success add"
                             type="button"

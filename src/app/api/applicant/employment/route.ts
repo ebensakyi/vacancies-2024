@@ -19,6 +19,9 @@ export async function POST(request: Request) {
       leavingReason: res.data.leavingReason,
     };
 
+    console.log(data);
+    
+
     const response = await prisma.employment.create({
       data,
     });
