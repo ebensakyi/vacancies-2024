@@ -181,7 +181,37 @@ const Header = () => {
 
                       </Link>
                     </li>
-                    <li
+                    <li className="nav-item dropdown">
+                      <a
+                        className="nav-link dropdown-toggle arrow-none"
+                        href="#"
+                        id="topnav-pages"
+                        role="button"
+                      >
+                        <i
+                          className="dripicons-view-list
+ me-2"
+                        />
+                        Broadsheet <div className="arrow-down" />
+                      </a>
+                      <div
+                        className="dropdown-menu"
+                        aria-labelledby="topnav-pages"
+                      >
+                        <Link href="/admin/broadsheet" className="dropdown-item">
+
+                          All
+
+                        </Link>
+                        <Link href="/admin/broadsheet/position-summary" className="dropdown-item">
+
+                          Summary
+
+                        </Link>
+                      
+                      </div>
+                    </li>
+                    {/* <li
                       className={
                         pathname == "/admin/broadsheet"
                           ? "nav-item active"
@@ -197,7 +227,7 @@ const Header = () => {
                         Broadsheet
 
                       </Link>
-                    </li>
+                    </li> */}
 
                     {/* <li className="nav-item dropdown">
                     <a

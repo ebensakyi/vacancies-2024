@@ -1,4 +1,15 @@
+'use client'
+import { LOGIN_URL } from "@/constants";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
 const Faq = () => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect(LOGIN_URL);
+    }
+  })
   return (
     <div id="layout-wrapper">
       <div className="main-content">

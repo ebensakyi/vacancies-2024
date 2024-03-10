@@ -3,7 +3,9 @@ import { LOGIN_URL } from "@/constants";
 import moment from "moment";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useSearchParams } from 'next/navigation'
 
 const Applications = ({ data }: any) => {
   const { data: session } = useSession({
@@ -13,7 +15,18 @@ const Applications = ({ data }: any) => {
     }
   })
 
-  console.log(data);
+  const router = useRouter()
+
+  const searchParams = useSearchParams()
+ 
+  const isSubmitted = searchParams.get('isSubmitted')
+useEffect(() => {
+  if(isSubmitted) {
+    router.refresh()
+  }
+
+ 
+}, [])
 
   return (
     <div id="layout-wrapper">

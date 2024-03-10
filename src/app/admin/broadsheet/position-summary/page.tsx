@@ -1,14 +1,13 @@
 import { SERVER_BASE_URL } from "@/constants";
-import Broadsheet from "@/src/components/admin/broadsheet/Broadsheet";
 import BroadsheetPositionSummary from "@/src/components/admin/broadsheet/BroadsheetPositionSummary";
 
 export const dynamic = "force-dynamic";
 
 
 
-async function getEducationLevels(searchParams: any) {
+async function getPositionSummary(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/education-level?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/postion-summary?qry=${qry}`, { cache: 'no-store' });
 
 
 
@@ -25,14 +24,14 @@ async function getEducationLevels(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
 
-    const educationLevels = await getEducationLevels(searchParams)
+    const positionSummaries = await getPositionSummary(searchParams)
 
 
     let data: any = {
-        educationLevels
+        positionSummaries
     }
 
-    return <Broadsheet data={data} />
+    return <BroadsheetPositionSummary data={data} />
 
 
 }

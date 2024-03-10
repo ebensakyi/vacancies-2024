@@ -38,7 +38,7 @@ export const SubmitApplication = ({ data }: any) => {
       let { status } = response;
 
       if (status == 200) {
-        router.push("/applicant/applications");
+        router.push("/applicant/applications?isSubmitted=1");
         return toast.success("Application submitted successfully");
       }
       if (status != 200)
