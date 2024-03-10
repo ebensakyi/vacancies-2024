@@ -6,9 +6,9 @@ export const dynamic = "force-dynamic";
 
 
 
-async function getEducationLevels(searchParams: any) {
+async function getBroadsheets(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/primary-data/education-level?qry=${qry}`, { cache: 'no-store' });
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/broadshhet?qry=${qry}`, { cache: 'no-store' });
 
 
 
@@ -25,11 +25,11 @@ async function getEducationLevels(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
 
-    const educationLevels = await getEducationLevels(searchParams)
+    const broadsheet = await getBroadsheets(searchParams)
 
 
     let data: any = {
-        educationLevels
+        broadsheet
     }
 
     return <Broadsheet data={data} />

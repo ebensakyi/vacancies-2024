@@ -9,7 +9,9 @@ import { usePathname, redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
 
-const BroadsheetPositionSummary = ({ jobSummary }: any) => {
+const BroadsheetPositionSummary = ({ data }: any) => {
+  console.log(data);
+  
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -127,42 +129,47 @@ const BroadsheetPositionSummary = ({ jobSummary }: any) => {
                           {/* <th>#</th> */}
                           <th>Job title</th>
                           <th>Total applicants</th>
-                          <th>Unworked applicants</th>
+                         
                           <th>Shortlisted applicants</th>
-                          <th>Rejected applicants</th>
+                          <th>Rejected applicants</th> 
+                          <th>Unworked applicants</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {jobSummary?.map((job: any) => {
+                        {data?.positionSummaries?.response?.map((job: any) => {
                           return (
                             <tr>
                               {/* <td>{job.id}</td> */}
-                              <td>{job.name}</td>
+                              <td>{job.jobName}</td>
                               <td>
                                 <span className="badge bg-primary font-size-12">
-                                  {job.applicationCount}
+                                  {job.totalApplications}
                                 </span>
                               </td>
 
                               <td>
-                                <span className="badge bg-dark font-size-12">
-                                  {job.unworkedApplicationCount}
-                                </span>
-                              </td>
-                              <td>
                                 <span className="badge bg-success font-size-12">
-                                  {job.shortlistedApplicationCount}
+                                  {job.shortlistedApplications}
                                 </span>
                               </td>
                               <td>
                                 <span className="badge bg-danger font-size-12">
-                                  {job.rejectedApplicationCount}
+                                  {job.rejectedApplications
+}
+                                </span>
+                              </td>
+                              <td>
+                                <span className="badge bg-dark font-size-12">
+                                  {job.unworkedApplications
+}
                                 </span>
                               </td>
 
                               <td>
-                                <select
+                                <Link   type="button"
+                                className="btn btn-primary add" href={"/admin/broadsheet/?id="+job.id}>View</Link>
+                                {/* <select
                                   className="custom-select form-control"
                                   onChange={async (e: any) => await generate(e.target.value)}
                                 >
@@ -237,7 +244,7 @@ const BroadsheetPositionSummary = ({ jobSummary }: any) => {
                                       Rejected
                                     </option>
                                   </optgroup>
-                                </select>
+                                </select> */}
 
                                 <br />
                                 <br />

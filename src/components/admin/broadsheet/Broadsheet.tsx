@@ -8,8 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { usePathname, redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
+import ReactPaginate from "react-paginate";
+import { calculateAge } from "@/lib/calculate-age";
+import _ from "lodash";
 
-const Broadsheet = ({ jobSummary }: any) => {
+const Broadsheet = ({ data }: any) => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -95,199 +98,199 @@ const Broadsheet = ({ jobSummary }: any) => {
               </div>
             </div>
             <div className="row">
+        <div className="col-12">
+          <div className="card">
+            <div className="card-body">
+              {/* <h4 className="card-title">Position records</h4> */}
+              <p className="card-title-desc">
+                Click on view to view the broadsheet of a position.
+              </p>
+              <div className="table-rep-plugin">
+                <div
+                  className="table-responsive mb-0"
+                  data-pattern="priority-columns"
+                >
+                  <div className="row">
+                    <div className="col-md-4" style={{ textAlign: "end" }}>
+                      <div className="form-group">
+                        <div className="mb-6 position-relative">
+                          <input
+                            type="text"
+                            className="form-control required"
+                            placeholder="Search by name of applicant"
+                            // value={searchText}
+                            // onChange={(e:any) => {
+                            //   setSearchText(e.target.value);
+                            //   autoHandleSearch(e.target.value)
+                            // }}
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-              <ToastContainer
-                position="top-right"
-                autoClose={15000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-              />
-              <div className="col-12">
-                <div className="card">
-                  <div className="card-body">
-                    {/* <h4 className="card-title">Position records</h4>
-            <p className="card-title-desc">
-              Click on view to view the broadsheet of a position.
-            </p> */}
-                    <table
-                      className="table table-striped table-bordered nowrap"
-                      style={{
-                        borderCollapse: "collapse",
-                        borderSpacing: 0,
-                        width: "100%",
-                      }}
-                    >
-                      <thead>
-                        <tr>
-                          {/* <th>#</th> */}
-                          <th>Job title</th>
-                          <th>Total applicants</th>
-                          <th>Unworked applicants</th>
-                          <th>Shortlisted applicants</th>
-                          <th>Rejected applicants</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {jobSummary?.map((job: any) => {
-                          return (
-                            <tr>
-                              {/* <td>{job.id}</td> */}
-                              <td>{job.name}</td>
-                              <td>
-                                <span className="badge bg-primary font-size-12">
-                                  {job.applicationCount}
-                                </span>
-                              </td>
-
-                              <td>
-                                <span className="badge bg-dark font-size-12">
-                                  {job.unworkedApplicationCount}
-                                </span>
-                              </td>
-                              <td>
-                                <span className="badge bg-success font-size-12">
-                                  {job.shortlistedApplicationCount}
-                                </span>
-                              </td>
-                              <td>
-                                <span className="badge bg-danger font-size-12">
-                                  {job.rejectedApplicationCount}
-                                </span>
-                              </td>
-
-                              <td>
-                                <select
-                                  className="custom-select form-control"
-                                  onChange={async (e: any) => await generate(e.target.value)}
-                                >
-                                  <optgroup label="View">
-                                    <option
-
-                                    >
-                                      Select action
-                                    </option>
-                                    <option
-                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=1`}
-                                    >
-                                      All
-                                    </option>
-                                    <option
-                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=-1`}
-                                    >
-                                      Unworked
-                                    </option>
-                                    <option
-                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=1`}
-                                    >
-                                      Shortlisted
-                                    </option>
-                                    <option
-                                      value={`/admin/broadsheet/${job.id}?shortlisted=1&getType=0`}
-                                    >
-                                      Rejected
-                                    </option>
-                                  </optgroup>
-                                  <optgroup label="Download PDF">
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=`}
-                                    >
-                                      All
-                                    </option>
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=-1`}
-                                    >
-                                      Unworked
-                                    </option>
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=1`}
-                                    >
-                                      Shortlisted
-                                    </option>
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=pdf&getType=0`}
-                                    >
-                                      Rejected
-                                    </option>
-                                  </optgroup>
-                                  <optgroup label="Download XLS">
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=`}
-                                    >
-                                      All
-                                    </option>
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=-1`}
-                                    >
-                                      Unworked
-                                    </option>
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=1`}
-                                    >
-                                      Shortlisted
-                                    </option>
-                                    <option
-                                      value={`/api/admin/generate-broadsheet?jobId=${job.id}&fileType=xls&getType=0`}
-                                    >
-                                      Rejected
-                                    </option>
-                                  </optgroup>
-                                </select>
-
-                                <br />
-                                <br />
-                              </td>
-                              <td>
-                                <div className="d-flex flex-wrap gap-2">
-                                  {/* <button type="button" className="btn btn-warning waves-effect waves-light  btn-sm ">
-                                                <i className="uil uil-exclamation-triangle me-2"></i> Warning
-                                            </button> */}
-                                </div>
-
-                                {/* <button
-                          className="btn btn-success btn-sm "
-                          onClick={(e:any) => {
-                            e.preventDefault();
-                            generatePdf(job.id);
-                          }}
-                        >
-                          {job.id == currentId
-                            ? "Generating broadsheet"
-                            : "Generate"}
-                        </button> */}
-                              </td>
-
-                              {/* <td>
-                        {job.id == currentId && path != null ? (
-                          <a
-                            href={path}
-                            className="btn btn-success btn-sm "
-                            download
-                            target="_blank"
+                    {/* <div className="col-md-3">
+                      <div className="form-group">
+                        <div className="mb-3 position-relative">
+                          <button
+                            type="button"
+                            onClick={(e:any) => {
+                              e.preventDefault();
+                              handleSearch();
+                            }}
+                            className="btn btn-primary  add"
                           >
-                            <i className="dripicons-download" />
-                          </a>
-                        ) : null}
-
-                       
-                        <td>
-                         
-                        </td> */}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                            <i className="fas fa-search"></i>Search
+                          </button>
+                        </div>
+                      </div>
+                    </div> */}
                   </div>
+                  <table
+
+                    className="table table-striped table-bordered dt-responsive nowrap"
+                    style={{
+                      borderCollapse: "collapse",
+                      borderSpacing: 0,
+                      width: "100%",
+                    }}
+                  >
+                    <thead>
+                      <tr>
+                        {/* <th>R/N</th> */}
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Sex</th>
+                        <th>Age</th>
+                        {/* <th>Marital status</th> */}
+                        {/* <th>Qualification</th> */}
+                        {/* <th>Experience</th>
+                        <th>Experience years</th> */}
+
+                        {/* <th>Bonded to organization</th> */}
+                        {/* <th>Bonded details</th>
+
+                        <th>References</th>
+                        <th>Contact objection</th> */}
+
+                        <th>Shortlist status</th>
+                        <th>View</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {data?.broadsheet?.response?.map((bs:any) => {
+                        return (
+                          <tr key={bs.id}>
+                            {/* <td>{bs.jobId}</td> */}
+                            <td>
+                              {_.startCase(_.lowerCase(bs.firstName))}{" "}
+                              {_.startCase(_.lowerCase(bs.otherNames))}{" "}
+                              {_.startCase(_.lowerCase(bs.surname))}
+                            </td>
+                            <td>{bs.job}</td>
+                            <td>
+                              {bs.phoneNumber} <br />
+                              {bs.residenceTel}
+                            </td>
+                            <td> {bs.email}</td>
+                            <td>{bs.address}</td>
+                            <td>{bs.sex}</td>
+                            <td>
+                              {/* {bs.dob} */}
+                              {calculateAge(bs.dob)} yrs
+                            </td>
+
+                            {/* <td>
+                              {bs.User.Certificate.map((cert) => {
+                                return (
+                                  <table>
+                                    <tr>{cert.from}</tr>
+                                    <tr>{cert.to}</tr>
+                                    <tr>{cert.certificateObtained}</tr>
+                                  </table>
+                                );
+                              })}
+                            </td> */}
+
+                            {/* <td>
+                              {bs.User.Employment.map((emp) => {
+                                return (
+                                  <table>
+                                    <tr>{emp.organizationName} </tr>
+                                    <tr>{emp.position} </tr>
+                                    <tr>{emp.salary} </tr>
+                                    <tr>
+                                      {emp.start} to {emp.end}
+                                    </tr>
+                                  </table>
+                                );
+                              })}
+                            </td>
+                            <td> {calculateExperience(bs.User.Employment)}</td> */}
+
+                            {/* <td>{bs.User.Bonded.YesNo.value}</td> */}
+                            {/* <td>{bs.User.Bonded.details}</td> */}
+                            {/* 
+                            <td>
+                              {bs.User.Reference.map((ref) => {
+                                return (
+                                  <table>
+                                    <tr>{ref.name}</tr>
+                                    <tr>{ref.occupation}</tr>
+                                    <tr>{ref.address}</tr>
+                                    <tr>{ref.phone}</tr>
+                                  </table>
+                                );
+                              })}
+                            </td>
+                            <td>{bs.User.Confirmation.YesNo.value}</td> */}
+                            <td>
+                              {bs.shortlisted == 1 ? "Shortlisted" : "Rejected"}
+                            </td>
+                            <td>
+                              <Link
+                                href={`/admin/broadsheet/single-application?id=${bs.id}`}
+                              >
+                                <a className="btn btn-success btn-sm waves-effect waves-light ">
+                                  <i className="dripicons-preview" /> View
+                                </a>
+                              </Link>
+                            </td>
+                           
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                  {/* <ReactPaginate
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    previousLabel={"Previous"}
+                    nextLabel={"Next"}
+                    breakLabel={"..."}
+                    initialPage={broadsheet.curPage - 1}
+                    pageCount={broadsheet.maxPage}
+                    onPageChange={handlePagination}
+                    containerClassName={"paginate-wrap"}
+                    subContainerClassName={"paginate-inner"}
+                    pageClassName={"paginate-li"}
+                    pageLinkClassName={"paginate-a"}
+                    activeClassName={"paginate-active"}
+                    nextLinkClassName={"paginate-next-a"}
+                    previousLinkClassName={"paginate-prev-a"}
+                    breakLinkClassName={"paginate-break-a"}
+                  /> */}
+
+                  {/* <TablePagination position={position} page={page} /> */}
                 </div>
-              </div>{" "}
-              {/* end col */}
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
           </div>
         </div>
       </div>

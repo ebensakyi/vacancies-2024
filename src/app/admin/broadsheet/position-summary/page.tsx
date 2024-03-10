@@ -1,5 +1,6 @@
 import { SERVER_BASE_URL } from "@/constants";
 import BroadsheetPositionSummary from "@/src/components/admin/broadsheet/BroadsheetPositionSummary";
+import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -7,9 +8,7 @@ export const dynamic = "force-dynamic";
 
 async function getPositionSummary(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/postion-summary?qry=${qry}`, { cache: 'no-store' });
-
-
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/broadsheet/position-summary?qry=${qry}`, { cache: 'no-store',headers:headers() });
 
     if (!response.ok) {
         throw new Error('Failed to fetch data')
