@@ -34,6 +34,9 @@ const SingleApplication = ({ data }: any) => {
 
   const handleShortlisting = async () => {
     try {
+      if(rejected && rejectReason.length == 0){
+       return toast.error(`Please select a reason for rejecting`);
+      }
       const data = {
         rejected,
         shortlisted,
@@ -52,7 +55,7 @@ const SingleApplication = ({ data }: any) => {
       if (status== 200) {   
            toast.success(`Application vetted successfully`);
 
-         router.replace("/admin/shortlist")
+         router.push("/admin/shortlist")
          return
       }
     } catch (error) { }
@@ -245,14 +248,21 @@ const SingleApplication = ({ data }: any) => {
                                 <tbody>
                                   <tr>
                                     <td>
-                                      {data?.application?.response?.shortlisted == 1 ? (
+                                      {data?.application?.response?.shortlisted == -1 ? (
+                                        <span
+                                          className="badge bg-dark"
+                                          style={{ padding: 10 }}
+                                        >
+                                          Not worked on
+                                        </span>
+                                      ):data?.application?.response?.shortlisted == 1 ? (
                                         <span
                                           className="badge bg-success"
                                           style={{ padding: 10 }}
                                         >
                                           Shortlisted
                                         </span>
-                                      ) : (
+                                      )  : (
                                         <span
                                           className="badge bg-danger"
                                           style={{ padding: 10 }}

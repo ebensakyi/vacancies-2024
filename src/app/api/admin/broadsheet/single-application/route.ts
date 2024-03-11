@@ -1,6 +1,5 @@
 import { prisma } from "@/prisma/db";
 import { NextResponse } from "next/server";
-import PersonalInfo from "@/src/components/applicant/PersonalInfo";
 
 export async function GET(request: Request) {
   try {

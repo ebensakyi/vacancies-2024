@@ -1,41 +1,62 @@
 import { prisma } from "@/prisma/db";
 import { NextResponse } from "next/server";
-import PersonalInfo from '@/src/components/applicant/PersonalInfo';
 
 export async function GET(request: Request) {
   try {
-    let { searchParams } = new URL(request.url);
-    let jobId: any = searchParams.get("id")?.toString();
-
+    // let { searchParams } = new URL(request.url);
+    // let applicationId: any = searchParams.get("id")?.toString();
 
     const response = await prisma.application.findMany({
-        where:{
-            jobId: Number(jobId)
-        },
+      where: {
+        deleted: 0,
+        submitted:1,
+      },
       include: {
+        RejectReason: true,
         Job: true,
         User: {
-            include:{
-                Personal:{
-                    include: {
-                        Sex:true,
-                        MaritalStatus:true,
-                    }
+          include: {
+            Personal: {
+              include: {
+                Sex: true,
+                MaritalStatus: true,
+              },
+            },
+            Essay: true,
+            Employment: true,
+            GradesObtained: {
+              include: {
+                IndexNumber: {
+                  include: { ExamType: true },
                 },
-                Employment:true,
-                GradesObtained:true,
-                SchoolAttended:true,
-                Reference:true,
-                Publication:true,
-                Certificate:true,
-
-            }
+              },
+            },
+            SchoolAttended: {
+              include: {
+                EducationLevel: true,
+              },
+            },
+            Reference: true,
+            Publication: true,
+            Certificate: true,
+            Bonded: {
+              include: {
+                YesNo: true,
+              },
+            },
+            Confirmation: {
+              include: {
+                YesNo: true,
+              },
+            },
+          },
         },
       },
     });
 
-    
+ 
 
+    
     return NextResponse.json({ response });
   } catch (error) {
     console.log(error);

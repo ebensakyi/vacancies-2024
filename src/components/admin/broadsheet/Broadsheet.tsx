@@ -94,7 +94,7 @@ const Broadsheet = ({ data }: any) => {
             <div className="row">
               <div className="col-12">
                 <div className="page-title-box d-flex align-items-center justify-content-between">
-                  <h4 className="mb-0">BROADSHEET</h4>
+                  <h4 className="mb-0">BROADSHEET </h4>
                 </div>
               </div>
             </div>
@@ -252,12 +252,11 @@ const Broadsheet = ({ data }: any) => {
                           
                             <td>{bs.User.Confirmation.YesNo.value}</td> */}
                                   <td>
-                                    {}
-                                    {bs.shortlisted == 1 ? "Shortlisted" ? bs.shortlisted == -1 : "Not worked on" : "Rejected"}
+                                    {bs.shortlisted === 1 ?  <span className="badge bg-success">Shortlisted</span>  ? bs.shortlisted == -1 :<span className="badge bg-dark">Not worked on</span>  :<span className="badge bg-danger">Rejected</span> }
                                   </td>
                                   <td>
                                     <Link
-                                      href={`/admin/broadsheet/single-application?id=${bs.id}`} className="btn btn-success btn-sm waves-effect waves-light "
+                                      href={`/admin/shortlist/single-application?id=${bs.id}`} className="btn btn-success btn-sm waves-effect waves-light "
                                     >
 
                                       <i className="dripicons-preview" /> View

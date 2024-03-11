@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
 
 const BroadsheetPositionSummary = ({ data }: any) => {
-  
+
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -128,15 +128,23 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                           {/* <th>#</th> */}
                           <th>Job title</th>
                           <th>Total applicants</th>
-                         
+
                           <th>Shortlisted applicants</th>
-                          <th>Rejected applicants</th> 
+                          <th>Rejected applicants</th>
                           <th>Unworked applicants</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         {data?.positionSummaries?.response?.map((job: any) => {
+                          function exportPdf() {
+                            throw new Error("Function not implemented.");
+                          }
+
+                          function exportExcel() {
+                            throw new Error("Function not implemented.");
+                          }
+
                           return (
                             <tr>
                               {/* <td>{job.id}</td> */}
@@ -144,30 +152,42 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                               <td>
                                 <span className="badge bg-primary font-size-12">
                                   {job.totalApplications}
-                                </span>
+
+                                </span><br/>
+                                <button className="badge bg-primary font-size-12" onClick={()=>{exportPdf()}}>PDF Export All</button><br/><br/>
+                                <button className="badge bg-primary font-size-12" onClick={()=>{exportExcel()}}>Excel Export All</button>
+
                               </td>
 
                               <td>
                                 <span className="badge bg-success font-size-12">
                                   {job.shortlistedApplications}
-                                </span>
+                                </span><br/>
+                                <button className="badge bg-success font-size-12" onClick={()=>{exportPdf()}}>PDF Export Shortlisted</button><br/><br/>
+                                <button className="badge bg-success font-size-12" onClick={()=>{exportExcel()}}>Excel Export Shortlisted</button>
                               </td>
                               <td>
                                 <span className="badge bg-danger font-size-12">
                                   {job.rejectedApplications
-}
-                                </span>
+                                  }
+                                </span><br/>
+                                <button className="badge bg-danger font-size-12" onClick={()=>{exportPdf()}}>PDF Export Rejected</button><br/><br/>
+                                <button className="badge bg-danger font-size-12"  onClick={()=>{exportExcel()}}>Excel Export Rejected</button>
+
                               </td>
                               <td>
                                 <span className="badge bg-dark font-size-12">
                                   {job.unworkedApplications
-}
-                                </span>
+                                  }
+                                </span><br/>
+                                <button className="badge bg-dark font-size-12" onClick={()=>{exportPdf()}}>Export Unworked</button><br/><br/>
+                                <button className="badge bg-dark font-size-12" onClick={()=>{exportExcel()}}>Export Unworked</button>
+
                               </td>
 
                               <td>
-                                <Link   type="button"
-                                className="btn btn-primary add" href={"/admin/broadsheet/?id="+job.id}>View</Link>
+                                <Link type="button"
+                                  className="btn btn-primary add" href={"/admin/broadsheet/?id=" + job.id}>View</Link>
                                 {/* <select
                                   className="custom-select form-control"
                                   onChange={async (e: any) => await generate(e.target.value)}

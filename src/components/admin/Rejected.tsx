@@ -12,7 +12,7 @@ import ReactPaginate from "react-paginate";
 import { calculateAge } from "@/lib/calculate-age";
 import _ from "lodash";
 
-const Shortlist = ({ data }: any) => {
+const Rejected = ({ data }: any) => {
 
   console.log(data);
   
@@ -256,7 +256,8 @@ const Shortlist = ({ data }: any) => {
                             <td>{bs.User.Confirmation.YesNo.value}</td> */}
                                   <td>
                                     {}
-                                    {bs.shortlisted == 1 ? "Shortlisted" ? bs.shortlisted == -1 : "Not worked on" : "Rejected"}
+                                    {bs.shortlisted == 1 ?  <span className="badge bg-success">Shortlisted</span>  ? bs.shortlisted == -1 :<span className="badge bg-dark">Not worked on</span>  :<span className="badge bg-danger">Rejected</span> }
+                                    
                                   </td>
                                   <td>
                                     <Link
@@ -305,4 +306,4 @@ const Shortlist = ({ data }: any) => {
   );
 };
 
-export default Shortlist;
+export default Rejected;
