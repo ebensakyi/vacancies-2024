@@ -10,7 +10,6 @@ import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
 
 const BroadsheetPositionSummary = ({ data }: any) => {
-  console.log(data);
   
   const { data: session } = useSession({
     required: true,

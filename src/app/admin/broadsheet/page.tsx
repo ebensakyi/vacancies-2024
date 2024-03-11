@@ -1,14 +1,13 @@
+export const dynamic = "force-dynamic";
 import { SERVER_BASE_URL } from "@/constants";
 import Broadsheet from "@/src/components/admin/broadsheet/Broadsheet";
-import BroadsheetPositionSummary from "@/src/components/admin/broadsheet/BroadsheetPositionSummary";
 
-export const dynamic = "force-dynamic";
 
 
 
 async function getBroadsheets(searchParams: any) {
-    let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/broadshhet?qry=${qry}`, { cache: 'no-store' });
+    let { id } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/broadsheet?id=${id}`, { cache: 'no-store' });
 
 
 

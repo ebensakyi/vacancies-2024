@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/prisma/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
+import { calculateAge } from "@/lib/calculate-age";
 
 export async function POST(request: Request) {
   try {
@@ -59,7 +60,6 @@ export async function PUT(request: Request) {
     const session: any = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
-    console.log(">>>>>>>>>>>>>update",res.data.id);
     
 
     let age = calculateAge(res.data.dob);
@@ -124,13 +124,3 @@ export async function GET(request: Request) {
   }
 }
 
-function calculateAge(dateOfBirth: Date) {
-  const today = new Date();
-  const dob = new Date(dateOfBirth);
-  let age = today.getFullYear() - dob.getFullYear();
-  const monthDiff = today.getMonth() - dob.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-    age--;
-  }
-  return age;
-}
