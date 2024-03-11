@@ -10,6 +10,8 @@ import { ADMIN_LOGIN_URL } from "@/constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const SingleApplication = ({ data }: any) => {
+  console.log(data);
+  
 
   const { data: session } = useSession({
     required: true,
@@ -39,19 +41,19 @@ const SingleApplication = ({ data }: any) => {
         appId: id,
       };
       const response = await axios.post(
-        "/api/admin/broadsheet/shortlist",
+        "/api/admin/shortlist",
         {
           data,
         }
       );
-      //console.log("response: " + JSON.stringify(response.data));
-      // Router.reload(window.location.pathname);
+
 
       let { status } = response;
       if (status== 200) {   
            toast.success(`Application vetted successfully`);
 
-        return router.refresh();
+         router.replace("/admin/shortlist")
+         return
       }
     } catch (error) { }
   };
@@ -259,9 +261,10 @@ const SingleApplication = ({ data }: any) => {
                                         </span>
                                       )}
                                     </td>
-                                    {data?.application?.shortlisted == 0 ? (
+                                    {data?.application?.response?.shortlisted == 0 ? (
                                       <td>
-                                        {data?.application?.RejectReason.map((r: any) => {
+                                        {/* {data?.application?.applicationRejectReasons?.map((rr:any)=>rr?.Reason?.reason)} */}
+                                        {data?.application?.applicationRejectReasons?.map((r: any) => {
                                           return (
                                             <li
                                               style={{

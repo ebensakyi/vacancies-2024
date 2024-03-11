@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { useState, useLocation } from "react";
+import { useState } from "react";
 
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
-import { calculateAge } from "../../../util/calculate-age";
 import _ from "lodash";
 
 export const SinglePositionBroadsheet = ({ broadsheet }) => {

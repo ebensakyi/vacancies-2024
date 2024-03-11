@@ -12,6 +12,7 @@ export async function GET(request: Request) {
         id: Number(applicationId),
       },
       include: {
+        RejectReason: true,
         Job: true,
         User: {
           include: {
@@ -48,13 +49,18 @@ export async function GET(request: Request) {
                 YesNo: true,
               },
             },
-            RejectReason: true,
           },
         },
       },
     });
 
-    return NextResponse.json({ response });
+    let applicationRejectReasons = await prisma.rejectReason.findMany({
+      where: { applicationId:Number(applicationId) },
+      include: { Reason: true },
+    });
+
+    
+    return NextResponse.json({ response,applicationRejectReasons });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: error });
