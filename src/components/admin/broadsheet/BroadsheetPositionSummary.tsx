@@ -80,7 +80,18 @@ const BroadsheetPositionSummary = ({ data }: any) => {
   //   }
   // };
 
-  // const handleAction = async () => { };
+  async function exportPdf(jobId: any) {
+    const response = await axios.post("/api/admin/generate-broadsheet", {
+      type: 1,
+    });
+  }
+
+  async function exportExcel(jobId: any) {
+    const response = await axios.post("/api/admin/generate-broadsheet", {
+      type: 2,
+    });
+  }
+
 
   return (
     <div id="layout-wrapper">
@@ -137,13 +148,6 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                       </thead>
                       <tbody>
                         {data?.positionSummaries?.response?.map((job: any) => {
-                          function exportPdf() {
-                            throw new Error("Function not implemented.");
-                          }
-
-                          function exportExcel() {
-                            throw new Error("Function not implemented.");
-                          }
 
                           return (
                             <tr>
@@ -153,35 +157,35 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                                 <span className="badge bg-primary font-size-12">
                                   {job.totalApplications}
 
-                                </span><br/>
-                                <button className="badge bg-primary font-size-12" onClick={()=>{exportPdf()}}>PDF Export All</button><br/><br/>
-                                <button className="badge bg-primary font-size-12" onClick={()=>{exportExcel()}}>Excel Export All</button>
+                                </span><br />
+                                <button className="badge bg-primary font-size-12" onClick={() => { exportPdf(job.id) }}>PDF Export All</button><br /><br />
+                                <button className="badge bg-primary font-size-12" onClick={() => { exportExcel(job.id) }}>Excel Export All</button>
 
                               </td>
 
                               <td>
                                 <span className="badge bg-success font-size-12">
                                   {job.shortlistedApplications}
-                                </span><br/>
-                                <button className="badge bg-success font-size-12" onClick={()=>{exportPdf()}}>PDF Export Shortlisted</button><br/><br/>
-                                <button className="badge bg-success font-size-12" onClick={()=>{exportExcel()}}>Excel Export Shortlisted</button>
+                                </span><br />
+                                <button className="badge bg-success font-size-12" onClick={() => { exportPdf(job.id) }}>PDF Export Shortlisted</button><br /><br />
+                                <button className="badge bg-success font-size-12" onClick={() => { exportExcel(job.id) }}>Excel Export Shortlisted</button>
                               </td>
                               <td>
                                 <span className="badge bg-danger font-size-12">
                                   {job.rejectedApplications
                                   }
-                                </span><br/>
-                                <button className="badge bg-danger font-size-12" onClick={()=>{exportPdf()}}>PDF Export Rejected</button><br/><br/>
-                                <button className="badge bg-danger font-size-12"  onClick={()=>{exportExcel()}}>Excel Export Rejected</button>
+                                </span><br />
+                                <button className="badge bg-danger font-size-12" onClick={() => { exportPdf(job.id) }}>PDF Export Rejected</button><br /><br />
+                                <button className="badge bg-danger font-size-12" onClick={() => { exportExcel(job.id) }}>Excel Export Rejected</button>
 
                               </td>
                               <td>
                                 <span className="badge bg-dark font-size-12">
                                   {job.unworkedApplications
                                   }
-                                </span><br/>
-                                <button className="badge bg-dark font-size-12" onClick={()=>{exportPdf()}}>Export Unworked</button><br/><br/>
-                                <button className="badge bg-dark font-size-12" onClick={()=>{exportExcel()}}>Export Unworked</button>
+                                </span><br />
+                                <button className="badge bg-dark font-size-12" onClick={() => { exportPdf(job.id) }}>Export Unworked</button><br /><br />
+                                <button className="badge bg-dark font-size-12" onClick={() => { exportExcel(job.id) }}>Export Unworked</button>
 
                               </td>
 

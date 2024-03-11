@@ -1,4 +1,4 @@
-export const run = (pdfText: string) => {
+export const broadsheetTemplate = (pdfText: string) => {
   return (
     `
     <!doctype html>
