@@ -80,17 +80,14 @@ const BroadsheetPositionSummary = ({ data }: any) => {
   //   }
   // };
 
-  async function exportPdf(jobId: any) {
+  async function exportBroadsheet(jobId: any,fileType: number,broadsheetType:any) {
     const response = await axios.post("/api/admin/generate-broadsheet", {
-      type: 1,
+      fileType,
+      jobId:jobId,
+      broadsheetType
     });
   }
 
-  async function exportExcel(jobId: any) {
-    const response = await axios.post("/api/admin/generate-broadsheet", {
-      type: 2,
-    });
-  }
 
 
   return (
@@ -158,8 +155,8 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                                   {job.totalApplications}
 
                                 </span><br />
-                                <button className="badge bg-primary font-size-12" onClick={() => { exportPdf(job.id) }}>PDF Export All</button><br /><br />
-                                <button className="badge bg-primary font-size-12" onClick={() => { exportExcel(job.id) }}>Excel Export All</button>
+                                <button className="badge bg-primary font-size-12" onClick={() => { exportBroadsheet(job.id,1,undefined) }}>PDF Export All</button><br /><br />
+                                <button className="badge bg-primary font-size-12" onClick={() => { exportBroadsheet(job.id,2,undefined) }}>Excel Export All</button>
 
                               </td>
 
@@ -167,16 +164,16 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                                 <span className="badge bg-success font-size-12">
                                   {job.shortlistedApplications}
                                 </span><br />
-                                <button className="badge bg-success font-size-12" onClick={() => { exportPdf(job.id) }}>PDF Export Shortlisted</button><br /><br />
-                                <button className="badge bg-success font-size-12" onClick={() => { exportExcel(job.id) }}>Excel Export Shortlisted</button>
+                                <button className="badge bg-success font-size-12" onClick={() => { exportBroadsheet(job.id,1,1) }}>PDF Export Shortlisted</button><br /><br />
+                                <button className="badge bg-success font-size-12" onClick={() => { exportBroadsheet(job.id,2,1) }}>Excel Export Shortlisted</button>
                               </td>
                               <td>
                                 <span className="badge bg-danger font-size-12">
                                   {job.rejectedApplications
                                   }
                                 </span><br />
-                                <button className="badge bg-danger font-size-12" onClick={() => { exportPdf(job.id) }}>PDF Export Rejected</button><br /><br />
-                                <button className="badge bg-danger font-size-12" onClick={() => { exportExcel(job.id) }}>Excel Export Rejected</button>
+                                <button className="badge bg-danger font-size-12" onClick={() => { exportBroadsheet(job.id,1,0) }}>PDF Export Rejected</button><br /><br />
+                                <button className="badge bg-danger font-size-12" onClick={() => { exportBroadsheet(job.id,2,0) }}>Excel Export Rejected</button>
 
                               </td>
                               <td>
@@ -184,8 +181,8 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                                   {job.unworkedApplications
                                   }
                                 </span><br />
-                                <button className="badge bg-dark font-size-12" onClick={() => { exportPdf(job.id) }}>Export Unworked</button><br /><br />
-                                <button className="badge bg-dark font-size-12" onClick={() => { exportExcel(job.id) }}>Export Unworked</button>
+                                <button className="badge bg-dark font-size-12" onClick={() => { exportBroadsheet(job.id,1,-1) }}>Export Unworked</button><br /><br />
+                                <button className="badge bg-dark font-size-12" onClick={() => { exportBroadsheet(job.id,2,-1) }}>Export Unworked</button>
 
                               </td>
 
