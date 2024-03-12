@@ -1,7 +1,7 @@
+// @ts-nocheck
 "use client"
 import ReactHtmlParser from "react-html-parser";
 
-import { useRef, useEffect } from "react";
 import moment from "moment";
 import { useSession } from "next-auth/react";
 import { LOGIN_URL } from "@/constants";
@@ -26,6 +26,7 @@ const FullApplication = ({ data }: any) => {
                   <button
                     className="btn btn-warning add"
                     onClick={() => {
+                      
                       const printContents =
                         document.getElementById("printableArea").innerHTML;
                       const originalContents = document.body.innerHTML;

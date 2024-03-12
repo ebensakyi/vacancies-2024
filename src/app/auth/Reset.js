@@ -128,7 +128,7 @@ const Reset = () => {
                             name="password"
                             value={password}
                             required
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setPassword(e.target.value);
                             }}
                           />
@@ -153,7 +153,7 @@ const Reset = () => {
                             name="password"
                             value={confirmPassword}
                             required
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setConfirmPassword(e.target.value);
                             }}
                           />
@@ -171,7 +171,7 @@ const Reset = () => {
                           <button
                             className="btn btn-success"
                             type="submit"
-                            onClick={(e:any) => {
+                            onClick={(e) => {
                               e.preventDefault();
                               reset();
                             }}

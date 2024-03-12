@@ -90,7 +90,7 @@ const SetupPortal = ({ data }: any) => {
                                   }}
                                 >
                                   <option value="">
-                                    Select staff you're recruiting
+                                    Select staff you are recruiting
                                   </option>
                                   {data?.recruitments?.response?.map((st: any) => (
                                     <option key={st.id} value={st.id}>

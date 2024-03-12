@@ -161,7 +161,7 @@ const BroadsheetPositionSummary = ({ data }: any) => {
                         {data?.positionSummaries?.response?.map((job: any) => {
 
                           return (
-                            <tr>
+                            <tr key={job.id}>
                               {/* <td>{job.id}</td> */}
                               <td>{job.jobName}</td>
                               <td>

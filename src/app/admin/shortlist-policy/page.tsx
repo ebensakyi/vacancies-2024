@@ -1,5 +1,5 @@
 import { SERVER_BASE_URL } from "@/constants";
-import AddPolicy from "@/src/components/admin/Policy";
+import Policy from "@/src/components/admin/configure/Policy";
 
 export const dynamic = "force-dynamic";
 

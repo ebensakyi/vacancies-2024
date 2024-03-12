@@ -12,7 +12,6 @@ const Dashboard = ({ data }:any) => {
         redirect(ADMIN_LOGIN_URL);
     }
 })
-console.log(data);
 
 
 // console.log(session?.user?.accesiblePages);
@@ -292,7 +291,7 @@ console.log(data);
               <tbody>
                 {data?.stats?.response?.applicationSummary?.map((job:any) => {
                   return (
-                    <tr>
+                    <tr key={job.id}>
                      
                       <td>{job.name}</td>
                       <td><span className="badge bg-primary font-size-12">{job.applicationCount}</span></td>

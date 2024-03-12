@@ -119,7 +119,7 @@ export const Register = () => {
                             id="validationTooltip01"
                             name="firstName"
                             value={firstName}
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setFirstName(e.target.value);
                             }}
                             required
@@ -136,7 +136,7 @@ export const Register = () => {
                             id="validationTooltip02"
                             name="surname"
                             value={surname}
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setSurname(e.target.value);
                             }}
                             required
@@ -155,7 +155,7 @@ export const Register = () => {
                             id="validationTooltip02"
                             name="otherNames"
                             value={otherNames}
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setOtherNames(e.target.value);
                             }}
                           />
@@ -170,7 +170,7 @@ export const Register = () => {
                             id="validationTooltip02"
                             name="email"
                             value={email}
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setEmail(e.target.value);
                             }}
                             required
@@ -190,7 +190,7 @@ export const Register = () => {
                             value={phoneNumber}
                             maxLength="10"
                             placeholder="Phone number"
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setPhoneNumber(e.target.value);
                             }}
                             required
@@ -209,7 +209,7 @@ export const Register = () => {
                             minLength={8}
                             name="password"
                             value={password}
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setPassword(e.target.value);
                               if (password.length + 1 >= 8) {
                                 setIsValid(true);
@@ -238,7 +238,7 @@ export const Register = () => {
                             minLength={8}
                             name="confirmPassword"
                             value={confirmPassword}
-                            onChange={(e:any) => {
+                            onChange={(e) => {
                               setConfirmPassword(e.target.value);
                               if (password === confirmPassword) {
                                 setPasswordsMatch(true);
@@ -265,7 +265,7 @@ export const Register = () => {
                             disabled={!passwordsMatch && !isValid}
                             className="btn btn-success"
                             type="button"
-                            onClick={(e:any) => {
+                            onClick={(e) => {
                               e.preventDefault();
                               save();
                             }}

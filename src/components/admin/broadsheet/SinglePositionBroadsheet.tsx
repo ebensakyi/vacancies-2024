@@ -4,14 +4,15 @@ import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
 import _ from "lodash";
+import { calculateAge } from "@/lib/calculate-age";
 
-export const SinglePositionBroadsheet = ({ broadsheet }) => {
+export const SinglePositionBroadsheet = ({ broadsheet }:any) => {
   const [searchText, setSearchText] = useState();
   const router = useRouter();
 
 
 
-  const autoHandleSearch = (searchText) => {
+  const autoHandleSearch = (searchText:any) => {
     try {
       router.push({
         pathname: '/admin/broadsheet/[id]',
@@ -25,7 +26,7 @@ export const SinglePositionBroadsheet = ({ broadsheet }) => {
   };
 
 
-  const handlePagination = (page) => {
+  const handlePagination = (page:any) => {
     const path = router.pathname;
     const query = router.query;
     query.page = page.selected + 1;
@@ -121,7 +122,7 @@ export const SinglePositionBroadsheet = ({ broadsheet }) => {
                     </thead>
 
                     <tbody>
-                      {broadsheet.data.map((bs) => {
+                      {broadsheet.data.map((bs:any) => {
                         return (
                           <tr key={bs.id}>
                             {/* <td>{bs.jobId}</td> */}
@@ -215,7 +216,7 @@ export const SinglePositionBroadsheet = ({ broadsheet }) => {
                     pageCount={broadsheet.maxPage}
                     onPageChange={handlePagination}
                     containerClassName={"paginate-wrap"}
-                    subContainerClassName={"paginate-inner"}
+                    // subContainerClassName={"paginate-inner"}
                     pageClassName={"paginate-li"}
                     pageLinkClassName={"paginate-a"}
                     activeClassName={"paginate-active"}

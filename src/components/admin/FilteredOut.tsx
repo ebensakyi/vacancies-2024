@@ -170,7 +170,7 @@ export const FilteredOut = ({ broadsheet }:any) => {
                     pageCount={broadsheet.maxPage}
                     onPageChange={handlePagination}
                     containerClassName={"paginate-wrap"}
-                    subContainerClassName={"paginate-inner"}
+                    //subContainerClassName={"paginate-inner"}
                     pageClassName={"paginate-li"}
                     pageLinkClassName={"paginate-a"}
                     activeClassName={"paginate-active"}

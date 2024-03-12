@@ -73,7 +73,7 @@ const Filter = ({
                         <option value="">Select </option>
                         <option value="*">Any</option>
                         {educationLevelList.map((el:any) => (
-                          <option value={el.id}>
+                          <option key={el.id} value={el.id}>
                             Must Not Contain {el.name}
                           </option>
                         ))}
@@ -189,7 +189,7 @@ const Filter = ({
                         <option value="">Select job </option>
                         {/* <option value="*">ALL</option> */}
                         {jobList.map((jl:any) => (
-                          <option value={jl.id}>{jl.name}</option>
+                          <option key={jl.id} value={jl.id}>{jl.name}</option>
                         ))}
                       </select>
                     </div>

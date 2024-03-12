@@ -260,11 +260,10 @@ const UserRole = ({ data }: any) => {
                                       setId(data.id)
                                       setName(data.name)
 
-                                      let savedPages = data.PageAccess.map((pa) => {
+                                      let savedPages = data.PageAccess.map((pa:any) => {
                                         return { id: pa.Page.id, name: pa.Page.name }
                                       })
 
-                                      console.log(savedPages);
 
                                       setAccessiblePages(savedPages)
                                     }}

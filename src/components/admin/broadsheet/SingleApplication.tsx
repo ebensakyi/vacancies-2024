@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client'
 import ReactHtmlParser from "react-html-parser";
 import Cookies from "js-cookie";
@@ -9,9 +10,7 @@ import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const SingleApplication = ({ data }: any) => {
-  console.log(data);
-  
+const SingleApplication = ({ data }: any) => {  
 
   const { data: session } = useSession({
     required: true,
@@ -276,7 +275,7 @@ const SingleApplication = ({ data }: any) => {
                                         {/* {data?.application?.applicationRejectReasons?.map((rr:any)=>rr?.Reason?.reason)} */}
                                         {data?.application?.applicationRejectReasons?.map((r: any) => {
                                           return (
-                                            <li
+                                            <li  key={r.id}
                                               style={{
                                                 listStyleType: "none",
                                               }}

@@ -229,9 +229,9 @@ const generatePdf = async (jobId: number, broadsheetType: any) => {
 
     //  console.log("fileName===> ",file);
 
-    let uploadedFile = await uploadFile(filePath, fileName);
+    let uploadedFile:any = await uploadFile(filePath, fileName);
 
-    let response = uploadedFile?.Location;
+    let response :any = uploadedFile?.Location;
 
     console.log(response);
 

@@ -319,7 +319,7 @@ const Employment = ({ data }: any) => {
                   /> */}
                                                 </div>
                                                 <small className="d-inline-block ms-1" style={danger}>
-                                                    Select "*To Date" for Month and Year if you are
+                                                    Select *To Date for Month and Year if you are
                                                     currently at post at stated organization
                                                 </small>
                                             </div>

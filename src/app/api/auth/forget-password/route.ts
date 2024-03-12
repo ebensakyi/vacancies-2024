@@ -13,12 +13,13 @@ export async function POST(request: Request) {
   if (!emailExist) {
     return NextResponse.json({}, { status: 201 });
   }
-  let user = await prisma.user.findFirst({ where: { email } });
+  let user:any = await prisma.user.findFirst({ where: { email } });
 
   let send = await sendMail(
    email,
     "WAEC Recruitment Password Reset",
-    `<h4>Welcome to WAEC Recruitment Portal.</h4><br /><p>Click on the link below to reset your password;\n<br/><p>URL: <a href="https://vacancies.waecgh.org/api/auth/reset-password?id=${nanoid(200)}#$${user.id}"> Reset password</a></p> <br/>`
+    `<h4>Welcome to WAEC Recruitment Portal.</h4><br />
+    <p>Click on the link below to reset your password;\n<br/><p>URL: <a href="https://vacancies.waecgh.org/api/auth/reset-password?id=${nanoid(200)}#$${user.id}"> Reset password</a></p> <br/>`
   );
 
   return NextResponse.json({});

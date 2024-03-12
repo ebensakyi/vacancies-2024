@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client'
 
 import { SERVER_BASE_URL } from "@/constants";
@@ -50,7 +51,7 @@ export default  function ExternalJobAdverts({data}:any){
             <Link href="/auth/login" className="btn btn-primary btn-sm add" >
                 login
             </Link>{" "}
-            and apply. Once you're shortlisted after application, you would
+            and apply. Once you are shortlisted after application, you would
             be contacted via your phone number and/or email. So ensure your
             details are correct.
           </p>
