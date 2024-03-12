@@ -34,7 +34,7 @@ const Broadsheet = ({ data }: any) => {
     try {
       let _url = url
 
-      // window.open(url, "_blank");
+    window.open(url, "_blank");
 
       const firstPath = url.split("/")[1];
 

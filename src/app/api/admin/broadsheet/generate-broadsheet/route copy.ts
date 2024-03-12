@@ -1,4 +1,4 @@
-import Promise, { resolve, reject } from "bluebird";
+import Promise, { resolve ,reject} from "bluebird";
 import _ from "lodash";
 import AWS from "aws-sdk";
 const fs = require("fs");
@@ -20,70 +20,75 @@ const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
-const puppeteer = require("puppeteer");
+    const puppeteer = require('puppeteer');
+
+
 
 export async function POST(request: Request) {
-  try {
+ // try {
     const res = await request.json();
     const session: any = await getServerSession(authOptions);
     const userId = session?.user?.id;
+
+ 
 
     let jobId = res.jobId;
     let fileType = res.fileType;
     let broadsheetType = res.broadsheetType;
 
-    let generatedFile = await generate(jobId, fileType, broadsheetType);
+      await generate(jobId, fileType, broadsheetType);
+     const response = new NextResponse()
+response.headers.set('content-type', 'application/pdf');
+response.headers.set('content-disposition', 'attachment; filename="example.pdf"');
 
-    //      const response = new NextResponse()
-    // response.headers.set('content-type', 'application/pdf');
-    // response.headers.set('content-disposition', 'attachment; filename="a.pdf"');
+return response;
 
-    // return response;
+    // return NextResponse.json({ response });
 
-    // const response = new NextResponse(generatedFile);
-    // response.headers.set("content-type", "application/pdf");
-    // response.headers.set(
-    //   "content-disposition",
-    //   'attachment; filename="./public/broadsheet/a.pdf"'
-    // );
 
-    // return response;
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: error });
-  }
+ 
+
+
+  // } catch (error) {
+  //   console.log(error);
+  //   return NextResponse.json({ message: error });
+  // }
 }
 
 const generate = async (jobId: any, fileType: any, broadsheetType: any) => {
   if (fileType == "pdf") {
-    return generatePdf(jobId, broadsheetType);
+    generatePdf(jobId, broadsheetType);
   }
   if (fileType == "xls") {
-    return generateXls(jobId, broadsheetType);
+    generateXls(jobId, broadsheetType);
   }
 };
 
-const generatePdf = async (jobId: number, broadsheetType: any) => {
+const generatePdf = async (
+  jobId: number,
+  broadsheetType: any
+) => {
   try {
     let where = {};
     let pdfText = "";
     let jobName = "";
     let typeName = "";
 
-    if (broadsheetType == "undefined") {
+       if (broadsheetType == 'undefined') {
       typeName = "ALL";
       where = { submitted: 1, jobId: Number(jobId) };
-    } else if (broadsheetType == "-1") {
+    } else if (broadsheetType == '-1') {
       typeName = "UNWORKED";
       where = { submitted: 1, jobId: Number(jobId), shortlisted: -1 };
-    } else if (broadsheetType == "1") {
+    } else if (broadsheetType == '1') {
       typeName = "SHORTLISTED";
       where = { submitted: 1, jobId: Number(jobId), shortlisted: 1 };
-    } else if (broadsheetType == "0") {
+    } else if (broadsheetType == '0') {
       typeName = "REJECTED";
       where = { submitted: 1, jobId: Number(jobId), shortlisted: 0 };
     }
 
+    
     const broadsheet = await prisma.application.findMany({
       where: where,
 
@@ -134,6 +139,7 @@ const generatePdf = async (jobId: number, broadsheetType: any) => {
       },
     });
 
+   
     {
       let i = 1;
       pdfText = broadsheet
@@ -171,7 +177,9 @@ const generatePdf = async (jobId: number, broadsheetType: any) => {
                }).join("")}
              
               ${bs.User.GradesObtained.map((gd: any) => {
-                return `${gd.IndexNumber.ExamType.name}(${gd.examYear}) - ${gd.subject} - ${gd.grade}  <br/> `;
+                return `${gd.IndexNumber.ExamType.name}(${gd.examYear}) - ${
+                  gd.subject
+                } - ${gd.grade}  <br/> `;
               }).join("")}
              </td> 
 
@@ -202,6 +210,8 @@ const generatePdf = async (jobId: number, broadsheetType: any) => {
     }
     let html = broadsheetTemplate(pdfText);
 
+
+
     let date = new Date();
     let formatted = moment(date).format("DDMMYYYYhhmm");
     let fileName =
@@ -212,30 +222,95 @@ const generatePdf = async (jobId: number, broadsheetType: any) => {
       formatted +
       ".pdf";
 
-    let filePath = "./public/broadsheet/" + fileName;
 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
 
-    await page.setContent(html);
+      // let options:{} = {
+      //   format: "A4",
+      //   orientation: "landscape",
+      //   header: {
+      //     height: "25mm",
+      //     contents: `<div style="text-align: center;">THE WEST AFRICAN EXAMINATIONS COUNCIL</div>
+      //     <div style="text-align: center;">BROADSHEET FOR ${typeName} - ${jobName}</div>`,
+      //   },
+      //   border: {
+      //     top: "0.2in",
+      //     right: "0.2in",
+      //     bottom: "0.2in",
+      //     left: "0.8in",
+      //   },
+  
+     
+      // }  
 
-    const pdfBuffer = await page.pdf({ format: "A4", orientation: "portrait" });
 
-    await browser.close();
+      (async () => {
+        const browser = await puppeteer.launch();
+       
+        const page = await browser.newPage();
+       
+        await page.setContent(html);
+       
+      let file =  await page.pdf({ path: 'example.pdf', format: 'A4', orientation: 'portrait', });
+       
+        await browser.close();
 
-    // Write the PDF buffer to a file
-    //const filePath = `./${fileName}.pdf`;
-    fs.writeFileSync(filePath, pdfBuffer);
+        
+       
+       })();
 
+
+ //   let response = await pdf.create(html, options);
+
+ // new Promise(async (resolve, reject) => {
+
+  // const options = {
+  //   format: 'A4',
+  //   orientation: 'portrait',
+  //   border: '10mm',
+  //   footer: {
+  //     height: '10mm',
+  //   },
+  //   type: 'pdf',
+  //   timeout: 30000,
+  // };
+
+//   const buffer = await pdf.create(html, {
+//     format: "A4",
+//     orientation: "landscape",
+//     header: {
+//       height: "25mm",
+//       contents: `<div style="text-align: center;">THE WEST AFRICAN EXAMINATIONS COUNCIL</div>
+//       <div style="text-align: center;">BROADSHEET FOR ${typeName} - ${jobName}</div>`,
+//     },
+//     border: {
+//       top: "0.2in",
+//       right: "0.2in",
+//       bottom: "0.2in",
+//       left: "0.8in",
+//     },
+
+ 
+//   } ).toBuffer((err: any, buffer: unknown) => {
+//     if (err) {
+//       return reject(err);
+//       }
+  
+//       return resolve(buffer);
+//   });
+// });
+   
+
+
+    // let file = "./public/broadsheet/" + fileName;   
     //  console.log("fileName===> ",file);
 
-    let uploadedFile = await uploadFile(filePath, fileName);
+    // let uploadedFile = await uploadFile(file, fileName);
 
-    let response = uploadedFile?.Location;
+    // let fileUrl = uploadedFile?.Location;
 
-    console.log(response);
+    // console.log(uploadedFile);
 
-    return NextResponse.json({response});
+   // return NextResponse.json({ fileName, url: fileUrl });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error });
@@ -263,26 +338,30 @@ const uploadFile = async (fileName: string, location: any) => {
     return error;
   }
 };
-const generateXls = async (jobId: number, broadsheetType: string) => {
+const generateXls = async (
+  jobId: number,
+  broadsheetType: string
+) => {
   try {
     let where = {};
     let pdfText = "";
     let jobName = "";
     let typeName = "";
 
-    if (broadsheetType == "undefined") {
+    if (broadsheetType == 'undefined') {
       typeName = "ALL";
       where = { submitted: 1, jobId: Number(jobId) };
-    } else if (broadsheetType == "-1") {
+    } else if (broadsheetType == '-1') {
       typeName = "UNWORKED";
       where = { submitted: 1, jobId: Number(jobId), shortlisted: -1 };
-    } else if (broadsheetType == "1") {
+    } else if (broadsheetType == '1') {
       typeName = "SHORTLISTED";
       where = { submitted: 1, jobId: Number(jobId), shortlisted: 1 };
-    } else if (broadsheetType == "0") {
+    } else if (broadsheetType == '0') {
       typeName = "REJECTED";
       where = { submitted: 1, jobId: Number(jobId), shortlisted: 0 };
     }
+
 
     const broadsheet = await prisma.application.findMany({
       where: where,
@@ -334,7 +413,7 @@ const generateXls = async (jobId: number, broadsheetType: string) => {
       },
     });
 
-    //let x = JSON.stringify(broadsheet);
+     //let x = JSON.stringify(broadsheet);
     //  console.log(x);
 
     let i = 1;
@@ -374,6 +453,7 @@ const generateXls = async (jobId: number, broadsheetType: string) => {
       })
       .join("");
 
-    console.log("pdf");
+      console.log("pdf");
+      
   } catch (error) {}
 };
