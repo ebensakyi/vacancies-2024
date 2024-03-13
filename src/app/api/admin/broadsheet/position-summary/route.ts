@@ -28,16 +28,16 @@ export async function GET(request: Request) {
       },
     });
 
-    const response = jobApplication.map((job) => {
+    const response = jobApplication.map((job:any) => {
       const totalApplications = job.Application.length;
       const shortlistedApplications = job.Application.filter(
-        (app) => (app.shortlisted == 1)
+        (app:any) => (app.shortlisted == 1)
       ).length;
       const rejectedApplications = job.Application.filter(
-        (app) => (app.shortlisted == 0)
+        (app:any) => (app.shortlisted == 0)
       ).length;
       const unworkedApplications = job.Application.filter(
-        (app) => (app.shortlisted == -1)
+        (app:any) => (app.shortlisted == -1)
       ).length;
 
       return {

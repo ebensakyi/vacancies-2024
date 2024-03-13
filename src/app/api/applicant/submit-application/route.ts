@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     });
 
     await prisma.$transaction(
-      userApplications.map((app) =>
+      userApplications.map((app:any) =>
         prisma.application.update({
           where: { id: app.id },
           data: {
@@ -79,7 +79,7 @@ export async function GET(request: Request) {
       },
     });
 
-    let response = application.map((m) => m.jobId);
+    let response = application.map((m:any) => m.jobId);
 
     return NextResponse.json({ response });
   } catch (error) {

@@ -48,7 +48,7 @@ export async function GET(request: Request) {
       },
     });
 
-    let response = application.map((m) => m.jobId);
+    let response = application.map((m:any) => m.jobId);
 
     return NextResponse.json({ response });
   } catch (error) {
