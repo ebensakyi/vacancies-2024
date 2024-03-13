@@ -25,6 +25,7 @@ async function getPositionSummary(searchParams: any) {
 export default async function Page({ searchParams }: any) {
 
     const session: any = await getServerSession(authOptions);
+    const userRole = session
 
     const positionSummaries = await getPositionSummary(searchParams)
 
