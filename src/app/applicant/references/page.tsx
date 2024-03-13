@@ -1,6 +1,9 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
 import Reference from "@/src/components/applicant/Reference";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/options";
+import { redirect } from "next/navigation";
 
 
 
@@ -19,6 +22,13 @@ async function getReferences(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 4) {
+        return redirect('/auth/login')
+    }
+
 
 
     const references = await getReferences(searchParams)

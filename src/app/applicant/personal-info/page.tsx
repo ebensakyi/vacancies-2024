@@ -1,7 +1,10 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
 import PersonalInfo from "@/src/components/applicant/PersonalInfo";
+import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
+import { authOptions } from "../../api/auth/[...nextauth]/options";
+import { redirect } from "next/navigation";
 
 
 
@@ -67,6 +70,13 @@ async function getPersonalInfo(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 4) {
+        return redirect('/auth/login')
+    }
+
 
 
     const personalInfo = await getPersonalInfo(searchParams)

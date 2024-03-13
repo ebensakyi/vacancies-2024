@@ -1,6 +1,9 @@
 export const dynamic = "force-dynamic";
 import { SERVER_BASE_URL } from "@/constants";
 import Dashboard from "@/src/components/admin/Dashboard";
+import { authOptions } from "../../api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 
 async function getApplicationSummary(searchParams: any) {
@@ -44,6 +47,14 @@ async function getStats(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 1 || userRole != 2 || userRole != 3) {
+        return redirect('/auth/admin/login')
+    }
+
 
 
     const recruitments = await getRecrutments(searchParams)

@@ -1,7 +1,10 @@
 export const dynamic = "force-dynamic";
 import { SERVER_BASE_URL } from "@/constants";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/options";
 import JobAdvertPreview from "@/src/components/admin/JobAdvertPreview";
+import { getServerSession } from "next-auth";
 import { headers } from "next/headers"
+import { redirect } from "next/navigation";
 
 
 async function getJobById(searchParams: any) {
@@ -23,6 +26,14 @@ async function getJobById(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+
+
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 1 || userRole != 2 || userRole != 3) {
+        return redirect('/auth/admin/login')
+    }
 
 
     const job = await getJobById(searchParams)

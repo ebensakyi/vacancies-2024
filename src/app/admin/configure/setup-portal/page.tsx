@@ -1,5 +1,8 @@
 import { SERVER_BASE_URL } from "@/constants";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/options";
 import SetupPortal from "@/src/components/admin/SetupPortal";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +36,14 @@ async function getRecruitments(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 1 || userRole != 2 || userRole != 3) {
+        return redirect('/auth/admin/login')
+    }
+
 
 
     const currentSetup = await getSetupPortal(searchParams)

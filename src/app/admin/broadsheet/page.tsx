@@ -1,6 +1,9 @@
 export const dynamic = "force-dynamic";
 import { SERVER_BASE_URL } from "@/constants";
 import Broadsheet from "@/src/components/admin/broadsheet/Broadsheet";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/options";
+import { redirect } from "next/navigation";
 
 
 
@@ -22,6 +25,13 @@ async function getBroadsheets(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 1 || userRole != 2 || userRole != 3) {
+        return redirect('/auth/admin/login')
+    }
 
 
     const broadsheet = await getBroadsheets(searchParams)

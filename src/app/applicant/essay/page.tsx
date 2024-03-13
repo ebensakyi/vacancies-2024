@@ -1,6 +1,9 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
 import { Essay } from "@/src/components/applicant/Essay";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/options";
+import { redirect } from "next/navigation";
 
 
 
@@ -19,6 +22,13 @@ async function getEssay(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 4) {
+        return redirect('/auth/login')
+    }
+
 
 
     const essay = await getEssay(searchParams)

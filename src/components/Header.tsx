@@ -18,7 +18,7 @@ const Header = () => {
 
 
   return (
-    <> {user ?
+    <> {user && pathname != "/auth/login" ?
 
       user?.userRoleId == 1 || user?.userRoleId == 2 || user?.userRoleId == 3 ?
         ///ADMIN NAV
@@ -208,7 +208,7 @@ const Header = () => {
                           Summary
 
                         </Link>
-                      
+
                       </div>
                     </li>
                     {/* <li
@@ -313,17 +313,17 @@ const Header = () => {
                       >
                         <Link href="/admin/configure/recruitment" className="dropdown-item">
 
-                        <span className="badge bg-danger">1</span>  Create  Recruitment
+                          <span className="badge bg-danger">1</span>  Create  Recruitment
 
                         </Link>
                         <Link href="/admin/configure/setup-portal" className="dropdown-item">
 
-                        <span className="badge bg-warning">2</span>  Set up portal
+                          <span className="badge bg-warning">2</span>  Set up portal
 
                         </Link>
                         <Link href="/admin/configure/policy" className="dropdown-item">
 
-                        <span className="badge bg-success">3</span>    Policy
+                          <span className="badge bg-success">3</span>    Policy
 
                         </Link>
                         <Link href="/admin/job-advert" className="dropdown-item">

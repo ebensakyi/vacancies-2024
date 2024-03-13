@@ -1,8 +1,11 @@
 export const dynamic = "force-dynamic";
  import { SERVER_BASE_URL } from "@/constants";
 import Certificate from "@/src/components/applicant/Certificate";
+import { getServerSession } from "next-auth";
 
 import { headers } from "next/headers";
+import { authOptions } from "../../api/auth/[...nextauth]/options";
+import { redirect } from "next/navigation";
 
 
 
@@ -32,6 +35,13 @@ async function getCertificates(searchParams: any) {
 
 
 export default async function Page({ searchParams }: any) {
+    const session: any = await getServerSession(authOptions);
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 4) {
+        return redirect('/auth/login')
+    }
+
 
 
     const certificates = await getCertificates(searchParams)

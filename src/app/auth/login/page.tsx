@@ -17,10 +17,7 @@ const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // useEffect(async () => {
-  //   gen = await genCode(20);
-  //   core = await genCode(100);
-  // });
+
 
   const login = async () => {
     try {
@@ -42,43 +39,11 @@ const Page = () => {
 
       })
 
-      console.log(result);
 
       setEmail("");
       setPassword("");
 
-      // let { statusCode } = response.data;
-      // let { message } = response.data;
-
-
-      // if (statusCode == 0) {
-      //   return toast.error(message);
-      // } else if (statusCode == 1) {
-      //   let { userType } = response.data.data;
-      //   let { submitted } = response.data.data || "";
-
-      //   let { recruitmentType } = response.data.data || "";
-
-
-      // if (userType == 1) {
-      //   Router.push("/admin/dashboard");
-      //   return toast.success("Logged in successfully");
-      // } else if (userType == 2) {
-      //   Router.push("/admin/shortlist");
-      //   return toast.success("Logged in successfully");
-      // } else if (userType == 3) {
-      //   Router.push("/admin/dashboard");
-      //   return toast.success("Logged in successfully");
-      // } else if (userType == 4) {
-
-
-      //   if (submitted == true) {
-      //     return Router.replace("/applicant/list");
-      //   } else {
-      //     return Router.replace("/applicant/personal?core=");
-      //   }
-      // }
-
+      
     } catch (error) {
       console.log(error);
     }

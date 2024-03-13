@@ -3,6 +3,7 @@ import { authOptions } from "@/src/app/api/auth/[...nextauth]/options";
 import BroadsheetPositionSummary from "@/src/components/admin/broadsheet/BroadsheetPositionSummary";
 import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 async function getPositionSummary(searchParams: any) {
     let { qry } = searchParams
-    let response = await fetch(`${SERVER_BASE_URL}/api/admin/broadsheet/position-summary?qry=${qry}`, { cache: 'no-store',headers:headers() });
+    let response = await fetch(`${SERVER_BASE_URL}/api/admin/broadsheet/position-summary?qry=${qry}`, { cache: 'no-store', headers: headers() });
 
     if (!response.ok) {
         throw new Error('Failed to fetch data')
@@ -24,8 +25,14 @@ async function getPositionSummary(searchParams: any) {
 
 export default async function Page({ searchParams }: any) {
 
+
     const session: any = await getServerSession(authOptions);
-    const userRole = session
+    const userRole = session?.user.userRoleId
+
+    if (userRole != 1 || userRole != 2 || userRole != 3) {
+        return redirect('/auth/admin/login')
+    }
+
 
     const positionSummaries = await getPositionSummary(searchParams)
 
