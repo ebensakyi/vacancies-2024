@@ -197,6 +197,7 @@ CREATE TABLE `CurrentRecruitment` (
     `updatedAt` DATETIME(3) NOT NULL,
     `recruitmentId` INTEGER NOT NULL,
 
+    UNIQUE INDEX `CurrentRecruitment_recruitmentId_key`(`recruitmentId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -209,6 +210,7 @@ CREATE TABLE `CurrentShortlisting` (
     `updatedAt` DATETIME(3) NOT NULL,
     `recruitmentId` INTEGER NOT NULL,
 
+    UNIQUE INDEX `CurrentShortlisting_recruitmentId_key`(`recruitmentId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -390,6 +392,8 @@ CREATE TABLE `Confirmation` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `contactObjection` INTEGER NOT NULL,
+    `workWaec` INTEGER NULL,
+    `staffId` VARCHAR(10) NULL,
     `deleted` INTEGER NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,

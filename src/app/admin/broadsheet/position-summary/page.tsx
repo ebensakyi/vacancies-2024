@@ -1,5 +1,7 @@
 import { SERVER_BASE_URL } from "@/constants";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/options";
 import BroadsheetPositionSummary from "@/src/components/admin/broadsheet/BroadsheetPositionSummary";
+import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +24,7 @@ async function getPositionSummary(searchParams: any) {
 
 export default async function Page({ searchParams }: any) {
 
+    const session: any = await getServerSession(authOptions);
 
     const positionSummaries = await getPositionSummary(searchParams)
 
