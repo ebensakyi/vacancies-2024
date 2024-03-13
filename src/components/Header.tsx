@@ -198,7 +198,7 @@ const Header = () => {
                         className="dropdown-menu"
                         aria-labelledby="topnav-pages"
                       >
-                        <Link href="/admin/broadsheet" className="dropdown-item">
+                        <Link href="/admin/broadsheet?page=1" className="dropdown-item">
 
                           All
 

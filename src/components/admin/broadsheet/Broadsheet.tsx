@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { usePathname, redirect } from "next/navigation";
+import { usePathname, redirect, useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
 import ReactPaginate from "react-paginate";
@@ -21,6 +21,9 @@ const Broadsheet = ({ data }: any) => {
     }
   })
   const pathname = usePathname()
+  const searchParams = useSearchParams();
+const router = useRouter();
+const page = searchParams.get('page');
 
   useEffect(() => {
     let searchId = localStorage.getItem("currentData");
@@ -34,7 +37,7 @@ const Broadsheet = ({ data }: any) => {
     try {
       let _url = url
 
-    window.open(url, "_blank");
+      window.open(url, "_blank");
 
       const firstPath = url.split("/")[1];
 
@@ -83,7 +86,29 @@ const Broadsheet = ({ data }: any) => {
   //   }
   // };
 
-  // const handleAction = async () => { };
+//   const handlePagination = (page: any) => {
+//     let searchText = searchParams.get('searchText')||""
+
+//     page = page.selected == -1 ? 1 : page.selected + 1;
+
+//     router.push(
+//         `${pathname}?page=${page}&searchText=${searchText}`
+
+//     );
+// };
+
+const handlePagination = (page: any) => {
+  const searchText = searchParams.get('searchText') || "";
+  page = page.selected == -1 ? 1 : page.selected + 1;
+
+  console.log("PAGE ",page);
+  
+
+  router.push(`${pathname}?page=${page}&searchText=${searchText}`)
+
+};
+
+
 
   return (
     <div id="layout-wrapper">
@@ -252,7 +277,7 @@ const Broadsheet = ({ data }: any) => {
                           
                             <td>{bs.User.Confirmation.YesNo.value}</td> */}
                                   <td>
-                                    {bs.shortlisted === 1 ?  <span className="badge bg-success">Shortlisted</span>  ? bs.shortlisted == -1 :<span className="badge bg-dark">Not worked on</span>  :<span className="badge bg-danger">Rejected</span> }
+                                    {bs.shortlisted === 1 ? <span className="badge bg-success">Shortlisted</span> ? bs.shortlisted == -1 : <span className="badge bg-dark">Not worked on</span> : <span className="badge bg-danger">Rejected</span>}
                                   </td>
                                   <td>
                                     <Link
@@ -268,24 +293,27 @@ const Broadsheet = ({ data }: any) => {
                             })}
                           </tbody>
                         </table>
-                        {/* <ReactPaginate
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"..."}
-                    initialPage={broadsheet.curPage - 1}
-                    pageCount={broadsheet.maxPage}
-                    onPageChange={handlePagination}
-                    containerClassName={"paginate-wrap"}
-                    subContainerClassName={"paginate-inner"}
-                    pageClassName={"paginate-li"}
-                    pageLinkClassName={"paginate-a"}
-                    activeClassName={"paginate-active"}
-                    nextLinkClassName={"paginate-next-a"}
-                    previousLinkClassName={"paginate-prev-a"}
-                    breakLinkClassName={"paginate-break-a"}
-                  /> */}
+                        <ReactPaginate
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    previousLabel={"Previous"}
+                                    nextLabel={"Next"}
+                                    breakLabel={"..."}
+                                    initialPage={data.curPage - 1}
+                                    pageCount={data.maxPage}
+                                    onPageChange={handlePagination}
+                                    breakClassName={"page-item"}
+                                    breakLinkClassName={"page-link"}
+                                    containerClassName={"pagination"}
+                                    pageClassName={"page-item"}
+                                    pageLinkClassName={"page-link"}
+                                    previousClassName={"page-item"}
+                                    previousLinkClassName={"page-link"}
+                                    nextClassName={"page-item"}
+                                    nextLinkClassName={"page-link"}
+                                    activeClassName={"active"}
+                                />
+                       
 
                         {/* <TablePagination position={position} page={page} /> */}
                       </div>

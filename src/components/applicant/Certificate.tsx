@@ -141,6 +141,7 @@ const Certificate = ({ data }: any) => {
                             </div>
                         </div>
                         <div className="row">
+                            
                             <ApplicationMenu whichLink="certifications" />
 
                             <ToastContainer
