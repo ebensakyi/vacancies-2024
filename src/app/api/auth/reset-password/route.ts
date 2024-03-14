@@ -17,17 +17,10 @@ export async function POST(request: Request) {
     let tokenArr = token.split('-_-')
     let userId = Number(tokenArr[1]);
 
-    console.log("tokenArr",tokenArr);
-    console.log(res);
-    console.log("userId",userId);
-
-
-    
 
 
   let user = await prisma.user.findFirst({ where: { id: userId } });
 
-  console.log(user);
   
 
     if (!user) {
