@@ -4,6 +4,7 @@ import Education from "@/src/components/applicant/Education";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "../../api/auth/[...nextauth]/options";
+import { applicantUser } from "@/lib/user-roles";
 
 
 
@@ -61,10 +62,10 @@ export default async function Page({ searchParams }: any) {
     const session: any = await getServerSession(authOptions);
     const userRole = session?.user.userRoleId
 
-    if (userRole != 4) {
+  
+    if (!applicantUser(userRole)) {
         return redirect('/auth/login')
     }
-
 
 
     const educationLevels = await getEducationLevel(searchParams)

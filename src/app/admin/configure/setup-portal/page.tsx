@@ -1,4 +1,5 @@
 import { SERVER_BASE_URL } from "@/constants";
+import { adminUser } from "@/lib/user-roles";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/options";
 import SetupPortal from "@/src/components/admin/SetupPortal";
 import { getServerSession } from "next-auth";
@@ -40,10 +41,9 @@ export default async function Page({ searchParams }: any) {
     const session: any = await getServerSession(authOptions);
     const userRole = session?.user.userRoleId
 
-    if (userRole != 1 && userRole != 2 && userRole != 3) {
-        return redirect('/auth/admin/login')
+    if (!adminUser(userRole)) {
+        return redirect('/auth/login')
     }
-
 
 
     const currentSetup = await getSetupPortal(searchParams)

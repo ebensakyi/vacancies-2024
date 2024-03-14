@@ -4,6 +4,7 @@ import { Essay } from "@/src/components/applicant/Essay";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
+import { applicantUser } from "@/lib/user-roles";
 
 
 
@@ -25,11 +26,10 @@ export default async function Page({ searchParams }: any) {
     const session: any = await getServerSession(authOptions);
     const userRole = session?.user.userRoleId
 
-    if (userRole != 4) {
+    
+    if (!applicantUser(userRole)) {
         return redirect('/auth/login')
     }
-
-
 
     const essay = await getEssay(searchParams)
   
