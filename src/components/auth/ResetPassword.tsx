@@ -36,21 +36,22 @@ const ResetPassword = () => {
         data,
       });
 
-      
+
 
       setPassword("")
       setConfirmPassword("")
       if (response.status == 200) {
+        router.push("/auth/login")
         toast.success("Password reset successfully");
-     return router.push("/auth/login")
- 
+        return
+
       }
 
       if (response.status == 201)
         return toast.error("User account not found.\nPlease try again");
     } catch (error) {
       console.log(error);
-      
+
       return toast.error("Password reset not successful.\nPlease try again");
 
     }
