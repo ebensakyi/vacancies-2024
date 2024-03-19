@@ -69,6 +69,11 @@ export async function POST(request: Request) {
 
       let response = { ...user, token, accesiblePages, name: user.firstName + " " + user.surname + " " + user.otherNames, role: user.userRoleId };
 
+<<<<<<< HEAD
+=======
+      
+
+>>>>>>> 68cbc63686f3dbb7caafe5c63d05e7d9db6fd419
       return NextResponse.json(response);
     }
     return NextResponse.json(null, { status: 400 });
