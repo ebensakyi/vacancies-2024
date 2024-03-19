@@ -9,10 +9,7 @@ import ApplicationMenu from "../ApplicationMenu";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { LOGIN_URL } from "@/constants";
-import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
-const QuillEditor = dynamic(() => import("react-quill"), { ssr: false });
 export const Essay = ({ data }: any) => {
   const { data: session } = useSession({
     required: true,
@@ -24,7 +21,7 @@ export const Essay = ({ data }: any) => {
   const [essay, setEssay] = useState("");
   const [wordCount, setWordCount] = useState(0);
 
-  const handleEditorChange1 = (content: string, editor: any) => {
+  const handleEditorChange = (content: string, editor: any) => {
     // Split the content into words using whitespace as delimiter
     const words = content.trim().split(/\s+/);
     // Filter out empty strings (e.g., consecutive whitespaces)
@@ -33,38 +30,7 @@ export const Essay = ({ data }: any) => {
     setWordCount(filteredWords.length);
   };
 
-  const quillModules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
-      [{ align: [] }],
-      [{ color: [] }],
-      ["code-block"],
-      ["clean"],
-    ],
-  };
-
-  const quillFormats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "link",
-    "image",
-    "align",
-    "color",
-    "code-block",
-  ];
-
-  const handleEditorChange = (newContent: any) => {
-    setEssay(newContent);
-  };
+  //let savedLetter = savedEssay.essay;
 
   useEffect(() => {
 
@@ -81,8 +47,6 @@ export const Essay = ({ data }: any) => {
 
     }
   }, []);
-
-  
   const save = async () => {
     try {
       const data = {
@@ -171,14 +135,32 @@ export const Essay = ({ data }: any) => {
                       <div className="row">
                         <div className="col-md-12">
                           <div className="mb-3 position-relative">
-                          <QuillEditor
-                              style={{height:'400px'}}
-                                value={essay}
-                                onChange={handleEditorChange}
-                                modules={quillModules}
-                                formats={quillFormats}
-                                className="w-full h-[70%] mt-10 bg-white"
-                              />
+                            <Editor
+                              apiKey="231hohc8dmkwpp8k8vawvs3oatywgw9p3x2n9bnsu7e5mabx"
+                              initialValue={data?.essay?.response?.essay}
+                              // initialValue="<h1>This is the initial content of the editor.</h1>"
+                              init={{
+                                height: 500,
+                                menubar: false,
+                                plugins: [
+                                  "advlist autolink lists link image",
+                                  "charmap print preview anchor help",
+                                  "searchreplace visualblocks code",
+                                  "insertdatetime media table paste wordcount",
+                                ],
+                                toolbar:
+                                  "undo redo | formatselect | bold italic | \
+            alignleft aligncenter alignright | \
+            bullist numlist outdent indent | help",
+            wordcount: true
+
+                              }}
+                              onChange={(e: any) => {
+                                setEssay(e.target.getContent());
+                              }}
+                              onEditorChange={ handleEditorChange}
+
+                            />
                           </div>
                         </div>
                         <small style={{ color: "red" }}>{wordCount}/200</small>

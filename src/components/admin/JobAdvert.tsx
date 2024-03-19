@@ -1,23 +1,26 @@
-
-"use client"
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Editor } from "@tinymce/tinymce-react";
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
+
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
+
+const QuillEditor = dynamic(() => import("react-quill"), { ssr: false });
 
 const JobAdvert = ({ data }: any) => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-        redirect(ADMIN_LOGIN_URL);
-    }
-})
-  const router = useRouter()
-  const [toggleModal, setToggleModal] = useState(false)
+      redirect(ADMIN_LOGIN_URL);
+    },
+  });
+  const router = useRouter();
+  const [toggleModal, setToggleModal] = useState(false);
   const [id, setId] = useState("");
 
   const [name, setName] = useState("");
@@ -31,7 +34,38 @@ const JobAdvert = ({ data }: any) => {
   // const [open, setOpen] = useState(false);
 
   // const onCloseModal = () => setOpen(false);
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      [{ align: [] }],
+      [{ color: [] }],
+      ["code-block"],
+      ["clean"],
+    ],
+  };
 
+  const quillFormats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "link",
+    "image",
+    "align",
+    "color",
+    "code-block",
+  ];
+
+  const handleEditorChange = (newContent: any) => {
+    setDetail(newContent);
+  };
 
   const save = async () => {
     try {
@@ -45,20 +79,16 @@ const JobAdvert = ({ data }: any) => {
 
       let response = await axios.post("/api/admin/job-advert", { data });
 
-
       if (response.status == 200) {
-        setName("")
-        setPolicy("")
-        setDetail("")
-        router.refresh()
-
+        setName("");
+        setPolicy("");
+        setDetail("");
+        router.refresh();
 
         return toast.success("Data saved successfully");
       }
       if (response.status != 200) return toast.error("Data not saved");
-    } catch (error) {
-    }
-
+    } catch (error) {}
   };
 
   const update = async () => {
@@ -73,47 +103,37 @@ const JobAdvert = ({ data }: any) => {
       if (name == "" || policy == "" || detail == "")
         return toast.error("Data not saved. Fill the form");
 
-
       let response = await axios.put("/api/admin/job-advert", { data });
 
-
-
       if (response.status == 200) {
-        setName("")
-        setPolicy("")
-        setDetail("")
-        router.refresh()
+        setName("");
+        setPolicy("");
+        setDetail("");
+        router.refresh();
 
         return toast.success("Data updated successfully");
       }
-      setName("")
-      setPolicy("")
-      setDetail("")
-      router.refresh()
+      setName("");
+      setPolicy("");
+      setDetail("");
+      router.refresh();
       return toast.error("Data not updated");
-    } catch (error) {
-    }
-
+    } catch (error) {}
   };
 
   const handlePublishing = async (id: any) => {
     try {
-
       const data = {
         publish: 1,
         id,
-
       };
       const response = await axios.put("/api/admin/job-advert", { data });
       if (response.status == 200) {
-        router.refresh()
+        router.refresh();
         return toast.success("Job published successfully");
       }
       if (response.status != 0) return toast.error("Job not published ");
-    } catch (error) {
-
-    }
-
+    } catch (error) {}
   };
 
   const deleteJob = async (id: any) => {
@@ -122,23 +142,19 @@ const JobAdvert = ({ data }: any) => {
         data: id,
       });
 
-
-      router.refresh()
+      router.refresh();
       if (response.status == 200) {
-
-
         return toast.success("Job deleted successfully");
       }
       if (response.status != 200) return toast.error("Job not deleted ");
     } catch (error) {
       return toast.error("Job not deleted ");
     }
-
   };
+
   // let formattedDetails = ReactHtmlParser(detail)
   return (
     <div id="layout-wrapper">
-
       <div className="main-content">
         <div className="page-content">
           <div className="container-fluid">
@@ -150,7 +166,6 @@ const JobAdvert = ({ data }: any) => {
               </div>
             </div>
             <div className="row">
-
               <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -173,7 +188,10 @@ const JobAdvert = ({ data }: any) => {
                       <div className="row">
                         <div className="col-md-6">
                           <div className="mb-3 position-relative">
-                            <label className="form-label" htmlFor="validationTooltip01">
+                            <label
+                              className="form-label"
+                              htmlFor="validationTooltip01"
+                            >
                               Job title
                             </label>
                             <input
@@ -191,7 +209,10 @@ const JobAdvert = ({ data }: any) => {
                         </div>
                         <div className="col-md-6">
                           <div className="mb-3 position-relative">
-                            <label className="form-label" htmlFor="validationTooltip02">
+                            <label
+                              className="form-label"
+                              htmlFor="validationTooltip02"
+                            >
                               Shortlist policy
                             </label>
                             <select
@@ -215,60 +236,52 @@ const JobAdvert = ({ data }: any) => {
                       <div className="row">
                         <div className="col-md-12">
                           <div className="mb-3 position-relative">
-                            <Editor
-                              apiKey="231hohc8dmkwpp8k8vawvs3oatywgw9p3x2n9bnsu7e5mabx"
-                              initialValue={detail}
-                              init={{
-                                height: 500,
-                                // menubar: false,
-                                plugins: [
-                                  "advlist autolink lists link image",
-                                  "charmap print preview anchor help",
-                                  "searchreplace visualblocks code",
-                                  "insertdatetime media table paste wordcount",
-                                ],
-                                //                     toolbar:
-                                //                       "undo redo | formatselect | bold italic | \
-                                // alignleft aligncenter alignright | \
-                                // bullist numlist outdent indent | help",
-                              }}
-                              onChange={(e: any) => {
-                                setDetail(e.target.getContent());
-                              }}
-                            />
+                            <div >
+                              <QuillEditor
+                              style={{height:'400px'}}
+                                value={detail}
+                                onChange={handleEditorChange}
+                                modules={quillModules}
+                                formats={quillFormats}
+                                className="w-full h-[70%] mt-10 bg-white"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                      {id != "" ? <button
-                        className="btn btn-warning"
-                        type="submit"
-                        onClick={(e: any) => {
-                          e.preventDefault();
-                          update();
-                        }}
-                      >
-                        Update
-                      </button> : <button
-                        className="btn btn-primary"
-                        type="submit"
-                        onClick={(e: any) => {
-                          e.preventDefault();
-                          save();
-                        }}
-                      >
-                        Submit
-                      </button>}
-
-                      {" "}
+                      <br/>  <br/>  <br/>
+                      {id != "" ? (
+                        <button
+                          className="btn btn-warning"
+                          type="submit"
+                          onClick={(e: any) => {
+                            e.preventDefault();
+                            update();
+                          }}
+                        >
+                          Update
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-primary"
+                          type="submit"
+                          onClick={(e: any) => {
+                            e.preventDefault();
+                            save();
+                          }}
+                        >
+                          Submit
+                        </button>
+                      )}{" "}
                       <button
                         className="btn btn-danger"
                         type="submit"
                         onClick={(e: any) => {
                           e.preventDefault();
 
-                          setId("")
-                          setName("")
-                          setDetail("")
+                          setId("");
+                          setName("");
+                          setDetail("");
                         }}
                       >
                         Cancel
@@ -301,8 +314,6 @@ const JobAdvert = ({ data }: any) => {
                         </thead>
                         <tbody>
                           {data?.jobAds?.response?.map((ad: any) => {
-
-
                             return (
                               <tr key={ad.id}>
                                 <td hidden>{ad.id}</td>
@@ -331,35 +342,41 @@ const JobAdvert = ({ data }: any) => {
                                     </label>
                                   </div>
                                 </td>
-                                <td> <button
-                                  type="button"
-                                  className="btn btn-primary btn-sm waves-effect waves-light "
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    setId(ad.id)
-                                    setName(ad.name)
-                                    setPolicy(ad.policyId)
-                                    setDetail(ad.details)
+                                <td>
+                                  {" "}
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary btn-sm waves-effect waves-light "
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setId(ad.id);
+                                      setName(ad.name);
+                                      setPolicy(ad.policyId);
+                                      setDetail(ad.details);
 
+                                      // setOpen(true);
+                                      // setModalTitle(ad.name);
+                                      // let fd = ReactHtmlParser(ad.details)
+                                      // console.log(fd);
 
-                                    // setOpen(true);
-                                    // setModalTitle(ad.name);
-                                    // let fd = ReactHtmlParser(ad.details)
-                                    // console.log(fd);
-
-                                    //setFormattedDetail(fd);
-                                  }}
-                                >
-                                  <i className="dripicons-pencil" />
-                                </button></td>
+                                      //setFormattedDetail(fd);
+                                    }}
+                                  >
+                                    <i className="dripicons-pencil" />
+                                  </button>
+                                </td>
                                 <td>
                                   <button
                                     type="button"
                                     className="btn btn-success btn-sm waves-effect waves-light "
                                     onClick={(e) => {
-                                      e.preventDefault()
+                                      e.preventDefault();
 
-                                      window.open(`/admin/job-advert/preview?id=${ad.id}`, '_blank', 'noopener,noreferrer');
+                                      window.open(
+                                        `/admin/job-advert/preview?id=${ad.id}`,
+                                        "_blank",
+                                        "noopener,noreferrer"
+                                      );
                                       // setName(ad.name)
                                       // setPolicy(ad.policyId)
                                       // setDetail(ad.detail)
