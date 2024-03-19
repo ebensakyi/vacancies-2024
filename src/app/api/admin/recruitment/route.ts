@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       startDate: new Date(res.data.startDate),
 
       staffTypeId: Number(res.data.staffType),
-      createdById: Number(userId),
+      createdBy: Number(userId),
 
     };
 
