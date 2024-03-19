@@ -19,6 +19,7 @@
     "@hookform/resolvers": "^3.3.2",
     "@preact/signals": "^1.2.1",
     "@prisma/client": "^5.10.2",
+    "@syncfusion/ej2-react-richtexteditor": "^25.1.35",
     "@tinymce/tinymce-react": "^4.3.0",
     "@types/node": "20.5.0",
     "@types/react-dom": "18.2.7",
@@ -80,6 +81,7 @@
     "@types/randomstring": "^1.1.12",
     "@types/react": "^18.0.1",
     "@types/react-html-parser": "^2.0.4",
+    "@types/react-rte": "^0.16.8",
     "prisma": "^5.10.2",
     "ts-node": "^10.9.1"
   }
