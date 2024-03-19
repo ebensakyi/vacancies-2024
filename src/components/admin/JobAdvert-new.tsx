@@ -8,14 +8,14 @@ import { Editor } from "@tinymce/tinymce-react";
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ADMIN_LOGIN_URL } from "@/constants";
-
+import { HtmlEditor, Inject, Link, QuickToolbar, RichTextEditorComponent, Toolbar } from '@syncfusion/ej2-react-richtexteditor';
 const JobAdvert = ({ data }: any) => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-        redirect(ADMIN_LOGIN_URL);
+      redirect(ADMIN_LOGIN_URL);
     }
-})
+  })
   const router = useRouter()
   const [toggleModal, setToggleModal] = useState(false)
   const [id, setId] = useState("");
@@ -135,6 +135,22 @@ const JobAdvert = ({ data }: any) => {
     }
 
   };
+
+  const toolbarSettings = {
+    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
+        'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
+        'LowerCase', 'UpperCase', '|',
+        'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
+        'Outdent', 'Indent', '|',
+        'CreateLink', 'Image', '|', 'ClearFormat', 'Print',
+        'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+};
+const quickToolbarSettings = {
+    image: ['Replace', 'Align', 'Caption', 'Remove', 'InsertLink', 'OpenImageLink', '-', 'EditImageLink', 'RemoveImageLink', 'Display', 'AltText', 'Dimension'],
+    link: ['Open', 'Edit', 'UnLink']
+}
+
+
   // let formattedDetails = ReactHtmlParser(detail)
   return (
     <div id="layout-wrapper">
@@ -215,27 +231,44 @@ const JobAdvert = ({ data }: any) => {
                       <div className="row">
                         <div className="col-md-12">
                           <div className="mb-3 position-relative">
-                            <Editor
-                              apiKey="231hohc8dmkwpp8k8vawvs3oatywgw9p3x2n9bnsu7e5mabx"
-                              initialValue={detail}
-                              init={{
-                                height: 500,
-                                // menubar: false,
-                                plugins: [
-                                  "advlist autolink lists link image",
-                                  "charmap print preview anchor help",
-                                  "searchreplace visualblocks code",
-                                  "insertdatetime media table paste wordcount",
-                                ],
-                                //                     toolbar:
-                                //                       "undo redo | formatselect | bold italic | \
-                                // alignleft aligncenter alignright | \
-                                // bullist numlist outdent indent | help",
-                              }}
-                              onChange={(e: any) => {
-                                setDetail(e.target.getContent());
-                              }}
-                            />
+                            <RichTextEditorComponent height={450} toolbarSettings={toolbarSettings} quickToolbarSettings={quickToolbarSettings}>
+                              <p>The Rich Text Editor component is WYSIWYG editor that provides the best user experience to create and update the content. Users can format their content using standard toolbar commands.</p>
+                              <p><b>Key features:</b></p>
+                              <ul>
+                                <li>
+                                  <p>Provides &lt;IFRAME&gt; and &lt;DIV&gt; modes</p>
+                                </li>
+                                <li>
+                                  <p>Capable of handling markdown editing.</p>
+                                </li>
+                                <li>
+                                  <p>Contains a modular library to load the necessary functionality on demand.</p>
+                                </li>
+                                <li>
+                                  <p>Provides a fully customizable toolbar.</p>
+                                </li>
+                                <li>
+                                  <p>Provides HTML view to edit the source directly for developers.</p>
+                                </li>
+                                <li>
+                                  <p>Supports third-party library integration.</p>
+                                </li>
+                                <li>
+                                  <p>Allows preview of modified content before saving it.</p>
+                                </li>
+                                <li>
+                                  <p>Handles images, hyperlinks, video, hyperlinks, uploads, etc.</p>
+                                </li>
+                                <li>
+                                  <p>Contains undo/redo manager.</p>
+                                </li>
+                                <li>
+                                  <p>Creates bulleted and numbered lists.</p>
+                                </li>
+                              </ul>
+                              <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar]} />
+                            </RichTextEditorComponent>
+
                           </div>
                         </div>
                       </div>
