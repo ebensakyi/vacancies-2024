@@ -4,55 +4,41 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
-import Image from "next/image";
 import Footer from "../Footer";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
 
 const ResetPassword = () => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [isValid, setIsValid] = useState(false);
-
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const token = searchParams.get('id');
-
 
 
 
   const reset = async () => {
     try {
-      if (password == "" || confirmPassword == "")
+      if (email == "" || password == "" || confirmPassword == "")
         return toast.error("Please fill the form");
       if (password != confirmPassword) {
         return toast.error("Passwords do not match");
 
       }
       const data = {
-        token,
+        email,
         password
       };
-      const response = await axios.post("/api/auth/reset-password", {
+      const response = await axios.post("/api/auth/forget-password", {
         data,
       });
 
-
-
+      setEmail("");
       setPassword("")
-      setConfirmPassword("")
       if (response.status == 200) {
-        router.push("/auth/login")
-        toast.success("Password reset successfully");
-        return
-
+        // Router.push("/auth/reset-password");
+        return toast.success("Check your email for a password reset link");
       }
 
-      if (response.status == 201)
-        return toast.error("User account not found.\nPlease try again");
+      if (response.status != 200)
+        return toast.error("Email account does not exist");
     } catch (error) {
-      console.log(error);
-
-      return toast.error("Password reset not successful.\nPlease try again");
 
     }
 
@@ -77,25 +63,22 @@ const ResetPassword = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="text-center">
-                <center>
-                  <Link href="/" className="mb-5 d-block auth-logo">
-                    <img
-                      src="/logo.png"
-                      alt=""
-                      height="120"
-                      width="100"
-                      className="logo logo-light"
-                    />
-                    {/* <Image
+                <Link href="/" className="mb-5 d-block auth-logo">
+                  <img
                     src="/logo.png"
                     alt=""
-                    height={100}
-                    width={100}
+                    height="120"
+                    width="100"
+                    className="logo logo-dark"
+                  />
+                  {/* <Image
+                    src="/logo.png"
+                    alt=""
+                    height="100"
+                    width="100"
                     className="logo logo-light"
                   /> */}
-                  </Link>
-                </center>
-
+                </Link>
               </div>
             </div>
           </div>
@@ -111,7 +94,7 @@ const ResetPassword = () => {
                   </div>
                   <div className="p-2 mt-4">
                     <div className="row">
-                      {/* <div className="mb-3">
+                      <div className="mb-3">
                         <label htmlFor="validationTooltip02">E-mail</label>
                         <input
                           type="email"
@@ -127,7 +110,7 @@ const ResetPassword = () => {
                         <div className="invalid-tooltip">
                           Email address is required
                         </div>
-                      </div> */}
+                      </div>
                       <div className="mb-3">
                         <label htmlFor="validationTooltip02">New Password</label>
                         <input
@@ -137,23 +120,12 @@ const ResetPassword = () => {
                           value={password}
                           onChange={(e: any) => {
                             setPassword(e.target.value);
-                            if (password.length + 1 >= 8) {
-                              setIsValid(true);
-                            } else {
-                              setIsValid(false);
-                            }
                           }}
                           required
                         />
-                        {password.trim().length >= 8 ? (
-                          <span className="badge rounded-pill bg-success">
-                            Passwords is valid
-                          </span>
-                        ) : (
-                          <span className="badge rounded-pill bg-danger">
-                            Passwords must be at least 8 characters
-                          </span>
-                        )}
+                        <div className="invalid-tooltip">
+                          Password is required
+                        </div>
                       </div>
                       <div className="mb-3">
                         <label htmlFor="validationTooltip02">Confirm Password</label>
@@ -162,31 +134,21 @@ const ResetPassword = () => {
                           className="form-control"
                           id="validationTooltip02"
                           name="email"
-                          value={confirmPassword}
+                          value={email}
                           onChange={(e: any) => {
-                            setConfirmPassword(e.target.value);
+                            setEmail(e.target.value);
                           }}
                           required
                         />
-                        {password != "" && password === confirmPassword ? (
-                          <span className="badge rounded-pill bg-success">
-                            Passwords match{" "}
-                          </span>
-                        ) : (
-                          <span className="badge rounded-pill bg-danger">
-                            Passwords do not match{" "}
-                          </span>
-                        )}
-                        {/* <div className="invalid-tooltip">
+                        <div className="invalid-tooltip">
                           Confirm password is required
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className="col-md-12 align-self-center text-right">
                     <div className="d-flex justify-content-end align-items-center">
                       <button
-                        disabled={(password != "" && password != confirmPassword) || !isValid}
                         className="btn btn-success"
                         type="submit"
                         onClick={(e: any) => {
@@ -203,10 +165,10 @@ const ResetPassword = () => {
             </div>
           </div>
         </div>
-      </div>
-      <Footer />
-    </>
-  );
+        </div>
+        <Footer />
+      </>
+      );
 };
 
-export default ResetPassword;
+      export default ResetPassword;

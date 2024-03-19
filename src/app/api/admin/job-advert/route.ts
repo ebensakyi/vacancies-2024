@@ -51,6 +51,7 @@ export async function PUT(request: Request) {
 
     const response = await prisma.advert.update({ data: { published: Math.abs(pub-1)  }, where: { id: id } });
 
+console.log(response);
 
     return NextResponse.json(response, { status: 200 });
 

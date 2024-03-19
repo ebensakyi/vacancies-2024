@@ -4,7 +4,6 @@ import Shortlist from "@/src/components/admin/Shortlist";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
-import { adminUser } from "@/lib/user-roles";
 
 
 
@@ -42,8 +41,9 @@ export default async function Page({ searchParams }: any) {
 
     const session: any = await getServerSession(authOptions);
     const userRole = session?.user.userRoleId
-    if (!adminUser(userRole)) {
-        return redirect('/auth/login')
+
+    if (userRole != 1 && userRole != 2 && userRole != 3) {
+        return redirect('/auth/admin/login')
     }
 
 

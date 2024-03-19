@@ -1,5 +1,4 @@
 import { SERVER_BASE_URL } from "@/constants";
-import { adminUser, applicantUser } from "@/lib/user-roles";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/options";
 import BroadsheetPositionSummary from "@/src/components/admin/broadsheet/BroadsheetPositionSummary";
 import { getServerSession } from "next-auth";
@@ -31,10 +30,13 @@ export default async function Page({ searchParams }: any) {
     const userRole = session?.user?.userRoleId
 
 
+    console.log(userRole != 1);
+    
+    console.log("userRole===> " + userRole);
     
 
-    if (!adminUser(userRole)) {
-        return redirect('/auth/login')
+    if (userRole != 1 && userRole != 2 && userRole != 3) {
+        return redirect('/auth/admin/login')
     }
 
 

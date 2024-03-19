@@ -9,7 +9,6 @@ export async function GET(request: Request) {
 
     const response = await prisma.degreePrefix.findMany({ });
 
-    console.log(response);
     
     return NextResponse.json({ response });
   } catch (error) {

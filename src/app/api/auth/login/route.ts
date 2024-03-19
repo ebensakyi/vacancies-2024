@@ -10,7 +10,8 @@ export async function POST(request: Request) {
     let email = res.email;
     let password = res.password;
 
-    
+    let name
+    let role
 
     let user: any = await prisma.user.findFirst({
       where: {
@@ -35,7 +36,6 @@ export async function POST(request: Request) {
     // }
 
     let isValid = await bcrypt.compare(password, user.password);
-    
 
     if (isValid) {
       //   await prisma.user.update({
@@ -68,9 +68,6 @@ export async function POST(request: Request) {
       const token = jwt.sign(user, process.env.TOKEN_SECRET || "");
 
       let response = { ...user, token, accesiblePages, name: user.firstName + " " + user.surname + " " + user.otherNames, role: user.userRoleId };
-
-      console.log(response);
-      
 
       return NextResponse.json(response);
     }

@@ -1,6 +1,5 @@
 export const dynamic = "force-dynamic";
 import { SERVER_BASE_URL } from "@/constants";
-import { adminUser } from "@/lib/user-roles";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/options";
 import Policy from "@/src/components/admin/configure/Policy";
 import { getServerSession } from "next-auth";
@@ -55,9 +54,10 @@ export default async function Page({ searchParams }: any) {
     const session: any = await getServerSession(authOptions);
     const userRole = session?.user.userRoleId
 
-    if (!adminUser(userRole)) {
-        return redirect('/auth/login')
+    if (userRole != 1 && userRole != 2 && userRole != 3) {
+        return redirect('/auth/admin/login')
     }
+
 
 
     const levels = await getEducationLevel(searchParams)

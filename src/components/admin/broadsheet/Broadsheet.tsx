@@ -22,17 +22,17 @@ const Broadsheet = ({ data }: any) => {
   })
   const pathname = usePathname()
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const page = searchParams.get('page');
+const router = useRouter();
+const page = searchParams.get('page');
 
-  // useEffect(() => {
-  //   let searchId = localStorage.getItem("currentData");
-  //   if (searchId)
-  //     redirect(
-  //       `${pathname}? /admin/broadsheet?searchId=${searchId}`,
-  //     );
+  useEffect(() => {
+    let searchId = localStorage.getItem("currentData");
+    if (searchId)
+      redirect(
+        `${pathname}? /admin/broadsheet?searchId=${searchId}`,
+      );
 
-  // }, []);
+  }, []);
   const generate = async (url: any) => {
     try {
       let _url = url
@@ -86,26 +86,27 @@ const Broadsheet = ({ data }: any) => {
   //   }
   // };
 
-  //   const handlePagination = (page: any) => {
-  //     let searchText = searchParams.get('searchText')||""
+//   const handlePagination = (page: any) => {
+//     let searchText = searchParams.get('searchText')||""
 
-  //     page = page.selected == -1 ? 1 : page.selected + 1;
+//     page = page.selected == -1 ? 1 : page.selected + 1;
 
-  //     router.push(
-  //         `${pathname}?page=${page}&searchText=${searchText}`
+//     router.push(
+//         `${pathname}?page=${page}&searchText=${searchText}`
 
-  //     );
-  // };
+//     );
+// };
 
-  const handlePagination = (page: any) => {
-    console.log("PAGEWW ", page);
+const handlePagination = (page: any) => {
+  const searchText = searchParams.get('searchText') || "";
+  page = page.selected == -1 ? 1 : page.selected + 1;
 
-    const searchText = searchParams.get('searchText') || "";
-    page = page.selected == -1 ? 1 : page.selected + 1;
+  console.log("PAGE ",page);
+  
 
-    router.push(`${pathname}?page=${page}&searchText=${searchText}`)
+  router.push(`${pathname}?page=${page}&searchText=${searchText}`)
 
-  };
+};
 
 
 
@@ -293,27 +294,28 @@ const Broadsheet = ({ data }: any) => {
                           </tbody>
                         </table>
                         <ReactPaginate
-                          marginPagesDisplayed={2}
-                          pageRangeDisplayed={5}
-                          previousLabel={"Previous"}
-                          nextLabel={"Next"}
-                          breakLabel={"..."}
-                          initialPage={data.curPage - 1}
-                          pageCount={data.maxPage}
-                          onPageChange={handlePagination}
-                          breakClassName={"page-item"}
-                          breakLinkClassName={"page-link"}
-                          containerClassName={"pagination"}
-                          pageClassName={"page-item"}
-                          pageLinkClassName={"page-link"}
-                          previousClassName={"page-item"}
-                          previousLinkClassName={"page-link"}
-                          nextClassName={"page-item"}
-                          nextLinkClassName={"page-link"}
-                          activeClassName={"active"}
-                        />
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    previousLabel={"Previous"}
+                                    nextLabel={"Next"}
+                                    breakLabel={"..."}
+                                    initialPage={data.curPage - 1}
+                                    pageCount={data.maxPage}
+                                    onPageChange={handlePagination}
+                                    breakClassName={"page-item"}
+                                    breakLinkClassName={"page-link"}
+                                    containerClassName={"pagination"}
+                                    pageClassName={"page-item"}
+                                    pageLinkClassName={"page-link"}
+                                    previousClassName={"page-item"}
+                                    previousLinkClassName={"page-link"}
+                                    nextClassName={"page-item"}
+                                    nextLinkClassName={"page-link"}
+                                    activeClassName={"active"}
+                                />
+                       
 
-
+                        {/* <TablePagination position={position} page={page} /> */}
                       </div>
                     </div>
                   </div>

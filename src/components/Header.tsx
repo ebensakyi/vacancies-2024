@@ -14,10 +14,11 @@ const Header = () => {
 
   let user = session?.user
 
-  let authPath = pathname.startsWith("/auth")
+
+
 
   return (
-    <> {user && !authPath ?
+    <> {user && pathname != "/auth/login" ?
 
       user?.userRoleId == 1 || user?.userRoleId == 2 || user?.userRoleId == 3 ?
         ///ADMIN NAV
