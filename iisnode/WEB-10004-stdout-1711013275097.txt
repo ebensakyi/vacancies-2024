@@ -1,0 +1,694 @@
+- [36minfo[39m Loaded env from C:\inetpub\wwwroot\vacancies-2024\.env
+- [36minfo[39m Loaded env from C:\inetpub\wwwroot\vacancies-2024\.env
+> Ready on http://localhost:\\.\pipe\e9c19b48-6081-4b35-928e-4def15ef971d
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`User`.`id`, `db_vacancies_2024`.`User`.`firstName`, `db_vacancies_2024`.`User`.`surname`, `db_vacancies_2024`.`User`.`otherNames`, `db_vacancies_2024`.`User`.`email`, `db_vacancies_2024`.`User`.`phoneNumber`, `db_vacancies_2024`.`User`.`password`, `db_vacancies_2024`.`User`.`position`, `db_vacancies_2024`.`User`.`deleted`, `db_vacancies_2024`.`User`.`createdAt`, `db_vacancies_2024`.`User`.`updatedAt`, `db_vacancies_2024`.`User`.`userRoleId`, `db_vacancies_2024`.`User`.`departmentId`, `db_vacancies_2024`.`User`.`loginTimes`, `db_vacancies_2024`.`User`.`createdById` FROM `db_vacancies_2024`.`User` WHERE (`db_vacancies_2024`.`User`.`email` = ? AND `db_vacancies_2024`.`User`.`deleted` = ?) LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`UserRole`.`id`, `db_vacancies_2024`.`UserRole`.`name`, `db_vacancies_2024`.`UserRole`.`createdBy`, `db_vacancies_2024`.`UserRole`.`deleted`, `db_vacancies_2024`.`UserRole`.`createdAt`, `db_vacancies_2024`.`UserRole`.`updatedAt` FROM `db_vacancies_2024`.`UserRole` WHERE `db_vacancies_2024`.`UserRole`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`AccessibleJob`.`id`, `db_vacancies_2024`.`AccessibleJob`.`jobId`, `db_vacancies_2024`.`AccessibleJob`.`deleted`, `db_vacancies_2024`.`AccessibleJob`.`createdAt`, `db_vacancies_2024`.`AccessibleJob`.`updatedAt`, `db_vacancies_2024`.`AccessibleJob`.`userId` FROM `db_vacancies_2024`.`AccessibleJob` WHERE `db_vacancies_2024`.`AccessibleJob`.`userId` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`PageAccess`.`id`, `db_vacancies_2024`.`PageAccess`.`createdBy`, `db_vacancies_2024`.`PageAccess`.`deleted`, `db_vacancies_2024`.`PageAccess`.`userRoleId`, `db_vacancies_2024`.`PageAccess`.`createdAt`, `db_vacancies_2024`.`PageAccess`.`updatedAt`, `db_vacancies_2024`.`PageAccess`.`pageId` FROM `db_vacancies_2024`.`PageAccess` WHERE (`db_vacancies_2024`.`PageAccess`.`userRoleId` = ? AND `db_vacancies_2024`.`PageAccess`.`deleted` = ?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Page`.`id`, `db_vacancies_2024`.`Page`.`name`, `db_vacancies_2024`.`Page`.`path`, `db_vacancies_2024`.`Page`.`hasSubMenu`, `db_vacancies_2024`.`Page`.`createdBy`, `db_vacancies_2024`.`Page`.`deleted`, `db_vacancies_2024`.`Page`.`createdAt`, `db_vacancies_2024`.`Page`.`updatedAt` FROM `db_vacancies_2024`.`Page` WHERE `db_vacancies_2024`.`Page`.`id` IN (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentRecruitment`.`id`, `db_vacancies_2024`.`CurrentRecruitment`.`createdBy`, `db_vacancies_2024`.`CurrentRecruitment`.`deleted`, `db_vacancies_2024`.`CurrentRecruitment`.`createdAt`, `db_vacancies_2024`.`CurrentRecruitment`.`updatedAt`, `db_vacancies_2024`.`CurrentRecruitment`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE `db_vacancies_2024`.`CurrentRecruitment`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Job`.`id`, `db_vacancies_2024`.`Job`.`name`, `db_vacancies_2024`.`Job`.`published`, `db_vacancies_2024`.`Job`.`createdBy`, `db_vacancies_2024`.`Job`.`deleted`, `db_vacancies_2024`.`Job`.`createdAt`, `db_vacancies_2024`.`Job`.`updatedAt`, `db_vacancies_2024`.`Job`.`policyId`, `aggr_selection_0_Application`.`_aggr_count_Application` FROM `db_vacancies_2024`.`Job` LEFT JOIN (SELECT `db_vacancies_2024`.`Application`.`jobId`, COUNT(*) AS `_aggr_count_Application` FROM `db_vacancies_2024`.`Application` WHERE 1=1 GROUP BY `db_vacancies_2024`.`Application`.`jobId`) AS `aggr_selection_0_Application` ON (`db_vacancies_2024`.`Job`.`id` = `aggr_selection_0_Application`.`jobId`) WHERE 1=1
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` WHERE 1=1) AS `sub`
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` WHERE `db_vacancies_2024`.`Application`.`submitted` = ?) AS `sub`
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` LEFT JOIN `db_vacancies_2024`.`User` AS `j1` ON (`j1`.`id`) = (`db_vacancies_2024`.`Application`.`userId`) LEFT JOIN `db_vacancies_2024`.`Personal` AS `j2` ON (`j2`.`userId`) = (`j1`.`id`) WHERE (`db_vacancies_2024`.`Application`.`submitted` = ? AND (`j2`.`sexId` = ? AND (`j2`.`id` IS NOT NULL) AND (`j1`.`id` IS NOT NULL)))) AS `sub`
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` LEFT JOIN `db_vacancies_2024`.`User` AS `j1` ON (`j1`.`id`) = (`db_vacancies_2024`.`Application`.`userId`) LEFT JOIN `db_vacancies_2024`.`Personal` AS `j2` ON (`j2`.`userId`) = (`j1`.`id`) WHERE (`db_vacancies_2024`.`Application`.`submitted` = ? AND (`j2`.`sexId` = ? AND (`j2`.`id` IS NOT NULL) AND (`j1`.`id` IS NOT NULL)))) AS `sub`
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentRecruitment`.`id`, `db_vacancies_2024`.`CurrentRecruitment`.`createdBy`, `db_vacancies_2024`.`CurrentRecruitment`.`deleted`, `db_vacancies_2024`.`CurrentRecruitment`.`createdAt`, `db_vacancies_2024`.`CurrentRecruitment`.`updatedAt`, `db_vacancies_2024`.`CurrentRecruitment`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE `db_vacancies_2024`.`CurrentRecruitment`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Job`.`id`, `db_vacancies_2024`.`Job`.`name`, `db_vacancies_2024`.`Job`.`published`, `db_vacancies_2024`.`Job`.`createdBy`, `db_vacancies_2024`.`Job`.`deleted`, `db_vacancies_2024`.`Job`.`createdAt`, `db_vacancies_2024`.`Job`.`updatedAt`, `db_vacancies_2024`.`Job`.`policyId`, `aggr_selection_0_Application`.`_aggr_count_Application` FROM `db_vacancies_2024`.`Job` LEFT JOIN (SELECT `db_vacancies_2024`.`Application`.`jobId`, COUNT(*) AS `_aggr_count_Application` FROM `db_vacancies_2024`.`Application` WHERE 1=1 GROUP BY `db_vacancies_2024`.`Application`.`jobId`) AS `aggr_selection_0_Application` ON (`db_vacancies_2024`.`Job`.`id` = `aggr_selection_0_Application`.`jobId`) WHERE 1=1
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` WHERE 1=1) AS `sub`
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` WHERE `db_vacancies_2024`.`Application`.`submitted` = ?) AS `sub`
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` LEFT JOIN `db_vacancies_2024`.`User` AS `j1` ON (`j1`.`id`) = (`db_vacancies_2024`.`Application`.`userId`) LEFT JOIN `db_vacancies_2024`.`Personal` AS `j2` ON (`j2`.`userId`) = (`j1`.`id`) WHERE (`db_vacancies_2024`.`Application`.`submitted` = ? AND (`j2`.`sexId` = ? AND (`j2`.`id` IS NOT NULL) AND (`j1`.`id` IS NOT NULL)))) AS `sub`
+[34mprisma:query[39m SELECT COUNT(*) FROM (SELECT `db_vacancies_2024`.`Application`.`id` FROM `db_vacancies_2024`.`Application` LEFT JOIN `db_vacancies_2024`.`User` AS `j1` ON (`j1`.`id`) = (`db_vacancies_2024`.`Application`.`userId`) LEFT JOIN `db_vacancies_2024`.`Personal` AS `j2` ON (`j2`.`userId`) = (`j1`.`id`) WHERE (`db_vacancies_2024`.`Application`.`submitted` = ? AND (`j2`.`sexId` = ? AND (`j2`.`id` IS NOT NULL) AND (`j1`.`id` IS NOT NULL)))) AS `sub`
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`User`.`id`, `db_vacancies_2024`.`User`.`firstName`, `db_vacancies_2024`.`User`.`surname`, `db_vacancies_2024`.`User`.`otherNames`, `db_vacancies_2024`.`User`.`email`, `db_vacancies_2024`.`User`.`phoneNumber`, `db_vacancies_2024`.`User`.`password`, `db_vacancies_2024`.`User`.`position`, `db_vacancies_2024`.`User`.`deleted`, `db_vacancies_2024`.`User`.`createdAt`, `db_vacancies_2024`.`User`.`updatedAt`, `db_vacancies_2024`.`User`.`userRoleId`, `db_vacancies_2024`.`User`.`departmentId`, `db_vacancies_2024`.`User`.`loginTimes`, `db_vacancies_2024`.`User`.`createdById` FROM `db_vacancies_2024`.`User` WHERE `db_vacancies_2024`.`User`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`UserRole`.`id`, `db_vacancies_2024`.`UserRole`.`name`, `db_vacancies_2024`.`UserRole`.`createdBy`, `db_vacancies_2024`.`UserRole`.`deleted`, `db_vacancies_2024`.`UserRole`.`createdAt`, `db_vacancies_2024`.`UserRole`.`updatedAt` FROM `db_vacancies_2024`.`UserRole` WHERE `db_vacancies_2024`.`UserRole`.`id` IN (?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Department`.`id`, `db_vacancies_2024`.`Department`.`name`, `db_vacancies_2024`.`Department`.`createdBy`, `db_vacancies_2024`.`Department`.`deleted`, `db_vacancies_2024`.`Department`.`createdAt`, `db_vacancies_2024`.`Department`.`updatedAt`, `db_vacancies_2024`.`Department`.`divisionId` FROM `db_vacancies_2024`.`Department` WHERE `db_vacancies_2024`.`Department`.`id` IN (?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`AccessibleJob`.`id`, `db_vacancies_2024`.`AccessibleJob`.`jobId`, `db_vacancies_2024`.`AccessibleJob`.`deleted`, `db_vacancies_2024`.`AccessibleJob`.`createdAt`, `db_vacancies_2024`.`AccessibleJob`.`updatedAt`, `db_vacancies_2024`.`AccessibleJob`.`userId` FROM `db_vacancies_2024`.`AccessibleJob` WHERE `db_vacancies_2024`.`AccessibleJob`.`userId` IN (?,?,?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Department`.`id`, `db_vacancies_2024`.`Department`.`name`, `db_vacancies_2024`.`Department`.`createdBy`, `db_vacancies_2024`.`Department`.`deleted`, `db_vacancies_2024`.`Department`.`createdAt`, `db_vacancies_2024`.`Department`.`updatedAt`, `db_vacancies_2024`.`Department`.`divisionId` FROM `db_vacancies_2024`.`Department` WHERE 1=1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Division`.`id`, `db_vacancies_2024`.`Division`.`name`, `db_vacancies_2024`.`Division`.`createdBy`, `db_vacancies_2024`.`Division`.`deleted`, `db_vacancies_2024`.`Division`.`createdAt`, `db_vacancies_2024`.`Division`.`updatedAt` FROM `db_vacancies_2024`.`Division` WHERE `db_vacancies_2024`.`Division`.`id` IN (?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`UserRole`.`id`, `db_vacancies_2024`.`UserRole`.`name`, `db_vacancies_2024`.`UserRole`.`createdBy`, `db_vacancies_2024`.`UserRole`.`deleted`, `db_vacancies_2024`.`UserRole`.`createdAt`, `db_vacancies_2024`.`UserRole`.`updatedAt` FROM `db_vacancies_2024`.`UserRole` WHERE `db_vacancies_2024`.`UserRole`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Job`.`id`, `db_vacancies_2024`.`Job`.`name`, `db_vacancies_2024`.`Job`.`published`, `db_vacancies_2024`.`Job`.`createdBy`, `db_vacancies_2024`.`Job`.`deleted`, `db_vacancies_2024`.`Job`.`createdAt`, `db_vacancies_2024`.`Job`.`updatedAt`, `db_vacancies_2024`.`Job`.`policyId` FROM `db_vacancies_2024`.`Job` WHERE `db_vacancies_2024`.`Job`.`deleted` = ?
+[34mprisma:query[39m SELECT 1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`UserRole`.`id`, `db_vacancies_2024`.`UserRole`.`name`, `db_vacancies_2024`.`UserRole`.`createdBy`, `db_vacancies_2024`.`UserRole`.`deleted`, `db_vacancies_2024`.`UserRole`.`createdAt`, `db_vacancies_2024`.`UserRole`.`updatedAt` FROM `db_vacancies_2024`.`UserRole` WHERE `db_vacancies_2024`.`UserRole`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`PageAccess`.`id`, `db_vacancies_2024`.`PageAccess`.`createdBy`, `db_vacancies_2024`.`PageAccess`.`deleted`, `db_vacancies_2024`.`PageAccess`.`userRoleId`, `db_vacancies_2024`.`PageAccess`.`createdAt`, `db_vacancies_2024`.`PageAccess`.`updatedAt`, `db_vacancies_2024`.`PageAccess`.`pageId` FROM `db_vacancies_2024`.`PageAccess` WHERE `db_vacancies_2024`.`PageAccess`.`userRoleId` IN (?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Page`.`id`, `db_vacancies_2024`.`Page`.`name`, `db_vacancies_2024`.`Page`.`path`, `db_vacancies_2024`.`Page`.`hasSubMenu`, `db_vacancies_2024`.`Page`.`createdBy`, `db_vacancies_2024`.`Page`.`deleted`, `db_vacancies_2024`.`Page`.`createdAt`, `db_vacancies_2024`.`Page`.`updatedAt` FROM `db_vacancies_2024`.`Page` WHERE `db_vacancies_2024`.`Page`.`id` IN (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Job`.`id`, `db_vacancies_2024`.`Job`.`name`, `db_vacancies_2024`.`Job`.`published`, `db_vacancies_2024`.`Job`.`createdBy`, `db_vacancies_2024`.`Job`.`deleted`, `db_vacancies_2024`.`Job`.`createdAt`, `db_vacancies_2024`.`Job`.`updatedAt`, `db_vacancies_2024`.`Job`.`policyId` FROM `db_vacancies_2024`.`Job` WHERE `db_vacancies_2024`.`Job`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`ExamType`.`id`, `db_vacancies_2024`.`ExamType`.`name`, `db_vacancies_2024`.`ExamType`.`createdBy`, `db_vacancies_2024`.`ExamType`.`deleted`, `db_vacancies_2024`.`ExamType`.`createdAt`, `db_vacancies_2024`.`ExamType`.`updatedAt` FROM `db_vacancies_2024`.`ExamType` WHERE `db_vacancies_2024`.`ExamType`.`deleted` = ? ORDER BY `db_vacancies_2024`.`ExamType`.`createdAt` DESC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`EducationLevel`.`id`, `db_vacancies_2024`.`EducationLevel`.`name`, `db_vacancies_2024`.`EducationLevel`.`createdBy`, `db_vacancies_2024`.`EducationLevel`.`deleted`, `db_vacancies_2024`.`EducationLevel`.`createdAt`, `db_vacancies_2024`.`EducationLevel`.`updatedAt` FROM `db_vacancies_2024`.`EducationLevel` WHERE `db_vacancies_2024`.`EducationLevel`.`deleted` = ? ORDER BY `db_vacancies_2024`.`EducationLevel`.`createdAt` DESC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Grade`.`id`, `db_vacancies_2024`.`Grade`.`name`, `db_vacancies_2024`.`Grade`.`examTypeId`, `db_vacancies_2024`.`Grade`.`interpretation`, `db_vacancies_2024`.`Grade`.`createdBy`, `db_vacancies_2024`.`Grade`.`deleted`, `db_vacancies_2024`.`Grade`.`createdAt`, `db_vacancies_2024`.`Grade`.`updatedAt` FROM `db_vacancies_2024`.`Grade` WHERE 1=1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`ExamType`.`id`, `db_vacancies_2024`.`ExamType`.`name`, `db_vacancies_2024`.`ExamType`.`createdBy`, `db_vacancies_2024`.`ExamType`.`deleted`, `db_vacancies_2024`.`ExamType`.`createdAt`, `db_vacancies_2024`.`ExamType`.`updatedAt` FROM `db_vacancies_2024`.`ExamType` WHERE `db_vacancies_2024`.`ExamType`.`id` IN (?,?,?,?,?,?)
+[
+  {
+    id: [33m1[39m,
+    name: [32m'1'[39m,
+    examTypeId: [33m1[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m1[39m,
+      name: [32m'WASSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m2[39m,
+    name: [32m'2'[39m,
+    examTypeId: [33m1[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m1[39m,
+      name: [32m'WASSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m3[39m,
+    name: [32m'3'[39m,
+    examTypeId: [33m1[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m1[39m,
+      name: [32m'WASSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m4[39m,
+    name: [32m'4'[39m,
+    examTypeId: [33m1[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m1[39m,
+      name: [32m'WASSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m5[39m,
+    name: [32m'5'[39m,
+    examTypeId: [33m1[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m1[39m,
+      name: [32m'WASSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m6[39m,
+    name: [32m'6'[39m,
+    examTypeId: [33m1[39m,
+    interpretation: [33m2[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m1[39m,
+      name: [32m'WASSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m7[39m,
+    name: [32m'A1'[39m,
+    examTypeId: [33m2[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m2[39m,
+      name: [32m'WASSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m8[39m,
+    name: [32m'B2'[39m,
+    examTypeId: [33m2[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m2[39m,
+      name: [32m'WASSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m9[39m,
+    name: [32m'B3'[39m,
+    examTypeId: [33m2[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m2[39m,
+      name: [32m'WASSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m10[39m,
+    name: [32m'C4'[39m,
+    examTypeId: [33m2[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m2[39m,
+      name: [32m'WASSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m11[39m,
+    name: [32m'C5'[39m,
+    examTypeId: [33m2[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m2[39m,
+      name: [32m'WASSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m12[39m,
+    name: [32m'C6'[39m,
+    examTypeId: [33m2[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m2[39m,
+      name: [32m'WASSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m13[39m,
+    name: [32m'A'[39m,
+    examTypeId: [33m3[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m3[39m,
+      name: [32m'BECE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m14[39m,
+    name: [32m'B'[39m,
+    examTypeId: [33m3[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m3[39m,
+      name: [32m'BECE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m15[39m,
+    name: [32m'C'[39m,
+    examTypeId: [33m3[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m3[39m,
+      name: [32m'BECE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m16[39m,
+    name: [32m'D'[39m,
+    examTypeId: [33m3[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m3[39m,
+      name: [32m'BECE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m17[39m,
+    name: [32m'A'[39m,
+    examTypeId: [33m4[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m4[39m,
+      name: [32m'BECE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m18[39m,
+    name: [32m'B'[39m,
+    examTypeId: [33m4[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m4[39m,
+      name: [32m'BECE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m19[39m,
+    name: [32m'C'[39m,
+    examTypeId: [33m4[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m4[39m,
+      name: [32m'BECE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m20[39m,
+    name: [32m'D'[39m,
+    examTypeId: [33m4[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m4[39m,
+      name: [32m'BECE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m21[39m,
+    name: [32m'1'[39m,
+    examTypeId: [33m5[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m5[39m,
+      name: [32m'SSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m22[39m,
+    name: [32m'2'[39m,
+    examTypeId: [33m5[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m5[39m,
+      name: [32m'SSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m23[39m,
+    name: [32m'3'[39m,
+    examTypeId: [33m5[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m5[39m,
+      name: [32m'SSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m24[39m,
+    name: [32m'4'[39m,
+    examTypeId: [33m5[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m5[39m,
+      name: [32m'SSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m25[39m,
+    name: [32m'5'[39m,
+    examTypeId: [33m5[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m5[39m,
+      name: [32m'SSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m26[39m,
+    name: [32m'6'[39m,
+    examTypeId: [33m5[39m,
+    interpretation: [33m2[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m5[39m,
+      name: [32m'SSCE SCHOOL'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m27[39m,
+    name: [32m'1'[39m,
+    examTypeId: [33m6[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m6[39m,
+      name: [32m'SSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m28[39m,
+    name: [32m'2'[39m,
+    examTypeId: [33m6[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m6[39m,
+      name: [32m'SSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m29[39m,
+    name: [32m'3'[39m,
+    examTypeId: [33m6[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m6[39m,
+      name: [32m'SSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m30[39m,
+    name: [32m'4'[39m,
+    examTypeId: [33m6[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m6[39m,
+      name: [32m'SSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m31[39m,
+    name: [32m'5'[39m,
+    examTypeId: [33m6[39m,
+    interpretation: [33m1[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m6[39m,
+      name: [32m'SSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  },
+  {
+    id: [33m32[39m,
+    name: [32m'6'[39m,
+    examTypeId: [33m6[39m,
+    interpretation: [33m2[39m,
+    createdBy: [33m1[39m,
+    deleted: [33m0[39m,
+    createdAt: [35m2024-03-20T16:14:19.135Z[39m,
+    updatedAt: [35m2024-03-20T16:14:19.135Z[39m,
+    ExamType: {
+      id: [33m6[39m,
+      name: [32m'SSCE PRIVATE'[39m,
+      createdBy: [33m1[39m,
+      deleted: [33m0[39m,
+      createdAt: [35m2024-03-20T16:14:19.077Z[39m,
+      updatedAt: [35m2024-03-20T16:14:19.077Z[39m
+    }
+  }
+]
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Subject`.`id`, `db_vacancies_2024`.`Subject`.`name`, `db_vacancies_2024`.`Subject`.`createdBy`, `db_vacancies_2024`.`Subject`.`deleted`, `db_vacancies_2024`.`Subject`.`createdAt`, `db_vacancies_2024`.`Subject`.`updatedAt`, `db_vacancies_2024`.`Subject`.`examTypeId`, `db_vacancies_2024`.`Subject`.`subjectTypeId` FROM `db_vacancies_2024`.`Subject` WHERE `db_vacancies_2024`.`Subject`.`deleted` = ? ORDER BY `db_vacancies_2024`.`Subject`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`SubjectType`.`id`, `db_vacancies_2024`.`SubjectType`.`name`, `db_vacancies_2024`.`SubjectType`.`createdBy`, `db_vacancies_2024`.`SubjectType`.`deleted`, `db_vacancies_2024`.`SubjectType`.`createdAt`, `db_vacancies_2024`.`SubjectType`.`updatedAt` FROM `db_vacancies_2024`.`SubjectType` WHERE `db_vacancies_2024`.`SubjectType`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`ExamType`.`id`, `db_vacancies_2024`.`ExamType`.`name`, `db_vacancies_2024`.`ExamType`.`createdBy`, `db_vacancies_2024`.`ExamType`.`deleted`, `db_vacancies_2024`.`ExamType`.`createdAt`, `db_vacancies_2024`.`ExamType`.`updatedAt` FROM `db_vacancies_2024`.`ExamType` WHERE `db_vacancies_2024`.`ExamType`.`id` IN (?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`ExamType`.`id`, `db_vacancies_2024`.`ExamType`.`name`, `db_vacancies_2024`.`ExamType`.`createdBy`, `db_vacancies_2024`.`ExamType`.`deleted`, `db_vacancies_2024`.`ExamType`.`createdAt`, `db_vacancies_2024`.`ExamType`.`updatedAt` FROM `db_vacancies_2024`.`ExamType` WHERE `db_vacancies_2024`.`ExamType`.`deleted` = ? ORDER BY `db_vacancies_2024`.`ExamType`.`createdAt` DESC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`SubjectType`.`id`, `db_vacancies_2024`.`SubjectType`.`name`, `db_vacancies_2024`.`SubjectType`.`createdBy`, `db_vacancies_2024`.`SubjectType`.`deleted`, `db_vacancies_2024`.`SubjectType`.`createdAt`, `db_vacancies_2024`.`SubjectType`.`updatedAt` FROM `db_vacancies_2024`.`SubjectType` WHERE 1=1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`deleted` = ? ORDER BY `db_vacancies_2024`.`StaffType`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Division`.`id`, `db_vacancies_2024`.`Division`.`name`, `db_vacancies_2024`.`Division`.`createdBy`, `db_vacancies_2024`.`Division`.`deleted`, `db_vacancies_2024`.`Division`.`createdAt`, `db_vacancies_2024`.`Division`.`updatedAt` FROM `db_vacancies_2024`.`Division` WHERE `db_vacancies_2024`.`Division`.`deleted` = ? ORDER BY `db_vacancies_2024`.`Division`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Department`.`id`, `db_vacancies_2024`.`Department`.`name`, `db_vacancies_2024`.`Department`.`createdBy`, `db_vacancies_2024`.`Department`.`deleted`, `db_vacancies_2024`.`Department`.`createdAt`, `db_vacancies_2024`.`Department`.`updatedAt`, `db_vacancies_2024`.`Department`.`divisionId` FROM `db_vacancies_2024`.`Department` WHERE 1=1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Division`.`id`, `db_vacancies_2024`.`Division`.`name`, `db_vacancies_2024`.`Division`.`createdBy`, `db_vacancies_2024`.`Division`.`deleted`, `db_vacancies_2024`.`Division`.`createdAt`, `db_vacancies_2024`.`Division`.`updatedAt` FROM `db_vacancies_2024`.`Division` WHERE `db_vacancies_2024`.`Division`.`id` IN (?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Division`.`id`, `db_vacancies_2024`.`Division`.`name`, `db_vacancies_2024`.`Division`.`createdBy`, `db_vacancies_2024`.`Division`.`deleted`, `db_vacancies_2024`.`Division`.`createdAt`, `db_vacancies_2024`.`Division`.`updatedAt` FROM `db_vacancies_2024`.`Division` WHERE `db_vacancies_2024`.`Division`.`deleted` = ? ORDER BY `db_vacancies_2024`.`Division`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`DegreePrefix`.`id`, `db_vacancies_2024`.`DegreePrefix`.`name`, `db_vacancies_2024`.`DegreePrefix`.`createdBy`, `db_vacancies_2024`.`DegreePrefix`.`deleted`, `db_vacancies_2024`.`DegreePrefix`.`createdAt`, `db_vacancies_2024`.`DegreePrefix`.`updatedAt` FROM `db_vacancies_2024`.`DegreePrefix` WHERE 1=1
+[34mprisma:query[39m SELECT 1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`UserRole`.`id`, `db_vacancies_2024`.`UserRole`.`name`, `db_vacancies_2024`.`UserRole`.`createdBy`, `db_vacancies_2024`.`UserRole`.`deleted`, `db_vacancies_2024`.`UserRole`.`createdAt`, `db_vacancies_2024`.`UserRole`.`updatedAt` FROM `db_vacancies_2024`.`UserRole` WHERE `db_vacancies_2024`.`UserRole`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`deleted` = ? ORDER BY `db_vacancies_2024`.`StaffType`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT 1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentRecruitment`.`id`, `db_vacancies_2024`.`CurrentRecruitment`.`createdBy`, `db_vacancies_2024`.`CurrentRecruitment`.`deleted`, `db_vacancies_2024`.`CurrentRecruitment`.`createdAt`, `db_vacancies_2024`.`CurrentRecruitment`.`updatedAt`, `db_vacancies_2024`.`CurrentRecruitment`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE `db_vacancies_2024`.`CurrentRecruitment`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentShortlisting`.`id`, `db_vacancies_2024`.`CurrentShortlisting`.`createdBy`, `db_vacancies_2024`.`CurrentShortlisting`.`deleted`, `db_vacancies_2024`.`CurrentShortlisting`.`createdAt`, `db_vacancies_2024`.`CurrentShortlisting`.`updatedAt`, `db_vacancies_2024`.`CurrentShortlisting`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentShortlisting` WHERE `db_vacancies_2024`.`CurrentShortlisting`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`UserRole`.`id`, `db_vacancies_2024`.`UserRole`.`name`, `db_vacancies_2024`.`UserRole`.`createdBy`, `db_vacancies_2024`.`UserRole`.`deleted`, `db_vacancies_2024`.`UserRole`.`createdAt`, `db_vacancies_2024`.`UserRole`.`updatedAt` FROM `db_vacancies_2024`.`UserRole` WHERE `db_vacancies_2024`.`UserRole`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`deleted` = ? ORDER BY `db_vacancies_2024`.`StaffType`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT 1
+[34mprisma:query[39m BEGIN
+[34mprisma:query[39m INSERT INTO `db_vacancies_2024`.`Recruitment` (`id`,`name`,`startDate`,`deadline`,`createdBy`,`deleted`,`createdAt`,`updatedAt`,`staffTypeId`) VALUES (?,?,?,?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`id` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m COMMIT
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`UserRole`.`id`, `db_vacancies_2024`.`UserRole`.`name`, `db_vacancies_2024`.`UserRole`.`createdBy`, `db_vacancies_2024`.`UserRole`.`deleted`, `db_vacancies_2024`.`UserRole`.`createdAt`, `db_vacancies_2024`.`UserRole`.`updatedAt` FROM `db_vacancies_2024`.`UserRole` WHERE `db_vacancies_2024`.`UserRole`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`deleted` = ? ORDER BY `db_vacancies_2024`.`StaffType`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentRecruitment`.`id`, `db_vacancies_2024`.`CurrentRecruitment`.`createdBy`, `db_vacancies_2024`.`CurrentRecruitment`.`deleted`, `db_vacancies_2024`.`CurrentRecruitment`.`createdAt`, `db_vacancies_2024`.`CurrentRecruitment`.`updatedAt`, `db_vacancies_2024`.`CurrentRecruitment`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE `db_vacancies_2024`.`CurrentRecruitment`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentShortlisting`.`id`, `db_vacancies_2024`.`CurrentShortlisting`.`createdBy`, `db_vacancies_2024`.`CurrentShortlisting`.`deleted`, `db_vacancies_2024`.`CurrentShortlisting`.`createdAt`, `db_vacancies_2024`.`CurrentShortlisting`.`updatedAt`, `db_vacancies_2024`.`CurrentShortlisting`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentShortlisting` WHERE `db_vacancies_2024`.`CurrentShortlisting`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`id` IN (?)
+[34mprisma:query[39m DELETE FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE 1=1
+[34mprisma:query[39m DELETE FROM `db_vacancies_2024`.`CurrentShortlisting` WHERE 1=1
+[34mprisma:query[39m BEGIN
+[34mprisma:query[39m INSERT INTO `db_vacancies_2024`.`CurrentRecruitment` (`id`,`createdBy`,`deleted`,`createdAt`,`updatedAt`,`recruitmentId`) VALUES (?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentRecruitment`.`id`, `db_vacancies_2024`.`CurrentRecruitment`.`createdBy`, `db_vacancies_2024`.`CurrentRecruitment`.`deleted`, `db_vacancies_2024`.`CurrentRecruitment`.`createdAt`, `db_vacancies_2024`.`CurrentRecruitment`.`updatedAt`, `db_vacancies_2024`.`CurrentRecruitment`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE `db_vacancies_2024`.`CurrentRecruitment`.`id` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m INSERT INTO `db_vacancies_2024`.`CurrentShortlisting` (`id`,`createdBy`,`deleted`,`createdAt`,`updatedAt`,`recruitmentId`) VALUES (?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentShortlisting`.`id`, `db_vacancies_2024`.`CurrentShortlisting`.`createdBy`, `db_vacancies_2024`.`CurrentShortlisting`.`deleted`, `db_vacancies_2024`.`CurrentShortlisting`.`createdAt`, `db_vacancies_2024`.`CurrentShortlisting`.`updatedAt`, `db_vacancies_2024`.`CurrentShortlisting`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentShortlisting` WHERE `db_vacancies_2024`.`CurrentShortlisting`.`id` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m COMMIT
+[34mprisma:query[39m SELECT 1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentRecruitment`.`id`, `db_vacancies_2024`.`CurrentRecruitment`.`createdBy`, `db_vacancies_2024`.`CurrentRecruitment`.`deleted`, `db_vacancies_2024`.`CurrentRecruitment`.`createdAt`, `db_vacancies_2024`.`CurrentRecruitment`.`updatedAt`, `db_vacancies_2024`.`CurrentRecruitment`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE `db_vacancies_2024`.`CurrentRecruitment`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentShortlisting`.`id`, `db_vacancies_2024`.`CurrentShortlisting`.`createdBy`, `db_vacancies_2024`.`CurrentShortlisting`.`deleted`, `db_vacancies_2024`.`CurrentShortlisting`.`createdAt`, `db_vacancies_2024`.`CurrentShortlisting`.`updatedAt`, `db_vacancies_2024`.`CurrentShortlisting`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentShortlisting` WHERE `db_vacancies_2024`.`CurrentShortlisting`.`deleted` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`id` IN (?)
+[34mprisma:query[39m SELECT 1
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`EducationLevel`.`id`, `db_vacancies_2024`.`EducationLevel`.`name`, `db_vacancies_2024`.`EducationLevel`.`createdBy`, `db_vacancies_2024`.`EducationLevel`.`deleted`, `db_vacancies_2024`.`EducationLevel`.`createdAt`, `db_vacancies_2024`.`EducationLevel`.`updatedAt` FROM `db_vacancies_2024`.`EducationLevel` WHERE `db_vacancies_2024`.`EducationLevel`.`deleted` = ? ORDER BY `db_vacancies_2024`.`EducationLevel`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Policy`.`id`, `db_vacancies_2024`.`Policy`.`name`, `db_vacancies_2024`.`Policy`.`age`, `db_vacancies_2024`.`Policy`.`experience`, `db_vacancies_2024`.`Policy`.`minimumGrade`, `db_vacancies_2024`.`Policy`.`note`, `db_vacancies_2024`.`Policy`.`createdBy`, `db_vacancies_2024`.`Policy`.`deleted`, `db_vacancies_2024`.`Policy`.`createdAt`, `db_vacancies_2024`.`Policy`.`updatedAt`, `db_vacancies_2024`.`Policy`.`educationLevelId`, `db_vacancies_2024`.`Policy`.`recruitmentId` FROM `db_vacancies_2024`.`Policy` WHERE `db_vacancies_2024`.`Policy`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`id` IN (?)
+[34mprisma:query[39m SELECT 1
+[34mprisma:query[39m DELETE FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE 1=1
+[34mprisma:query[39m BEGIN
+[34mprisma:query[39m INSERT INTO `db_vacancies_2024`.`CurrentRecruitment` (`id`,`createdBy`,`deleted`,`createdAt`,`updatedAt`,`recruitmentId`) VALUES (?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`CurrentRecruitment`.`id`, `db_vacancies_2024`.`CurrentRecruitment`.`createdBy`, `db_vacancies_2024`.`CurrentRecruitment`.`deleted`, `db_vacancies_2024`.`CurrentRecruitment`.`createdAt`, `db_vacancies_2024`.`CurrentRecruitment`.`updatedAt`, `db_vacancies_2024`.`CurrentRecruitment`.`recruitmentId` FROM `db_vacancies_2024`.`CurrentRecruitment` WHERE `db_vacancies_2024`.`CurrentRecruitment`.`id` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m COMMIT
+[34mprisma:query[39m BEGIN
+[34mprisma:query[39m INSERT INTO `db_vacancies_2024`.`Policy` (`id`,`name`,`age`,`experience`,`minimumGrade`,`note`,`createdBy`,`deleted`,`createdAt`,`updatedAt`,`educationLevelId`,`recruitmentId`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Policy`.`id`, `db_vacancies_2024`.`Policy`.`name`, `db_vacancies_2024`.`Policy`.`age`, `db_vacancies_2024`.`Policy`.`experience`, `db_vacancies_2024`.`Policy`.`minimumGrade`, `db_vacancies_2024`.`Policy`.`note`, `db_vacancies_2024`.`Policy`.`createdBy`, `db_vacancies_2024`.`Policy`.`deleted`, `db_vacancies_2024`.`Policy`.`createdAt`, `db_vacancies_2024`.`Policy`.`updatedAt`, `db_vacancies_2024`.`Policy`.`educationLevelId`, `db_vacancies_2024`.`Policy`.`recruitmentId` FROM `db_vacancies_2024`.`Policy` WHERE `db_vacancies_2024`.`Policy`.`id` = ? LIMIT ? OFFSET ?
+[34mprisma:query[39m COMMIT
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`EducationLevel`.`id`, `db_vacancies_2024`.`EducationLevel`.`name`, `db_vacancies_2024`.`EducationLevel`.`createdBy`, `db_vacancies_2024`.`EducationLevel`.`deleted`, `db_vacancies_2024`.`EducationLevel`.`createdAt`, `db_vacancies_2024`.`EducationLevel`.`updatedAt` FROM `db_vacancies_2024`.`EducationLevel` WHERE `db_vacancies_2024`.`EducationLevel`.`deleted` = ? ORDER BY `db_vacancies_2024`.`EducationLevel`.`name` ASC
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Policy`.`id`, `db_vacancies_2024`.`Policy`.`name`, `db_vacancies_2024`.`Policy`.`age`, `db_vacancies_2024`.`Policy`.`experience`, `db_vacancies_2024`.`Policy`.`minimumGrade`, `db_vacancies_2024`.`Policy`.`note`, `db_vacancies_2024`.`Policy`.`createdBy`, `db_vacancies_2024`.`Policy`.`deleted`, `db_vacancies_2024`.`Policy`.`createdAt`, `db_vacancies_2024`.`Policy`.`updatedAt`, `db_vacancies_2024`.`Policy`.`educationLevelId`, `db_vacancies_2024`.`Policy`.`recruitmentId` FROM `db_vacancies_2024`.`Policy` WHERE `db_vacancies_2024`.`Policy`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`EducationLevel`.`id`, `db_vacancies_2024`.`EducationLevel`.`name`, `db_vacancies_2024`.`EducationLevel`.`createdBy`, `db_vacancies_2024`.`EducationLevel`.`deleted`, `db_vacancies_2024`.`EducationLevel`.`createdAt`, `db_vacancies_2024`.`EducationLevel`.`updatedAt` FROM `db_vacancies_2024`.`EducationLevel` WHERE `db_vacancies_2024`.`EducationLevel`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Advert`.`id`, `db_vacancies_2024`.`Advert`.`name`, `db_vacancies_2024`.`Advert`.`details`, `db_vacancies_2024`.`Advert`.`published`, `db_vacancies_2024`.`Advert`.`createdBy`, `db_vacancies_2024`.`Advert`.`deleted`, `db_vacancies_2024`.`Advert`.`createdAt`, `db_vacancies_2024`.`Advert`.`updatedAt`, `db_vacancies_2024`.`Advert`.`policyId` FROM `db_vacancies_2024`.`Advert` WHERE `db_vacancies_2024`.`Advert`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Policy`.`id`, `db_vacancies_2024`.`Policy`.`name`, `db_vacancies_2024`.`Policy`.`age`, `db_vacancies_2024`.`Policy`.`experience`, `db_vacancies_2024`.`Policy`.`minimumGrade`, `db_vacancies_2024`.`Policy`.`note`, `db_vacancies_2024`.`Policy`.`createdBy`, `db_vacancies_2024`.`Policy`.`deleted`, `db_vacancies_2024`.`Policy`.`createdAt`, `db_vacancies_2024`.`Policy`.`updatedAt`, `db_vacancies_2024`.`Policy`.`educationLevelId`, `db_vacancies_2024`.`Policy`.`recruitmentId` FROM `db_vacancies_2024`.`Policy` WHERE `db_vacancies_2024`.`Policy`.`deleted` = ?
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`EducationLevel`.`id`, `db_vacancies_2024`.`EducationLevel`.`name`, `db_vacancies_2024`.`EducationLevel`.`createdBy`, `db_vacancies_2024`.`EducationLevel`.`deleted`, `db_vacancies_2024`.`EducationLevel`.`createdAt`, `db_vacancies_2024`.`EducationLevel`.`updatedAt` FROM `db_vacancies_2024`.`EducationLevel` WHERE `db_vacancies_2024`.`EducationLevel`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`Recruitment`.`id`, `db_vacancies_2024`.`Recruitment`.`name`, `db_vacancies_2024`.`Recruitment`.`code`, `db_vacancies_2024`.`Recruitment`.`startDate`, `db_vacancies_2024`.`Recruitment`.`deadline`, `db_vacancies_2024`.`Recruitment`.`createdBy`, `db_vacancies_2024`.`Recruitment`.`deleted`, `db_vacancies_2024`.`Recruitment`.`createdAt`, `db_vacancies_2024`.`Recruitment`.`updatedAt`, `db_vacancies_2024`.`Recruitment`.`staffTypeId` FROM `db_vacancies_2024`.`Recruitment` WHERE `db_vacancies_2024`.`Recruitment`.`id` IN (?)
+[34mprisma:query[39m SELECT `db_vacancies_2024`.`StaffType`.`id`, `db_vacancies_2024`.`StaffType`.`name`, `db_vacancies_2024`.`StaffType`.`createdBy`, `db_vacancies_2024`.`StaffType`.`deleted`, `db_vacancies_2024`.`StaffType`.`createdAt`, `db_vacancies_2024`.`StaffType`.`updatedAt` FROM `db_vacancies_2024`.`StaffType` WHERE `db_vacancies_2024`.`StaffType`.`id` IN (?)

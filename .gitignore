@@ -28,6 +28,11 @@ yarn-error.log*
 .env*.local
 .env
 
+
+web.config
+server.js
+
+
 # vercel
 .vercel
 
