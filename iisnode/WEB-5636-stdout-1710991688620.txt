@@ -1,0 +1,3 @@
+- [36minfo[39m Loaded env from C:\inetpub\wwwroot\vacancies-2024\.env
+- [36minfo[39m Loaded env from C:\inetpub\wwwroot\vacancies-2024\.env
+> Ready on http://localhost:\\.\pipe\ce2055f1-f818-43c0-9d7b-34db653df41c
