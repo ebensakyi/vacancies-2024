@@ -69,7 +69,7 @@ export async function POST(request: Request) {
 
       let response = { ...user, token, accesiblePages, name: user.firstName + " " + user.surname + " " + user.otherNames, role: user.userRoleId };
 
-      
+
 
       return NextResponse.json(response);
     }
