@@ -133,7 +133,7 @@ const Page = () => {
               <div className="card">
                 <div className="card-body p-4">
                   <div className="text-center mt-2">
-                    <h5 className="text-primary">Login</h5>
+                    <h5 className="text-primary">Admin Login</h5>
                     <p className="text-muted">Login to your account now.</p>
                   </div>
                   <div className="p-2 mt-4">
@@ -194,7 +194,7 @@ const Page = () => {
                           </button>
                         </div>
                       </div>
-                      <div className="mt-4 text-center">
+                      {/* <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
                           Don`t have an account?
                           <Link href="/auth/register" className="fw-medium text-primary">
@@ -202,7 +202,7 @@ const Page = () => {
                             Register now
                           </Link>
                         </p>
-                      </div>
+                      </div> */}
                       <div className="mt-4 text-center">
                         <p className="text-muted mb-0">
                           <Link href="/auth/forget-password" className="fw-medium text-primary">
