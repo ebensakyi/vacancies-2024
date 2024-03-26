@@ -21,6 +21,19 @@ async function getEmployments(searchParams: any) {
 }
 
 
+async function getStaffType(searchParams: any) {
+    let { qry } = searchParams
+    let response = await fetch(`${SERVER_BASE_URL}/api/applicant/select-position/stafftype`, { cache: 'no-store' });
+
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return await response.json();
+
+}
+
+
 export default async function Page({ searchParams }: any) {
     const session: any = await getServerSession(authOptions);
     const userRole = session?.user.userRoleId
@@ -32,10 +45,12 @@ export default async function Page({ searchParams }: any) {
 
 
     const employments = await getEmployments(searchParams)
-  
+    const staffTypes = await getStaffType(searchParams)
+
 
     let data: any = {
-       employments
+       employments,
+       staffTypes
     }
 
     return <Employment data={data} />

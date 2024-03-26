@@ -38,6 +38,9 @@ export async function GET(request: Request) {
 
     let userId = session?.user?.id;
 
+
+    
+
     const application = await prisma.application.findMany({
       where: {
         userId: userId,
@@ -50,7 +53,7 @@ export async function GET(request: Request) {
 
     let response = application.map((m:any) => m.jobId);
 
-    return NextResponse.json({ response });
+    return NextResponse.json( response );
   } catch (error) {
     console.log("=====errrr ", error);
   }

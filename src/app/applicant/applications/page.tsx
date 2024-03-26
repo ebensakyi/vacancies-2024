@@ -3,14 +3,12 @@ import { SERVER_BASE_URL } from "@/constants";
 import Applications from "@/src/components/applicant/Applications";
 import { getServerSession } from "next-auth";
 
-import { headers } from "next/headers";
 import { authOptions } from "../../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
 
 
 
 async function getApplications(searchParams: any) {
-    let { qry } = searchParams
     let response = await fetch(`${SERVER_BASE_URL}/api/applicant/applications`, { cache: 'no-store' });
 
 
